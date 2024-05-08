@@ -7,6 +7,11 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('Notfound.html'), 404
+
 @app.route('/area')
 def area():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
