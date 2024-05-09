@@ -212,7 +212,7 @@ def estado_civil_fedita(id):
         desc=request.form['descripcion']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
         cursor = conn.cursor()
-        cursor.execute('update estado_civil set descripcion=%s where idEstadoCivil=%s', (desc,id))
+        cursor.execute('update estado_civil set descripcion=%s where idEstadoCivil=%s', (id,desc))
         conn.commit()
     return redirect(url_for('estado_civil'))
 
