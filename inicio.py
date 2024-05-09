@@ -347,7 +347,7 @@ def habilidad_fagrega():
 def habilidad_borrar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('delete from habilidad where idGradoAvance = {0}'.format(id))
+    cursor.execute('delete from habilidad where idHabilidad = {0}'.format(id))
     conn.commit()
     return redirect(url_for('habilidad'))
 
@@ -405,7 +405,7 @@ def idioma_fagrega():
 def idioma_borrar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('delete from idioma where idGradoAvance = {0}'.format(id))
+    cursor.execute('delete from idioma where idIdioma = {0}'.format(id))
     conn.commit()
     return redirect(url_for('idioma'))
 
