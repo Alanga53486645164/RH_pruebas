@@ -1,0 +1,49 @@
+requisicion
+vacantes
+candidatos
+estilos
+corregir los "%s" donde debe estar como string, no como int
+
+update puesto set codPuesto = V009, idArea = 5, nomPuesto = SUPERVISOR DE TIENDA , puestoJefeSup = SUPERVISOR, jornada = LUNES A VIERNES,
+                  remunMensual = 10000, prestaciones = DE LEY, descripcionGeneral = VENTAS AL PÚBLICO, funciones = VENDER, edad = 18 A 45 AÑOS, sexo = Hombre,
+                  idEstadoCivil = 1, idEscolaridad = 3, idGradoAvance = 2, idCarrera = 2, experiencia = 2 AÑOS,
+                  conocimientos = VENTAS, manejoEquipo = DE COMPUTO, reqFisicos = AGUDEZA VISUAL, reqPsicologicos = MEMORIA A CORTO Y LARGO PLAZO, responsabilidades = INVENTARIO,
+                  condicionesTrabajo = AGRADABLES where idPuesto = 1
+
+
+--
+
+Actividades del modulo:
+
+    TABLAS SQL
+        cursos:
+            id_curso(PK), nombre, descripcion, duracion, objetivos de aprendizaje, lugar, obligatorio(Boolean)
+
+        curso_has_empleados:
+            id_registro(PK), id_curso(FK), id_empleado(FK), inicio, fin, calificacion
+
+        puesto_has_cursos:
+            id_Puesto(FK), id_Curso(FK)
+
+    Tabla en html para ver los cursos:
+        datos:
+            nombre, descripcion, duracion, puestos a los que va dirigido el curso(n:n)
+        acciones: 
+            ver empleados que participan/participaron en el 
+            (extra):
+                fltro  para ordenar por cursos de x puesto
+
+    Tabla para ver la participacion de los empleados en X curso:
+        datos:
+            id_empleado, nombre, inicio, fin , calificacion
+        acciones:
+            NO CRUD(no en este html)
+            ver empleado(conecatdo con el otro equipo)
+        
+-extra si se usa la version de 1 template:
+    * Adaptar la plantilla para poder crear mas de una columna, si el catalogo lo requiere
+    * Adaptar la plantilla para que de recibir una lista para llenar un campo, haga otro bucle 
+        recorriendo esa lista e imprimiendo sus valores, separados por "\n"
+
+--Alterno y del otro equipo:
+    Implementacion de los cursos que ha tomado el empleado en su ventana de "ver empleado" o "detalles"
