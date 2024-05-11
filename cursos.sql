@@ -14,6 +14,7 @@ insert into dias(dia) values
     ("SABADO"),
     ("DOMINGO");
 */
+/*Provicional en lo que conseguimos la tabla del otro equipo*/
 create table empleados(
 	id_empleado int primary key auto_increment,
     nombre varchar(40)
@@ -22,20 +23,29 @@ create table empleados(
 insert into empleados(nombre) values
 	("MARTIN"),
     ("PEDRO"),
+    ("GREGORIO"),
+    ("ALFONSO"),
     ("JUAN");
+/**/
 create table cursos(
 	id_curso int primary key auto_increment,
     nombre varchar(50),
     descripcion varchar(100),
     duracion varchar (15), 
-    objetivos_de_aprendizaje varchar(200),
-    lugar varchar(40),
+    objetivos_de_aprendizaje varchar(300),
     obligatorio boolean
 );
-insert into cursos(nombre,descripcion,duracion,objetivos_de_aprendizaje,lugar,obligatorio) values
-	("Curso de Induccion","Curso para la capacitacion de nuevos empleados","32 horas","entendimiento de politicas de la empresa, desempeño optimo del trabajo","Area 51",True),
-    ("Capacitacion de obrero","Curso para la capacitacion de los obreros","20 horas","entendimiento de politicas de la empresa, desempeño optimo del trabajo","Area 15",True);
+insert into cursos(nombre,descripcion,duracion,objetivos_de_aprendizaje,obligatorio) values
+	("Curso de Induccion","Curso para la capacitacion de nuevos empleados","32 horas","entendimiento de politicas de la empresa, desempeño optimo del trabajo",True),
+    ("Capacitacion de obrero","Curso para la capacitacion de los obreros","20 horas","entendimiento de politicas de la empresa, desempeño optimo del trabajo",True),
+    ("Papiroflexia","curso de origami","5 horas","capacitar tus dedos para tareas delicadas",false);
 /*
+create table capacitadores(
+	id_capacitador int primary key,
+    id_empleado int,
+    id_curso int
+);
+
 create table horario_has_actividad(
 	id_registro int,
     dia varchar(10),
@@ -76,12 +86,24 @@ insert into curso_has_empleados(id_curso,id_empleado,calificacion) values
 #drop table curso_has_empleados;
 select * from curso_has_empleados;
 
+create table modo_aplicacion_curso(
+	id_modo int primary key,
+    nombre varchar(20)
+);
+insert into modo_aplicacion_curso(nombre) values
+	("PRESENCIAL"),
+    ("SOLO MATERIAL DIDACTICO"),
+    ("VIRTUAL");
 create table curso_has_aparicion(
 	id_registro int primary key auto_increment,
+    id_metodo_aplicacion int ,
+    lugar varchar(40),
     id_curso int,
     inicio date,
-    fin date
+    fin date,
+	/*? la dejo?*/
+    id_encargado int /*fk a empleados*/
 );
-insert into curso_has_aparicion(id_curso,inicio,fin) values
-	(1,"2002-04-02","2002-04-20"),
-    (2,"2002-03-27","2002-04-15");
+insert into curso_has_aparicion(id_metodo_aplicacion,lugar,id_curso,inicio,fin,id_encargado) values
+	(1,"Area 51",1,"2002-04-02","2002-04-20",2),
+    (3,"NO HAY",2,"2002-03-27","2002-04-15",3);

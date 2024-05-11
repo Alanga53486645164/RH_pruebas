@@ -26,9 +26,10 @@ Actividades del modulo:
 
     Tabla html de apariciones de cursos:
         datos:
-           fecha inicio, fecha fin
+           metodo de aplicacion, lugar,fecha inicio, fecha fin, encargado
         acciones:
             ver empleados que participan/participaron en el
+            ver al encargado
         
     Tabla para ver la participacion de los empleados en X curso:
         datos:
@@ -36,6 +37,7 @@ Actividades del modulo:
         acciones:
             NO CRUD(no en este html)
             ver empleado(conecatdo con el otro equipo)
+            ¿Asignar calificacion?
         
 -extra si se usa la version de 1 template:
     * Adaptar la plantilla para poder crear mas de una columna, si el catalogo lo requiere
