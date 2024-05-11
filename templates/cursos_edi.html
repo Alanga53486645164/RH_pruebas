@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="/cursos_fedita/{{comentar.0}}" method="post">
+<!--form action="/area_fedita/{{comentar.0}}" method="post"-->
+   <div class="container">
+          <div class="form-row">
+               <div class="col-xs-12 ">
+                <div class="mb-3">
+                      <label for="nom_cursos" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" name="nom_cursos" id="nom_cursos" placeholder="nom_cursos" value="{{comentar.1}}">
+
+                      <label for="descripcion" class="form-label">Descripcion</label>
+                      <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="descripcion" value="{{comentar.2}}">
+                      <!--input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="area" value="{{comentar.1}}"-->
+                </div>
+
+                </div>
+          </div>
+    </div>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
+
+{% endblock %}

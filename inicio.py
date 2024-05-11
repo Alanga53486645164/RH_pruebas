@@ -419,6 +419,65 @@ def idioma_borrar(id):
 
 
 
+@app.route('/cursos')
+def cursos():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idCursos, nom_cursos, descripcion from cursos order by idCursos')
+    datos = cursor.fetchall()
+    return render_template("cursos.html", comentarios = datos)
+
+
+@app.route('/cursos_agregar')
+def cursos_agregar():
+    return render_template("cursos_agr.html")
+
+
+@app.route('/cursos_editar/<string:id>')
+def cusros_editar(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('select idCursos, nom_cursos, descripcion from cursos where idCursos = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("cursos_edi.html", comentar=dato[0])
+
+@app.route('/cursos_fedita/<string:id>',methods=['POST'])
+def cursos_fedita(id):
+    if request.method == 'POST':
+        nom=request.form['nom_cursos']
+        desc=request.form['descripcion']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+        cursor = conn.cursor()
+        cursor.execute('update cursos set nom_cursos=%s, descripcion=%s where idCursos=%s', (nom,desc,id))
+        conn.commit()
+    return redirect(url_for('cursos'))
+
+
+
+@app.route('/cursos_fagrega', methods=['POST'])
+def cursos_fagrega():
+    if request.method == 'POST':
+        desc = request.form['descripcion']
+        nom = request.form['nom_cursos']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+        cursor = conn.cursor()
+        cursor.execute('insert into cursos (descripcion, nom_cursos) values (%s,%s)',(desc, nom))
+        conn.commit()
+    return redirect(url_for('cursos'))
+
+
+@app.route('/cursos_borrar/<string:id>')
+def cusrsos_borrar(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('delete from cursos where idCursos = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('cursos'))
+
+
+
+
+
 
 
 @app.route('/puesto')
