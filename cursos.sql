@@ -1,5 +1,12 @@
 use rh3;
 set sql_safe_updates=0;
+drop table empleados;
+drop table cursos;
+drop table puesto_has_cursos;
+drop table curso_has_empleados;
+drop table modo_aplicacion_curso;
+drop table curso_has_aparicion;
+
 /*
 create table dias(
 	id_dia int primary key auto_increment,
