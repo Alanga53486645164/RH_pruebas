@@ -8,6 +8,7 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
+
 @app.route('/catalogosEdita:<string:tabla>:<int:id_campo>')
 def editar(tabla,id_campo):
     #como 'tabla' recibe el titulo de la tabla
