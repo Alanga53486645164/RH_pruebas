@@ -316,6 +316,26 @@ INSERT INTO `idioma` (`idIdioma`, `descripcion`) VALUES
 (9, 'ALEMAN AVANZADO');
 
 -- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `cursos`
+--
+
+CREATE TABLE IF NOT EXISTS `cursos` (
+  `idCursos` int(11) NOT NULL AUTO_INCREMENT,
+  `nom_cursos` varchar(50) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `duracion` varchar(50) NOT NULL,
+  `obj_de_aprendizaje` varchar(50) NOT NULL,
+  `duracion` varchar(50) NOT NULL,
+  `obligatorio` boolean NOT NULL,
+  PRIMARY KEY (`idCursos`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `cursos`
+--
+
+-- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `mediopublic`
