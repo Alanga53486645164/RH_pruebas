@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="/empleados_fedita/{{comentar.0}}" method="post">
+<!--form action="/area_fedita/{{comentar.0}}" method="post"-->
+   <div class="container">
+          <div class="form-row">
+               <div class="col-xs-12 ">
+                <div class="mb-3">
+                      <label for="nom_empleado" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" name="nom_empleado" id="nom_empleado" placeholder="nom_empleado" value="{{comentar.0}}">
+
+                      <!--input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="area" value="{{comentar.1}}"-->
+                </div>
+
+                </div>
+          </div>
+    </div>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>
+    <CENTER> <b> Agregar Empleados </b> </CENTER>
+      
+</h3>
+   <br>
+   <br>
+   <br>
+<form action="/empleados_fagrega" method="post">
+   <div class="container">
+          <div class="form-row">
+               <div class="col-xs-12 ">
+                <div class="mb-3">
+                      <label for="nom_empleado" class="form-label">Nombre del Empleado</label>
+                      <input type="text" class="form-control" name="nom_empleado" id="nom_empleado"></input>
+                </div>
+                </div>
+          </div>
+    </div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}

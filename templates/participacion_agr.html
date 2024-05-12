@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>
+    <CENTER> <b> Agregar Grado Avance </b> </CENTER>
+      
+</h3>
+   <br>
+   <br>
+   <br>
+<form action="/participacion_fagrega" method="post">
+   <div class="container">
+          <div class="form-row">
+               <div class="col-xs-12 ">
+                <div class="mb-3">
+                      <label for="Calificacion" class="form-label">Calificacion</label>
+                      <input type="text" class="form-control" name="Calificacion" id="Calificacion"></input>
+                </div>
+                </div>
+          </div>
+    </div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}

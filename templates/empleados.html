@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <tbody>
+    <tr>
+    <td color="FFFFFF" bgcolor="#465F5A" valign="top">
+    <right><h3><a href="/empleados_agregar">Agregar Cusrsos</a></h3></right>
+    <center><h3>EMPLEADOS REGISTRADOS</h3></center>
+    <table width="100%" border="1" cellpadding="2"  bordercolor="#2B2D83" >
+    <thead>
+      <tr>
+        <td color="white" bgcolor="blue">id</td>
+        <td color="white" bgcolor="blue">nombre</td>
+        <td colspan="2" color="white" bgcolor="yellow"><center>Opciones</center></td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in comentarios %}
+        <tr>
+          <td width="40%">
+             {{i.0}}
+          </td>
+        <td width="40%">
+           {{i.1}}
+        </td>
+
+
+
+
+
+
+
+        <td bgcolor="#2B2D83" width="8%">
+        <center><a href="/empleados_editar/{{i.0}}" style="...">Editar</a></center>
+        </td>
+        <td bgcolor="#2B2D83" width="8%">
+        <center><a href="/empleados_borrar/{{i.0}}" style="...">Borrar</a></center>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+{% endblock %}
