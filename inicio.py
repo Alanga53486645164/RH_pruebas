@@ -423,7 +423,7 @@ def idioma_borrar(id):
 def cursos():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
-    cursor.execute('select idCursos, nom_cursos, descripcion from cursos order by idCursos')
+    cursor.execute('select idCursos, nom_cursos, descripcion, duracion, obj_de_aprendizaje, obligatorio from cursos order by idCursos')
     datos = cursor.fetchall()
     return render_template("cursos.html", comentarios = datos)
 
@@ -437,7 +437,7 @@ def cursos_agregar():
 def cusros_editar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('select idCursos, nom_cursos, descripcion from cursos where idCursos = %s', (id))
+    cursor.execute('select idCursos, nom_cursos, descripcion, duracion, obj_de_aprendizaje, obligatorio from cursos where idCursos = %s', (id))
     dato  = cursor.fetchall()
     return render_template("cursos_edi.html", comentar=dato[0])
 
@@ -446,9 +446,12 @@ def cursos_fedita(id):
     if request.method == 'POST':
         nom=request.form['nom_cursos']
         desc=request.form['descripcion']
+        dura=request.form['duracion']
+        obje=request.form['obj_de_aprendizaje']
+        oblig=request.form['obligatorio']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
         cursor = conn.cursor()
-        cursor.execute('update cursos set nom_cursos=%s, descripcion=%s where idCursos=%s', (nom,desc,id))
+        cursor.execute('update cursos set nom_cursos=%s, descripcion=%s, duracion=%s, obj_de_aprendizaje=%s, obligatorio=%s where idCursos=%s', (nom,desc, dura, obje, oblig, id))
         conn.commit()
     return redirect(url_for('cursos'))
 
@@ -459,9 +462,12 @@ def cursos_fagrega():
     if request.method == 'POST':
         desc = request.form['descripcion']
         nom = request.form['nom_cursos']
+        dura = request.form['duracion']
+        obje = request.form['obj_de_aprendizaje']
+        obli = request.form['obligatorios']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
         cursor = conn.cursor()
-        cursor.execute('insert into cursos (descripcion, nom_cursos) values (%s,%s)',(desc, nom))
+        cursor.execute('insert into cursos (descripcion, nom_curso, duracion, obj_de_aprendizaje, obligatorios) values (%s,%s,%s,%s,%s)',(desc, nom, dura, obje, obli))
         conn.commit()
     return redirect(url_for('cursos'))
 

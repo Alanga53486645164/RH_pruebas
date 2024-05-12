@@ -13,21 +13,36 @@
         <td color="white" bgcolor="blue">id</td>
         <td color="white" bgcolor="blue">Curso</td>
         <td color="white" bgcolor="blue">Descripcion</td>
+        <td color="white" bgcolor="blue">duracion</td>
+        <td color="white" bgcolor="blue">A.E</td>
+        <td color="white" bgcolor="blue">obligatorio</td>
         <td colspan="2" color="white" bgcolor="yellow"><center>Opciones</center></td>
       </tr>
     </thead>
     <tbody>
     {% for i in comentarios %}
         <tr>
-          <td width="5%">
+          <td width="2%">
              {{i.0}}
           </td>
-        <td width="20%">
+        <td width="6%">
            {{i.1}}
         </td>
-        <td width="20%">
+        <td width="40%">
            {{i.2}}
         </td>
+        <td width="10%">
+           {{i.3}}
+        </td>
+        <td width="10%">
+           {{i.4}}
+        </td>
+        <td width="6%">
+           {{ i.5}}
+        </td>
+
+
+
 
 
 
