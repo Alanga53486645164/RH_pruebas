@@ -460,14 +460,13 @@ def cursos_fedita(id):
 @app.route('/cursos_fagrega', methods=['POST'])
 def cursos_fagrega():
     if request.method == 'POST':
-        desc = request.form['descripcion']
         nom = request.form['nom_cursos']
+        desc = request.form['descripcion']
         dura = request.form['duracion']
         obje = request.form['obj_de_aprendizaje']
-        obli = request.form['obligatorios']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
         cursor = conn.cursor()
-        cursor.execute('insert into cursos (descripcion, nom_curso, duracion, obj_de_aprendizaje, obligatorios) values (%s,%s,%s,%s,%s)',(desc, nom, dura, obje, obli))
+        cursor.execute('insert into cursos (nom_cursos, descripcion, duracion, obj_de_aprendizaje) values (%s,%s,%s,%s)',(nom, desc, dura, obje))
         conn.commit()
     return redirect(url_for('cursos'))
 
@@ -479,6 +478,127 @@ def cusrsos_borrar(id):
     cursor.execute('delete from cursos where idCursos = {0}'.format(id))
     conn.commit()
     return redirect(url_for('cursos'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/empleados')
+def empleados():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idEmpleado, nom_empleado from empleados order by idEmpleado')
+    datos = cursor.fetchall()
+    return render_template("empleados.html", comentarios = datos)
+
+
+@app.route('/empleados_agregar')
+def empleados_agregar():
+    return render_template("empleados_agr.html")
+
+
+@app.route('/empleados_editar/<string:id>')
+def empleados_editar(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('select idEmpleado, nom_empleado from empleados where idEmpleado = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("empleados_edi.html", comentar=dato[0])
+
+@app.route('/empleados_fedita/<string:id>',methods=['POST'])
+def empleados_fedita(id):
+    if request.method == 'POST':
+        nom=request.form['nom_empleado']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+        cursor = conn.cursor()
+        cursor.execute('update empleados set nom_empleado=%s where idEmpleado=%s', (nom, id))
+        conn.commit()
+    return redirect(url_for('empleados'))
+
+
+@app.route('/empleados_fagrega', methods=['POST'])
+def empleados_fagrega():
+    if request.method == 'POST':
+        nom = request.form['nom_empleado']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+        cursor = conn.cursor()
+        cursor.execute('insert into empleados (nom_empleado) values (%s)',( nom))
+        conn.commit()
+    return redirect(url_for('empleados'))
+
+
+@app.route('/empleados_borrar/<string:id>')
+def empleados_borrar(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('delete from empleados where idEmpleado = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('empleados'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/participacion')
+def participacion():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('SELECT s.nom_empleado, t.calificacion AS combinada FROM empleados s JOIN participacion t ON s.nom_empleado = s.nom_empleados ')
+    datos = cursor.fetchall()
+    return render_template("participacion.html", comentarios = datos)
+
+
+
+@app.route('/participacion_agregar')
+def participacion_agregar():
+    return render_template("participacion_agr.html")
+
+
+@app.route('/participacion_fagrega', methods=['POST'])
+def participacion_fagrega():
+    if request.method == 'POST':
+        cali = request.form['calificacion']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+        cursor = conn.cursor()
+        cursor.execute('insert into participacion (calificacion) values (%s)',( cali))
+        conn.commit()
+    return redirect(url_for('participacion'))
+
+
+@app.route('/participacion_borrar/<string:id>')
+def participacion_borrar(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('delete from participacion, empleados where idEmpleado = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('participacion'))
+
+
+
+
+
+
+
 
 
 

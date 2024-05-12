@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <tbody>
+    <tr>
+    <td color="FFFFFF" bgcolor="#465F5A" valign="top">
+    <right><h3><a href="/participacion_agregar">Agregar Habilidad</a></h3></right>
+    <center><h3>HABILIDAD REGISTRADAS</h3></center>
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <thead>
+      <tr>
+        <td color="white" bgcolor="blue">Nombre</td>
+        <td color="white" bgcolor="black"></td>
+        <td color="white" bgcolor="black"></td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in comentarios %}
+        <tr>
+        <td width="80%">
+           {{i.0}}
+        </td>
+
+    {% endfor %}
+    </tbody>
+    </table>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+{% endblock %}
