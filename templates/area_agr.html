@@ -4,22 +4,45 @@
     <CENTER> <b> Agregar {{titulo}} </b> </CENTER>
       
 </h3>
+{{boolean}}
+<br>
+{{datos}}
    <br>
    <br>
    <br>
 <form action="/catalogoPUSH:{{titulo}}" method="post">
    <div class="container">
-          <div class="form-row">
-               <div class="col-xs-12 ">
-                <div class="mb-3">
-                        {% for dato in datos %}
-                              <label for="descripcion" class="form-label">{{dato}}</label>
-                              <input autofocus type="text" class="form-control" name="{{dato}}" id="descripcion"></input>
+        <div class="form-row">
+            <div class="col-xs-12 ">
+            <div class="mb-3">
+                    {% for dato in range(cDatos) %}
+                        <label for="descripcion" class="form-label">{{datos[dato]}}</label>
+                        
+                        {% for booleano in boolean %}
+                            {% if dato==booleano %}
+                                <select name="{{datos[dato]}}" style="width:100%">
+                                    <option >True</option>
+                                    <option >False</option>
+                                </select>
+                            {% endif %}
                         {% endfor %}
-                  </div>
+                        <input autofocus type="text" name="{{datos[dato]}}" id="descripcion" 
+                            class="form-control {% for booleano in boolean %}{% if dato==booleano %}borrado{% endif %}{% endfor %}"
+                        ></input>
+
+                    {% endfor %}
                 </div>
-          </div>
+            </div>
+        </div>
     </div>
           <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+<script>
+    let borrados=document.getElementsByClassName("borrado")
+    for (let index = 0; index < borrados.length; index++) {
+        const element = borrados[index];
+        element.name=""
+        element.style.display="none"
+    }
+</script>
 {% endblock %}

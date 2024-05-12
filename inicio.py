@@ -100,17 +100,19 @@ def area_agregar(tabla_titulo):
     
     conexion=Admin()
     nombre_tabla=conexion.titleToTable(tabla_titulo)
-    dato=conexion.colsToString(nombre_tabla,False)[0]
+    dato,tipo_datos=conexion.colsToString(nombre_tabla,False)
 
     titulo_columnas=conexion.getColsNameFor(nombre_tabla)
     # titulo_columnas=['descripcion']
 
     # if(nombre_tabla=="cursos"):
     #     titulo_columnas=['nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio']
+    booleanos=conexion.searchBooleanSQL(tipo_datos)
+    cant_datos=len(titulo_columnas)
 
     return render_template("area_agr.html",
         columna=dato,titulo=tabla_titulo
-        ,datos=titulo_columnas
+        ,datos=titulo_columnas,boolean=booleanos,cDatos=cant_datos,none=None
     )
 
 # @app.route('/cursos_agregar')
@@ -131,8 +133,7 @@ def area_fagrega(title):
 
     Nombre_columnas=conexion.getColsNameFor(table_name)
     uniones=""
-    # for col in Nombre_columnas:
-    #     datos+=(request.form[col]),
+
     for col in range(len(Nombre_columnas)):
         column=Nombre_columnas[col]
         datos+=(request.form[column]),
@@ -143,6 +144,9 @@ def area_fagrega(title):
         if col <len(Nombre_columnas)-1:
             uniones+=","
     
+    bool=conexion.searchBooleanSQL(tipos_dato)
+    
+
     print("___uniones:",uniones)
     conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
         
