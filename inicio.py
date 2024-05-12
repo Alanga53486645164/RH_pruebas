@@ -425,7 +425,11 @@ def cursos():
     cursor = conn.cursor()
     cursor.execute('select idCursos, nom_cursos, descripcion, duracion, obj_de_aprendizaje, obligatorio from cursos order by idCursos')
     datos = cursor.fetchall()
-    return render_template("cursos.html", comentarios = datos)
+    cursor.execute('SELECT id_aparicion, id_curso, metodo_aplicacion, lugar, fecha_inicio, fecha_fin, encargado FROM apariciones_de_cursos ORDER BY id_aparicion')
+    datos_apariciones = cursor.fetchall()
+
+
+    return render_template("cursos.html", comentarios = datos,apariciones=datos_apariciones)
 
 
 @app.route('/cursos_agregar')
@@ -790,20 +794,6 @@ def puesto_fedita(idP):
             cursor.execute('insert into puesto_has_habilidad(idPuesto,idHabilidad) values (%s,%s)', (idP, i))
             conn.commit()
     return redirect(url_for('puesto'))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
