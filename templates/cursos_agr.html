@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>
+    <CENTER> <b> Agregar Cursos </b> </CENTER>
+      
+</h3>
+   <br>
+   <br>
+   <br>
+<form action="/cursos_fagrega" method="post">
+   <div class="container">
+          <div class="form-row">
+               <div class="col-xs-12 ">
+                <div class="mb-3">
+                      <label for="nom_cursos" class="form-label">Nomvre del Curso</label>
+                      <input type="text" class="form-control" name="nom_cursos" id="nom_cursos"></input>
+
+                      <label for="descripcion" class="form-label">Descripcion</label>
+                      <input type="text" class="form-control" name="descripcion" id="descripcion"></input>
+                </div>
+                </div>
+          </div>
+    </div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}

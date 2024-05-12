@@ -55,7 +55,8 @@ class Admin():
         return self.editor.existenciaTabla(tabla)
 
     def getSQLCols(self,table_name,primary_key):
-        query=f"SELECT column_name,column_key FROM information_schema.columns  WHERE table_schema = '{self.cx.db}' AND table_name = '{table_name}'"
+        # query=f"SELECT column_name,column_key FROM information_schema.columns  WHERE table_schema = '{self.cx.db}' AND table_name = '{table_name}'"
+        query=f"SELECT column_name,data_type FROM information_schema.columns  WHERE table_schema = '{self.cx.db}' AND table_name = '{table_name}'"
         if(primary_key!=True):
             query+=" and column_key !='PRI' "
         query+="order by ordinal_position"
@@ -82,6 +83,28 @@ class Admin():
     def colsToString(self,table,primary_key):
         
         return self.editor.columnsToString(self.getColsFrom(table,primary_key))
+    def getColsNameFor(self,tabla):
+        for tablas in self.editor.getColsName():
+            if tablas.isTable(tabla):
+                return tablas.getCols()
+        return None
+    def getComillas(self,datatype):
+        # comillas="varchar","date"
+        comillas="int","tinyint","double","float"
+        for tipo in comillas:
+            if tipo == datatype:
+                return ""
+        return "'"
+    def searchBooleanSQL(self,array):
+        c=0
+        booleanos=()
+        for tipo in array :
+            if tipo =="tinyint":
+                booleanos+=c,
+            c+=1
+        if len(booleanos)==0:
+            return None
+        return booleanos
 # admin=Admin()
 
 # admin.getColsFrom("puesto",False)

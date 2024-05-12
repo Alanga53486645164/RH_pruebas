@@ -1,4 +1,23 @@
+class Tabla:
+    def __init__(self,nombre_tabla,titulo_campos):
+        self.columnas=titulo_campos
+        self.nombres=nombre_tabla
+        self.separar_nombres()
 
+    def isTable(self,tabla):
+        try:
+            self.nombres.index(tabla)
+            return True
+        except Exception:
+            return False
+    
+    def separar_nombres(self):
+        self.nombres=self.nombres.split(",")
+
+    def getCols(self):
+        print("tablas_cols=",self.columnas)
+        return self.columnas
+    
 class Editor:
     def __init__(self):
         self.tablas=None
@@ -14,6 +33,14 @@ class Editor:
     def getTables(self):
         return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos"]
     
+    def getColsName(self):
+        # Nota:No se incluye al campo ID
+        tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio'))
+        tabl2=Tabla("area,carrera,escolaridad,estado_civil,grado_avance,habilidad,idioma",('Descripcion',))
+        return (
+            tabl,tabl2
+        )
+
     def getTableTitles(self):
         return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso"]
     

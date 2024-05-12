@@ -38,6 +38,9 @@ def area(tabla):
         return redirect("/")
     
     permitir_borrado=True
+    # showId=True
+    showId=False
+    
     titulo=conexion.tableToTitle(tabla)
     id=conexion.tableToId(tabla) 
 
@@ -52,9 +55,17 @@ def area(tabla):
     if(tabla=="cursos"):
         permitir_borrado=False
     
-    # print("borrado=",permitir_borrado)
+    titulo_columnas=conexion.getColsNameFor(tabla)
+    tipo_datos=conexion.colsToString(tabla,False)[1]
 
-    return render_template("area.html", comentarios = datos,titulo=titulo,tabla_plural=plural,male=male,borrado=permitir_borrado)
+    booleanos=conexion.searchBooleanSQL(tipo_datos)
+
+    n_columnas=len(titulo_columnas)
+    return render_template("area.html", 
+            comentarios = datos,titulo=titulo,tabla_plural=plural,male=male,
+            borrado=permitir_borrado, columnas=titulo_columnas,num_columnas=n_columnas,
+            id_tabla=showId, boolean=booleanos
+            )
 
 @app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
 def area_fedita(tabla,id_campo):
@@ -84,22 +95,56 @@ def area_borrar(titulo,id):
 # @app.route('/area_agregar')
 @app.route('/catalogosAgregar:<string:tabla_titulo>')
 def area_agregar(tabla_titulo):
+    # if tabla_titulo=="Curso":
+    #     return render_template("cursos_agr.html")
+    
     conexion=Admin()
     nombre_tabla=conexion.titleToTable(tabla_titulo)
     dato=conexion.colsToString(nombre_tabla,False)[0]
-    print("\n\ndato=",dato)
-    return render_template("area_agr.html",columna=dato,titulo=tabla_titulo)
+
+    titulo_columnas=conexion.getColsNameFor(nombre_tabla)
+    # titulo_columnas=['descripcion']
+
+    # if(nombre_tabla=="cursos"):
+    #     titulo_columnas=['nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio']
+
+    return render_template("area_agr.html",
+        columna=dato,titulo=tabla_titulo
+        ,datos=titulo_columnas
+    )
+
+# @app.route('/cursos_agregar')
+# def cursos_agregar():
+#     return render_template("cursos_agr.html")
 
 # @app.route('/area_fagrega', methods=['POST'])
 @app.route('/catalogoPUSH:<string:title>', methods=['POST'])
 def area_fagrega(title):
-    if request.method == 'POST':
-        desc = request.form['descripcion']
-        
-        conexion=Admin()
-        table_name=conexion.titleToTable(title)
-        columnas=conexion.colsToString(table_name,False)[0]
-        conexion.execute('insert into %s (%s) values ("%s")'%(table_name,columnas,desc))
+    if request.method != 'POST':
+        return
+    
+    conexion=Admin()
+    table_name=conexion.titleToTable(title)
+
+    columnas,tipos_dato=conexion.colsToString(table_name,False)
+    datos =table_name,columnas,
+
+    Nombre_columnas=conexion.getColsNameFor(table_name)
+    uniones=""
+    # for col in Nombre_columnas:
+    #     datos+=(request.form[col]),
+    for col in range(len(Nombre_columnas)):
+        column=Nombre_columnas[col]
+        datos+=(request.form[column]),
+
+        comilla=conexion.getComillas(tipos_dato[col])
+        uniones+=f"{comilla}%s{comilla}"
+
+        if col <len(Nombre_columnas)-1:
+            uniones+=","
+    
+    print("___uniones:",uniones)
+    conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
         
     return redirect(url_for('area',tabla=table_name))
 
@@ -420,4 +465,6 @@ def puesto_fedita(idP):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True
+        ,port=5001
+    )

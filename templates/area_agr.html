@@ -12,9 +12,11 @@
           <div class="form-row">
                <div class="col-xs-12 ">
                 <div class="mb-3">
-                      <label for="descripcion" class="form-label">{{columna}}</label>
-                      <input autofocus type="text" class="form-control" name="descripcion" id="descripcion"></input>
-                </div>
+                        {% for dato in datos %}
+                              <label for="descripcion" class="form-label">{{dato}}</label>
+                              <input autofocus type="text" class="form-control" name="{{dato}}" id="descripcion"></input>
+                        {% endfor %}
+                  </div>
                 </div>
           </div>
     </div>
