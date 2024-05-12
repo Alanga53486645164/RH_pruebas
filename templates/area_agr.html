@@ -15,22 +15,22 @@
         <div class="form-row">
             <div class="col-xs-12 ">
             <div class="mb-3">
-                    {% for dato in range(cDatos) %}
-                        <label for="descripcion" class="form-label">{{datos[dato]}}</label>
-                        
-                        {% for booleano in boolean %}
-                            {% if dato==booleano %}
-                                <select name="{{datos[dato]}}" style="width:100%">
-                                    <option >True</option>
-                                    <option >False</option>
-                                </select>
-                            {% endif %}
-                        {% endfor %}
-                        <input autofocus type="text" name="{{datos[dato]}}" id="descripcion" 
-                            class="form-control {% for booleano in boolean %}{% if dato==booleano %}borrado{% endif %}{% endfor %}"
-                        ></input>
+                {% for dato in range(cDatos) %}
+                <label for="descripcion" class="form-label">{{datos[dato]}}</label>
+                
+                {% for booleano in boolean %}
+                    {% if dato==booleano %}
+                        <select name="{{datos[dato]}}" style="width:100%">
+                            <option >True</option>
+                            <option >False</option>
+                        </select>
+                    {% endif %}
+                {% endfor %}
+                <input autofocus type="text" name="{{datos[dato]}}" id="descripcion" 
+                    class="form-control {% for booleano in boolean %}{% if dato==booleano %}borrado{% endif %}{% endfor %}"
+                ></input>
 
-                    {% endfor %}
+            {% endfor %}
                 </div>
             </div>
         </div>
