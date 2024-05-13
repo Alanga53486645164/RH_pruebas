@@ -27,16 +27,18 @@
                 {% for dato in range(cDatos) %}
                     <label for="descripcion" class="form-label">{{datos[dato]}}</label>
                     
-                    {% for booleano in boolean %}
-                        {% if dato==booleano %}
-                            <select name="{{datos[dato]}}" class="boolean" style="width:100%">
-                                <option >True</option>
-                                <option >False</option>
-                            </select>
-                        {% endif %}
-                    {% endfor %}
+                    {% if boolean !=None %}
+                        {% for booleano in boolean %}
+                            {% if dato==booleano %}
+                                <select name="{{datos[dato]}}" class="boolean" style="width:100%">
+                                    <option >True</option>
+                                    <option >False</option>
+                                </select>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                     <input required autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
-                        class="form-control {% for booleano in boolean %}{% if dato==booleano or (dato==5 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{{col}}"
+                        class="form-control {% if boolean!=None %}{% for booleano in boolean %}{% if dato==booleano or (dato==5 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{% endif %}{{col}}"
                         value="{{fetch[0][dato]}}"
                     ></input>
                     {% if dato ==5 and titulo=="Curso" %}
