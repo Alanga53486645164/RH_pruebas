@@ -38,8 +38,8 @@ def area(tabla):
         return redirect("/")
     
     permitir_borrado=True
-    # showId=True
     showId=False
+    edita=True
     
     titulo=conexion.tableToTitle(tabla)
     id=conexion.tableToId(tabla) 
@@ -47,7 +47,6 @@ def area(tabla):
     #print(f"titulo={titulo}\nid={id}")
     conexion.execute(f"select * from {tabla} order by {id}")
     datos = conexion.getResult()
-    print("ddatos=",datos)
 
     plural,male=conexion.tablaPlural(titulo)
     plural=plural.upper()
@@ -61,10 +60,15 @@ def area(tabla):
     booleanos=conexion.searchBooleanSQL(tipo_datos)
 
     n_columnas=len(titulo_columnas)
+
     return render_template("area.html", 
-            comentarios = datos,titulo=titulo,tabla_plural=plural,male=male,
-            borrado=permitir_borrado, columnas=titulo_columnas,num_columnas=n_columnas,
-            id_tabla=showId, boolean=booleanos
+            comentarios = datos,
+            titulo=titulo,tabla_plural=plural,male=male,
+                borrado=permitir_borrado, 
+                boolean=booleanos,
+                edita=edita,
+            columnas=titulo_columnas, num_columnas=n_columnas,
+            acciones=0, n_acc=0, id_tabla=showId
             )
 
 @app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])

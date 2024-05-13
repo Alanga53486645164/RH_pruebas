@@ -12,6 +12,8 @@ class Tabla:
             return False
     
     def separar_nombres(self):
+        if(self.nombres==None):
+            return None
         self.nombres=self.nombres.split(",")
 
     def getCols(self):

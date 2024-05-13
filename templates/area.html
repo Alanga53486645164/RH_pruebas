@@ -1,6 +1,20 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  <!-- el array de aqui guarda unas variables que llegan desde el archivo python  -->
+  {% set acciones = borrado,boolean, edita %}
+
+  <hr>
+  {% set ns = namespace(prev=0) %}
+
+  {% for x in acciones %}
+    x={{x}} <br>
+    {%- if x!=None and x!=False %} 
+      {%- set ns.prev = ns.prev+1 %}
+    {% endif -%} 
+  {% endfor %}
+
+  acciones={{ns.prev}}
     <div id="booleanos" style="display:None">{{boolean}}</div>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <tbody>
@@ -18,17 +32,21 @@
     <thead>
       <tr>
         {% if id_tabla==True %}
-          <td color="white" style="color:white" bgcolor="blue">ID</td>
+          <td class="text-center" style="color:white" bgcolor="blue">ID</td>
         {% endif %}
 
         {% for columna in columnas %}
-          <td color="white" style="color:white" bgcolor="blue">{{columna}}</td>
+          <td class="text-center" style="color:white" bgcolor="blue">{{columna}}</td>
         {% endfor %}
 
-        <td color="white" bgcolor="black"></td>
-        {% if borrado!=False %}
-          <td color="white" bgcolor="black"></td>
-        {% endif %}
+        <!-- con 'ctrl' + 'Esc ' puedes eliminar espacion entre renglones. Ejemplo :
+          Antes: 
+            borrado,(aqui se usa el comando)
+            boolean,(aqui se usa el comando)
+            edita
+          Despues
+            borrado,boolean,edita -->
+        <td class="text-center" bgcolor="black" colspan="{{ns.prev}}" style="color:white">Opciones</td>
       </tr>
     </thead>
     <tbody>
@@ -42,26 +60,27 @@
           
           <td
             {% if boolean != None %}
-              class={% for booleano in boolean %}
-                {% if campo==booleano+1 %}
-                    "booleanTarget" 
-                {% endif %}
-              {% endfor %}
-            {% endif %}
+class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} booleanTarget{% endif %}{% endfor %}{% endif %}"
           >
             {{ i[campo] }}
           </td>
 
         {% endfor %}
 
-        <td bgcolor="#2B2D83" width="8%">
         {% if titulo=="Curso" %}
-          <center><a href="/Apariciones_curso:{{i.0}}" >Ver Apariciones</a></center>
-        {% else %}
-          <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >Editar</a></center>
-        {% endif %}
-        <!-- <center><a href="/area_editar/{{i.0}}" >Editar</a></center> -->
+        <td bgcolor="#2B2D83">
+          <center><a href="/Instanciar_curso:{{i.0}}" >Activar Curso</a></center>
         </td>
+        {% endif %}
+
+        <td bgcolor="#2B2D83" width="8%">
+          {% if titulo=="Curso" %}
+            <center><a href="/Apariciones_curso:{{i.0}}" >Ver Apariciones</a></center>
+          {% else %}
+          <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >Editar</a></center>
+          {% endif %}
+        </td>
+
         {% if borrado!=False %}
           <td bgcolor="#3C3EC5" width="8%">
           <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}" >Borrar</a></center>
@@ -80,8 +99,10 @@
       function IntToBoolean(int){
         console.log(int)
         if(int==1){
+          return "SI"
           return "Cierto"
         }else{
+          return "NO"
           return "Falso"
         }
       }

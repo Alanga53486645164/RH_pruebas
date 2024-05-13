@@ -105,6 +105,9 @@ class Admin():
         if len(booleanos)==0:
             return None
         return booleanos
+    
+    # def getNAcciones(self,table_name):
+    #     if(table_name=='')
 # admin=Admin()
 
 # admin.getColsFrom("puesto",False)
