@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+    return render_template("home.html",inicio=True)
 
 # @app.errorhandler(404)
 # def page_not_found(error):
@@ -87,20 +87,20 @@ def area(tabla):
             acciones=0, n_acc=0, id_tabla=showId
             )
 
-# @app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
-# def area_fedita(tabla,id_campo):
-#     if request.method == 'POST':
-#         valor=request.form['valor']
+@app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
+def area_fedita(tabla,id_campo):
+    if request.method == 'POST':
+        valor=request.form['valor']
         
-#         conexion=Admin()
-#         campos= conexion.colsToString(tabla,True)[0]
-#         campos=campos.split(",")
-#         id_tabla=campos[0]
-#         otro=campos[1]
+        conexion=Admin()
+        campos= conexion.colsToString(tabla,True)[0]
+        campos=campos.split(",")
+        id_tabla=campos[0]
+        otro=campos[1]
 
-#         conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
+        conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
         
-    # return redirect(url_for('area',tabla=tabla))
+    return redirect(url_for('area',tabla=tabla))
 
 @app.route('/catalogoBorrar:<string:titulo>:<string:id>')
 def area_borrar(titulo,id):

@@ -12,16 +12,18 @@
     <link rel="icon" href="https://cdn-icons-png.freepik.com/512/6713/6713429.png">
 </head>
 <body>
-<style>
-    td{
-        padding: 2px;
-        border-left: 2px solid black;
-        border-bottom: 2px solid black;
-    }
-    body{
-        margin-top: 15%;
-    }
-    </style>
+    {% if inicio!=True %}
+    <style>
+        td{
+            padding: 2px;
+            border-left: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+        body{
+            margin-top: 15%;
+        }
+        </style>
+    {% endif %}
 
  {% block content %}
  {% endblock %}
@@ -74,5 +76,8 @@
         </nav>
     </header>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+    <script>
+        
+    </script>
 </body>
 </html> 
