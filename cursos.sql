@@ -1,11 +1,11 @@
 use rh3;
 set sql_safe_updates=0;
-drop table empleados;
-drop table cursos;
-drop table puesto_has_cursos;
-drop table curso_has_empleados;
-drop table modo_aplicacion_curso;
-drop table curso_has_aparicion;
+drop table if exists empleados;
+drop table if exists cursos;
+drop table if exists puesto_has_cursos;
+drop table if exists curso_has_empleados;
+drop table if exists modo_aplicacion_curso;
+drop table if exists curso_has_aparicion;
 
 /*
 create table dias(
@@ -36,7 +36,7 @@ insert into empleados(nombre) values
 /**/
 create table cursos(
 	id_curso int primary key auto_increment not null,
-    nombre varchar(50) primary key not null,
+    nombre varchar(50) unique not null,
     descripcion varchar(100) not null,
     duracion varchar (15) not null, 
     objetivos_de_aprendizaje varchar(300) not null,
