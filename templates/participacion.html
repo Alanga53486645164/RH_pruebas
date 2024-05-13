@@ -10,16 +10,22 @@
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <thead>
       <tr>
-        <td color="white" bgcolor="blue">Nombre</td>
-        <td color="white" bgcolor="black"></td>
-        <td color="white" bgcolor="black"></td>
+        <td color="white" bgcolor="blue">id</td>
+        <td color="white" bgcolor="blue">nombre</td>
+        <td color="white" bgcolor="blue">Calificacion</td>
       </tr>
     </thead>
     <tbody>
     {% for i in comentarios %}
         <tr>
         <td width="80%">
-           {{i.0}}
+           {i.0}
+        </td>
+        <td width="80%">
+           {i.2}
+        </td>
+        <td width="80%">
+           {i.3}
         </td>
 
     {% endfor %}

@@ -563,7 +563,7 @@ def empleados_borrar(id):
 def participacion():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
-    cursor.execute('SELECT s.nom_empleado, t.calificacion AS combinada FROM empleados s JOIN participacion t ON s.nom_empleado = s.nom_empleados ')
+    cursor.execute('select a.idEmpleado, a.nom_empleado, b.calificacion from empleados a, participacion b where a.idEmpleado = b.idEmpleado ')
     datos = cursor.fetchall()
     return render_template("participacion.html", comentarios = datos)
 
