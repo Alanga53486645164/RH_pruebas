@@ -1,36 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <h3>
     <CENTER> <b> Agregar {{titulo}} </b> </CENTER>
       
 </h3>
-{{boolean}}
+<!-- {{boolean}}
 <br>
 {{datos}}
+<br>
+{{fetch}} -->
    <br>
    <br>
    <br>
-<form action="/catalogoPUSH:{{titulo}}" method="post">
+<form action="/catalogoPUSH:{{titulo}}:{{id_campo}}" method="post">
    <div class="container">
         <div class="form-row">
             <div class="col-xs-12 ">
             <div class="mb-3">
                 {% for dato in range(cDatos) %}
-                <label for="descripcion" class="form-label">{{datos[dato]}}</label>
-                
-                {% for booleano in boolean %}
-                    {% if dato==booleano %}
-                        <select name="{{datos[dato]}}" style="width:100%">
-                            <option >True</option>
-                            <option >False</option>
+                    <label for="descripcion" class="form-label">{{datos[dato]}}</label>
+                    
+                    {% for booleano in boolean %}
+                        {% if dato==booleano %}
+                            <select name="{{datos[dato]}}" class="boolean" style="width:100%">
+                                <option >True</option>
+                                <option >False</option>
+                            </select>
+                        {% endif %}
+                    {% endfor %}
+                    <input required autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
+                        class="form-control {% for booleano in boolean %}{% if dato==booleano %}borrado{% endif %}{% endfor %}{{col}}"
+                        value="{{fetch[0][dato]}}"
+                    ></input>
+                    <!-- {% if titulo=='Curso' and dato==2 %}
+                        <select name="tiempo" id="">
+                            <option >Horas</option>
+                            <option >Dias</option>
                         </select>
-                    {% endif %}
-                {% endfor %}
-                <input autofocus type="text" name="{{datos[dato]}}" id="descripcion" 
-                    class="form-control {% for booleano in boolean %}{% if dato==booleano %}borrado{% endif %}{% endfor %}"
-                ></input>
+                    {% endif %} -->
 
-            {% endfor %}
+                {% endfor %}
                 </div>
             </div>
         </div>
@@ -43,6 +53,18 @@
         const element = borrados[index];
         element.name=""
         element.style.display="none"
+        element.required=false
     }
+    
+    let selects=document.getElementsByClassName("boolean")
+    for (let index = 0; index < selects.length; index++) {
+        const element = selects[index];
+        let valor='True'
+        if(borrados[index].value ==0){
+            valor='False'
+        }
+        element.value=valor
+    }
+
 </script>
 {% endblock %}

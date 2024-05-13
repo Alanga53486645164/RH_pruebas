@@ -17,7 +17,8 @@ def editar(tabla,id_campo):
 
     if(table_name==None):
         return redirect("/")
-
+    
+    template="area_edi.html"
     print("\nTabName=",table_name)
     print("\nId=",id_campo)
 
@@ -28,7 +29,12 @@ def editar(tabla,id_campo):
     print("\ndato=",dato)
 
     campos= conexion.colsToString(table_name,False)[0]
-    return render_template("area_edi.html", comentar=dato[0][1], campo=campos, tabla=table_name, id_campo=id_campo)
+
+    comentar=dato[0]
+    # if table_name=="cursos":
+    #     template="newCurso.html"
+    #     comentar=dato
+    return render_template(template, comentar=comentar, campo=campos, tabla=table_name, id_campo=id_campo)
 
 @app.route('/catalogos:<string:tabla>')
 def area(tabla): 
@@ -97,10 +103,10 @@ def area_borrar(titulo,id):
     return redirect(url_for('area',tabla=table_name))
 
 # @app.route('/area_agregar')
-@app.route('/catalogosAgregar:<string:tabla_titulo>')
-def area_agregar(tabla_titulo):
+@app.route('/catalogosAgregar:<string:tabla_titulo>:<string:id_campo>')
+def area_agregar(tabla_titulo,id_campo):
     # if tabla_titulo=="Curso":
-    #     return render_template("cursos_agr.html")
+    #     return render_template("cursos_agr.html"
     
     conexion=Admin()
     nombre_tabla=conexion.titleToTable(tabla_titulo)
@@ -114,9 +120,21 @@ def area_agregar(tabla_titulo):
     booleanos=conexion.searchBooleanSQL(tipo_datos)
     cant_datos=len(titulo_columnas)
 
+    
+    if id_campo!="%":
+        id_campo=int(id_campo)
+        id_table=conexion.tableToId("cursos")
+        
+        conexion.execute(f"select {dato} from cursos where {id_table}={id_campo}")
+        fetch =conexion.getResult()
+    else:
+        fetch=()
+        for col in range(len(dato.split(","))):
+            fetch+="",
     return render_template("area_agr.html",
         columna=dato,titulo=tabla_titulo
-        ,datos=titulo_columnas,boolean=booleanos,cDatos=cant_datos,none=None
+        ,datos=titulo_columnas,boolean=booleanos,cDatos=cant_datos,none=None,
+        fetch=fetch,id_campo=id_campo
     )
 
 # @app.route('/cursos_agregar')
@@ -124,8 +142,8 @@ def area_agregar(tabla_titulo):
 #     return render_template("cursos_agr.html")
 
 # @app.route('/area_fagrega', methods=['POST'])
-@app.route('/catalogoPUSH:<string:title>', methods=['POST'])
-def area_fagrega(title):
+@app.route('/catalogoPUSH:<string:title>:<string:id_campo>', methods=['POST'])
+def area_fagrega(title,id_campo):
     if request.method != 'POST':
         return
     
@@ -148,14 +166,52 @@ def area_fagrega(title):
         if col <len(Nombre_columnas)-1:
             uniones+=","
     
-    bool=conexion.searchBooleanSQL(tipos_dato)
-    
-
     print("___uniones:",uniones)
-    conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
+    if id_campo=="%":
+    
+        conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
+    else:
+        sets=""
+        for col in columnas.split(","):
+            sets+=" %s =replace_ ,"
+        sets=sets[:-1]
+        # a los '%s' les mandamos el nombre del campo que van a actualizar
+        sets=sets%tuple(columnas.split(","))
+        #remplazamos 'replace_' para ahora guardar los valores que vamos a enviar
+        sets=sets.replace("replace_","%s")
         
+        #a los nuevos %s de la sentencia les damos las comillas si las requieren para enviar el dato respectivo correctamente
+        sets=sets%tuple(uniones.split(","))
+        #uniomos el layout de sets con los datos a actualizar
+        sets=sets%datos[2:]
+        id_tabla=conexion.tableToId(table_name)
+        query=f"update {table_name} set {sets} where {id_tabla}={id_campo}"
+        print(query)
+        conexion.execute(query)
     return redirect(url_for('area',tabla=table_name))
 
+# @app.route('/EditaCurso:<int:id_curso>')
+# def editaCurso(id_curso):
+#     return redirect("")
+
+@app.route('/Instanciar_curso:<int:id_curso>')
+def instanciarCurso(id_curso):
+    conexion=Admin()
+
+    datos=()
+    conexion.execute("select * from cursos where id_curso=%s"%(id_curso))
+    datos+=conexion.getResult(),
+    
+    conexion.getSQLCols("curso_has_aparicion",False)
+    datos+=conexion.getResult(),
+
+    conexion.execute("select nombre from modo_aplicacion_curso")
+    datos+=conexion.getResult(),
+
+    conexion.execute("select nombre from empleados")
+    datos+=conexion.getResult(),
+
+    return render_template("newCurso.html",comentar=datos)
 
 
 @app.route('/puesto')

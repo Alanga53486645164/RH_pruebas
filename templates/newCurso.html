@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+    {{comentar.0}} <br>
+    {{comentar.1}} <br>
+    {{comentar.2}} <br>
+    <style>
+        form{
+            background-color: rgba(96, 85, 85, 0.763);
+        }
+    </style>
+    <div class="container">
+        <form action="" class="row">
+            <legend class="col-6">Lugar</legend>
+            <input type="text" class="col-6">
+
+            <legend class="col-6">Inicio</legend>
+            <input class="col-6" type="date">
+
+            <legend class="col-6">FIN</legend>
+            <input class="col-6" type="date">
+
+            <legend class="col-6">Encargado:</legend>
+            <select class="col-6" name="">
+                {% for opcion in comentar[3] %}
+                    <option >{{opcion.0}}</option>
+                {% endfor %}
+            </select>
+
+            <legend class="col-6">Metodo de Aplicacion:</legend>
+            <select class="col-6" name="">
+                {% for opcion in comentar[2] %}
+                    <option >{{opcion.0}}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+{% endblock %}
