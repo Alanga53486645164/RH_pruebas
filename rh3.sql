@@ -326,7 +326,6 @@ CREATE TABLE IF NOT EXISTS `cursos` (
   `descripcion` varchar(50) NOT NULL,
   `duracion` varchar(50) NOT NULL,
   `obj_de_aprendizaje` varchar(50) NOT NULL,
-  `duracion` varchar(50) NOT NULL,
   `obligatorio` boolean NOT NULL,
   PRIMARY KEY (`idCursos`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -525,6 +524,18 @@ CREATE TABLE IF NOT EXISTS `vacante` (
 INSERT INTO `vacante` (`idVacante`, `conseVR`, `fuenteCandidato`, `inicioFechaPublic`, `finFechaPublic`, `publicada`, `observaciones`, `candidatoSelecc`, `fechaContratacion`, `idRequisicion`, `idPuesto`) VALUES
 (1, 0, 'Interno', '2023-11-23', '2023-11-27', 1, 'gfgf', 0, '0000-00-00', 1, 1);
 COMMIT;
+CREATE TABLE IF NOT EXISTS apariciones_de_cursos (
+    id_aparicion INT AUTO_INCREMENT PRIMARY KEY,
+    id_curso INT,
+    metodo_aplicacion VARCHAR(50),
+    lugar VARCHAR(100),
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    encargado VARCHAR(100),
+    FOREIGN KEY (id_curso) REFERENCES cursos(idCursos)
+);
+
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
