@@ -17,7 +17,7 @@
       {%- set ns.prev = ns.prev+1 %}
     {% endif -%} 
   {% endfor %}
-
+<!-- {{comentarios}} -->
   <!-- acciones={{ns.prev}} -->
     <div id="booleanos" style="display:None">{{boolean}}</div>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
@@ -54,6 +54,7 @@
       </tr>
     </thead>
     <tbody>
+    {% set c=namespace(prev=0) %}
     {% for i in comentarios %}
         <tr>
         {% if id_tabla==True %}
@@ -70,6 +71,15 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
           </td>
 
         {% endfor %}
+
+        {% if titulo=='Curso' %}
+          <td class="puesto_has_curso">
+            {% if puestos_cursos[c.prev] =="" %}
+              NO HAY PUESTO ASOCIADO
+            {% else %}
+              |{{puestos_cursos[c.prev] }}</td>
+            {% endif %}
+        {% endif %}
         
         {% if edita !=False %}
           <td bgcolor="#2B2D83" width="8%">
@@ -99,13 +109,14 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
         {% endif %}
         </td>
         </tr>
+        {% set c.prev= c.prev+1 %}
     {% endfor %}
-    </tbody>
+    <!-- </tbody>
     </table>
     </td>
     </tr>
     </tbody>
-    </table>
+    </table> -->
 
     <script>
       function IntToBoolean(int){
@@ -125,6 +136,12 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
         let txt=booleanos[bool].innerText
         console.log(txt);
         booleanos[bool].innerText=IntToBoolean(txt)
+      }
+      let puestos=document.getElementsByClassName("puesto_has_curso")
+      for(let index=0;index<puestos.length;index++){
+        puestos[index].innerHTML=(puestos[index].innerHTML.split(",").join("<br>-"))
+        puestos[index].innerHTML=puestos[index].innerHTML.replace("|","-")
+        // puestos[index].innerHTML
       }
     </script>
 

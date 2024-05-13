@@ -19,14 +19,11 @@ def editar(tabla,id_campo):
         return redirect("/")
     
     template="area_edi.html"
-    print("\nTabName=",table_name)
-    print("\nId=",id_campo)
 
     id_tabla=conexion.tableToId(table_name)
     
     conexion.execute(f"select * from {table_name}  where {id_tabla} ={id_campo}")
     dato=conexion.getResult()
-    print("\ndato=",dato)
 
     campos= conexion.colsToString(table_name,False)[0]
 
@@ -51,14 +48,11 @@ def area(tabla):
     id=conexion.tableToId(tabla) 
 
     #print(f"titulo={titulo}\nid={id}")
-    conexion.execute(f"select * from {tabla} order by {id}")
+    conexion.execute(f"select * from {tabla} order by {id} asc")
     datos = conexion.getResult()
 
     plural,male=conexion.tablaPlural(titulo)
     plural=plural.upper()
-
-    if(tabla=="cursos"):
-        permitir_borrado=False
     
     titulo_columnas=conexion.getColsNameFor(tabla)
     tipo_datos=conexion.colsToString(tabla,False)[1]
@@ -67,8 +61,21 @@ def area(tabla):
 
     n_columnas=len(titulo_columnas)
 
+    n_registros=len(datos)
+    puestos_cursos=()
+    if(tabla=="cursos"):
+        permitir_borrado=True
+        titulo_columnas+="Puestos Aplicables",
+        for curso in datos:
+            conexion.execute(f"select p.nomPuesto from puesto_has_cursos pc join puesto p on pc.id_puesto=p.idPuesto where id_curso={curso[0]}")
+            p=conexion.getResult()
+            puestos=""
+            for puesto in p:
+                puestos+=puesto[0]+","
+            puestos_cursos+=puestos[:-1],
+    
     return render_template("area.html", 
-            comentarios = datos,
+            comentarios = datos, n_registros=n_registros, puestos_cursos=puestos_cursos,
             titulo=titulo,tabla_plural=plural,male=male,
                 borrado=permitir_borrado, 
                 boolean=booleanos,
@@ -77,20 +84,20 @@ def area(tabla):
             acciones=0, n_acc=0, id_tabla=showId
             )
 
-@app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
-def area_fedita(tabla,id_campo):
-    if request.method == 'POST':
-        valor=request.form['valor']
+# @app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
+# def area_fedita(tabla,id_campo):
+#     if request.method == 'POST':
+#         valor=request.form['valor']
         
-        conexion=Admin()
-        campos= conexion.colsToString(tabla,True)[0]
-        campos=campos.split(",")
-        id_tabla=campos[0]
-        otro=campos[1]
+#         conexion=Admin()
+#         campos= conexion.colsToString(tabla,True)[0]
+#         campos=campos.split(",")
+#         id_tabla=campos[0]
+#         otro=campos[1]
 
-        conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
+#         conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
         
-    return redirect(url_for('area',tabla=tabla))
+    # return redirect(url_for('area',tabla=tabla))
 
 @app.route('/catalogoBorrar:<string:titulo>:<string:id>')
 def area_borrar(titulo,id):
@@ -118,9 +125,8 @@ def area_agregar(tabla_titulo,id_campo):
     # if(nombre_tabla=="cursos"):
     #     titulo_columnas=['nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio']
     booleanos=conexion.searchBooleanSQL(tipo_datos)
-    cant_datos=len(titulo_columnas)
-
     
+
     if id_campo!="%":
         id_campo=int(id_campo)
         id_table=conexion.tableToId("cursos")
@@ -129,8 +135,18 @@ def area_agregar(tabla_titulo,id_campo):
         fetch =conexion.getResult()
     else:
         fetch=()
+        array=()
         for col in range(len(dato.split(","))):
-            fetch+="",
+            array+="",
+        fetch+=array,
+
+    if(nombre_tabla=="cursos"):
+        conexion.execute("select idPuesto,nomPuesto from puesto order by idPuesto desc")
+        # res=conexion.getResult()
+        titulo_columnas+="Puestos a los que va dirigido :",
+        fetch+=conexion.getResult()
+        
+    cant_datos=len(titulo_columnas)
     return render_template("area_agr.html",
         columna=dato,titulo=tabla_titulo
         ,datos=titulo_columnas,boolean=booleanos,cDatos=cant_datos,none=None,
@@ -146,7 +162,7 @@ def area_agregar(tabla_titulo,id_campo):
 def area_fagrega(title,id_campo):
     if request.method != 'POST':
         return
-    
+
     conexion=Admin()
     table_name=conexion.titleToTable(title)
 
@@ -166,7 +182,6 @@ def area_fagrega(title,id_campo):
         if col <len(Nombre_columnas)-1:
             uniones+=","
     
-    print("___uniones:",uniones)
     if id_campo=="%":
     
         conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
@@ -186,8 +201,30 @@ def area_fagrega(title,id_campo):
         sets=sets%datos[2:]
         id_tabla=conexion.tableToId(table_name)
         query=f"update {table_name} set {sets} where {id_tabla}={id_campo}"
-        print(query)
         conexion.execute(query)
+    
+    if table_name=="cursos":
+        puestos=request.form['puestos']
+        puestos=puestos.replace("puesto-","").split("|")[1:]
+        conexion.execute("select id_curso from cursos where nombre='%s'"%(datos[2]))
+        id_curso=conexion.getResult()[0]
+
+        query="delete from puesto_has_cursos where id_curso=%s"%(id_curso)
+        conexion.execute(query)
+        
+        values=""
+        for puesto in  puestos:
+            values+=f"({id_curso[0]},{puesto}),"
+
+        values=values[:-1]
+        query=f"insert into puesto_has_cursos(id_curso,id_puesto) values {values}"
+        conexion.execute(query)
+        # else:
+        #     values=""
+        #     for puesto in puestos:
+        #         values=f"id_puesto={puesto}"
+        #         query=f"update puesto_has_curso set {values} where id_curso={id_curso} and id_puesto={puesto}"
+        #         conexion.execute(query)
     return redirect(url_for('area',tabla=table_name))
 
 # @app.route('/EditaCurso:<int:id_curso>')
