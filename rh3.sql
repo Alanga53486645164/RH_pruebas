@@ -333,16 +333,9 @@ CREATE TABLE IF NOT EXISTS `empleados` (
 CREATE TABLE IF NOT EXISTS `participacion` (
   `idempleados` int(11) NOT NULL,
   `claificacion` int(4) NOT NULL,
-  FOREIGN KEY (`idempleados`) REFERENCES empleados(idEmpleados)
- ) ;
+
+)  DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 -- Estructura de tabla para la tabla `participacion`
-INSERT INTO `participacion` (`idempleados`, `claificacion`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(8, 6);
 --
 
 CREATE TABLE IF NOT EXISTS `cursos` (
