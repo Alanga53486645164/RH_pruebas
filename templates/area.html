@@ -120,7 +120,6 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
 
     <script>
       function IntToBoolean(int){
-        console.log(int)
         if(int==1){
           return "SI"
           return "Cierto"
@@ -131,10 +130,8 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
       }
 
       booleanos=document.getElementsByClassName("booleanTarget")
-      console.log(booleanos);
       for(let bool=0;bool<booleanos.length;bool++){
         let txt=booleanos[bool].innerText
-        console.log(txt);
         booleanos[bool].innerText=IntToBoolean(txt)
       }
       let puestos=document.getElementsByClassName("puesto_has_curso")
