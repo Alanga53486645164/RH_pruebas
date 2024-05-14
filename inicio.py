@@ -8,9 +8,9 @@ app = Flask(__name__)
 def home():
     return render_template("home.html",inicio=True)
 
-# @app.errorhandler(404)
-# def page_not_found(error):
-#     return render_template('Notfound.html'), 404
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('Notfound.html'), 404
 
 @app.route('/catalogosEdita:<string:tabla>:<int:id_campo>')
 def editar(tabla,id_campo):
