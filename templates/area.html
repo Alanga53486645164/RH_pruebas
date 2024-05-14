@@ -25,6 +25,7 @@
     <tr>
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
     <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
+    <div style="display:none" id="titulo_plural">{{tabla_plural}}</div>
     <center><h3>{{tabla_plural}} 
       {% if male==True %}
         REGISTRADOS
@@ -140,6 +141,8 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
         puestos[index].innerHTML=puestos[index].innerHTML.replace("|","-")
         // puestos[index].innerHTML
       }
+
+      document.getElementById("titulo").innerHTML="RH|"+document.getElementById("titulo_plural").innerHTML
     </script>
 
 {% endblock %}
