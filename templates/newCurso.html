@@ -116,17 +116,35 @@
             
             if(date1.isBoforeThan(date2)){
                 console.log("Fecha 1(",date1.getDate(),") es menor")
-                return 
+                return 1
             }
             console.log("Fecha 2(",date2.getDate(),") es menor")
+            return 2
         }
 
+        function InicioMenorQue() {
+            // let padre = e.target.parentNode;
+            
+            if(FechaMasLejana(inicio.value, fin.value)===2){
+                boton.validity.valid=false
+                alert("La fecha de fin debe ser mayor a la fecha de inicio")
+                return
+            }
+            boton.validity.valid=true
+            
+        }
+        // FechaMasLejana('2024-02-12','2024-02-12')
+        fin.addEventListener('change', InicioMenorQue);
+
+        let boton=document.getElementById("Enviar")
+        let padre=document.getElementsByTagName("form")[0]
         
-        FechaMasLejana('2024-02-12','2024-02-12')
-        fin.addEventListener('change', function(e) {
-            var fechaSeleccionada = inputFecha.value;
-            console.log('Se ha seleccionado la fecha:', fechaSeleccionada);
-            // Aquí puedes realizar cualquier acción adicional que necesites con la fecha seleccionada
-        });
+        padre.addEventListener("submit",function enviar(e){
+            InicioMenorQue()
+            if (boton.validity.valid==false){ 
+                e.preventDefault()
+                return
+            }
+        })
     </script>
 {% endblock %}
