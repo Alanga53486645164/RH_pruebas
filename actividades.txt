@@ -21,10 +21,12 @@ Actividades del modulo:
             nombre, descripcion, duracion,...(demas datos en su tabla sql menos id), puestos a los que va dirigido el curso(n:n)
         acciones:
             Ver apariciones 
+            Instanciar el curso(Yo)
             (extra):
                 fltro  para ordenar por cursos de x puesto
 
     Tabla html de apariciones de cursos:
+        (Alan)
         datos:
            metodo de aplicacion, lugar,fecha inicio, fecha fin, encargado
         acciones:
@@ -32,6 +34,7 @@ Actividades del modulo:
             ver al encargado
         
     Tabla para ver la participacion de los empleados en X curso:
+        (Ian)
         datos:
             nombre empleado,calificacion
         acciones:
@@ -45,4 +48,5 @@ Actividades del modulo:
         recorriendo esa lista e imprimiendo sus valores, separados por "\n"
 
 --Alterno y del otro equipo:
+    (Ian)
     Implementacion de los cursos que ha tomado el empleado en su ventana de "ver empleado" o "detalles"

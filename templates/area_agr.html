@@ -1,23 +1,107 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<style>
+    input,select{
+        margin-bottom: 1%;
+    }
+</style>
 <h3>
     <CENTER> <b> Agregar {{titulo}} </b> </CENTER>
       
 </h3>
+<!-- {{boolean}}
+<br>
+{{datos}}
+<br>
+{{fetch}}
+   <br> -->
    <br>
    <br>
-   <br>
-<form action="/catalogoPUSH:{{titulo}}" method="post">
-   <div class="container">
-          <div class="form-row">
-               <div class="col-xs-12 ">
-                <div class="mb-3">
-                      <label for="descripcion" class="form-label">{{columna}}</label>
-                      <input autofocus type="text" class="form-control" name="descripcion" id="descripcion"></input>
+<form action="/catalogoPUSH:{{titulo}}:{{id_campo}}" method="post">
+    <input type="text" style="display:none" name="n_puestos" value="{{num_puestos}}">
+    <div class="container">
+        <div class="form-row">
+            <div class="col-xs-12 ">
+            <div class="mb-3">
+                {% for dato in range(cDatos) %}
+                    <label for="descripcion" class="form-label">{{datos[dato]}}</label>
+                    
+                    {% if boolean !=None %}
+                        {% for booleano in boolean %}
+                            {% if dato==booleano %}
+                                <select name="{{datos[dato]}}" class="boolean" style="width:100%">
+                                    <option >True</option>
+                                    <option >False</option>
+                                </select>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <input required autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
+                        class="form-control {% if boolean!=None %}{% for booleano in boolean %}{% if dato==booleano or (dato==5 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{% endif %}{{col}}"
+                        value="{{fetch[0][dato]}}"
+                    ></input>
+                    {% if dato ==5 and titulo=="Curso" %}
+                        <input type="text" style="display:none" name="puestos">
+                        <br>
+                        {% for puesto in fetch[1:] %}
+                            <input class="agregarPresionado"type="checkbox" name="puesto-{{puesto[0]}}">
+                            {{puesto[1]}}
+                            <br>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- {% if titulo=='Curso' and dato==2 %}
+                        <select name="tiempo" id="">
+                            <option >Horas</option>
+                            <option >Dias</option>
+                        </select>
+                    {% endif %} -->
+
+                {% endfor %}
                 </div>
-                </div>
-          </div>
+            </div>
+        </div>
     </div>
           <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+<script>
+    let borrados=document.getElementsByClassName("borrado")
+    for (let index = 0; index < borrados.length; index++) {
+        const element = borrados[index];
+        element.name=""
+        element.style.display="none"
+        element.required=false
+    }
+    
+    let selects=document.getElementsByClassName("boolean")
+    for (let index = 0; index < selects.length; index++) {
+        const element = selects[index];
+        let valor='True'
+        if(borrados[index].value ==0){
+            valor='False'
+        }
+        element.value=valor
+    }
+    function agregarPresionado(e){
+        target =e.target
+        
+        let puestos=document.getElementsByName("puestos")[0]
+        if(target.accion==0){
+            puestos.value+="|"+target.name
+            target.accion=1
+            return
+        }
+        // puestos.value=puestos.value.replace(target.name,"|")
+        puestos.value=puestos.value.replace("|"+target.name,"")
+        target.accion=0
+    }
+    let target;
+
+    let checklist=document.getElementsByClassName("agregarPresionado")
+    for (let index = 0; index < checklist.length; index++) {
+        checklist[index].onclick=agregarPresionado
+        checklist[index].accion=0
+        
+    }
+</script>
 {% endblock %}

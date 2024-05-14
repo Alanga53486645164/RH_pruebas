@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block content %}
+    {{comentar.0}} <br>
+    {{comentar.1}} <br>
+    {{comentar.2}} <br>
+    {{comentar.3}} <br>
+    <style>
+        form{
+            background-color: rgba(96, 85, 85, 0.763);
+        }
+    </style>
+    <div class="container">
+        <form action="/ActivarCurso" class="row">
+            <legend class="col-6">Lugar</legend>
+            <input required type="text" class="col-6">
+
+            <legend class="col-6">Inicio</legend>
+            <input id="fecha_inicio" required class="col-6" type="date">
+
+            <legend class="col-6">FIN</legend>
+            <input id="fecha_fin" required class="col-6" type="date">
+
+            <legend class="col-6">Encargado:</legend>
+            <select class="col-6" name="">
+                {% for opcion in comentar[3] %}
+                    <option >{{opcion.0}}</option>
+                {% endfor %}
+            </select>
+
+            <legend class="col-6">Metodo de Aplicacion:</legend>
+            <select class="col-6" name="">
+                {% for opcion in comentar[2] %}
+                    <option >{{opcion.0}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input id="Enviar" type="submit" value="Activar Curso">
+        </form>
+    </div>
+
+    <script>
+        let inicio = document.getElementById("fecha_inicio")
+        let fin = document.getElementById("fecha_fin")
+
+        class Fecha{
+            constructor(fecha_string) {
+                let date=fecha_string.split("-")
+
+                if(fecha_string.length!=10 || date.length!=3 || date[0].length!=4 || date[1].length!=2){
+                    // creo que no necesita el ultimo de :  date[1].length!=2
+                    return null
+                }
+                this.year=date[0]
+                this.month=date[1]
+                this.day=date[2]
+            }
+            getYear(){
+                return this.year
+            }
+            getMonth(){
+                return this.month
+            }
+            getDay(){
+                return this.day
+            }
+            getDate(){
+                return ""+this.getYear()+"-"+this.getMonth()+"-"+this.getDay()
+            }
+            isBoforeThan(otra_fecha){
+                if(otra_fecha.getYear==undefined){
+                    // no es un objeto de la clase 'Fecha'
+                    otra_fecha= new Fecha(otra_fecha)
+                    if(otra_fecha==null){
+                        return null
+                    } 
+                }
+
+                if (otra_fecha.getYear()<this.getYear()){
+                    // el otro año es menor
+                    console.error("Somos el año MAyor");
+                    return false
+                }
+
+                if (otra_fecha.getYear()>this.getYear){
+                    console.error("Somos el año menor");
+
+                    // el otro año es mayor
+                    return true
+                }
+                console.error("Mismo año")
+                // estamos en el mismo año
+                if(otra_fecha.getMonth()<this.getMonth()){
+                    // el otro es antes que nosotros
+                    return false
+                }
+                
+                if(otra_fecha.getMonth()>this.getMonth()){
+                    // el otro es depsues de nosotros
+                    return true
+                }
+                console.error("Mismo mes")
+                //estamos en el mismo mes
+                console.error(otra_fecha.getDay(),"<=",this.getDay());
+                if(otra_fecha.getDay()<=this.getDay()){
+                    // el otro dia esta antes de nosotros
+                    return false
+                } 
+                console.error("Somos fecha menor")
+                //somos la fecha menor
+                return true
+            }
+        }
+        function FechaMasLejana(Fecha1,Fecha2){
+            date1=new Fecha(Fecha1)
+            date2=new Fecha(Fecha2)
+            
+            if(date1.isBoforeThan(date2)){
+                console.log("Fecha 1(",date1.getDate(),") es menor")
+                return 
+            }
+            console.log("Fecha 2(",date2.getDate(),") es menor")
+        }
+
+        
+        FechaMasLejana('2024-02-12','2024-02-12')
+        fin.addEventListener('change', function(e) {
+            var fechaSeleccionada = inputFecha.value;
+            console.log('Se ha seleccionado la fecha:', fechaSeleccionada);
+            // Aquí puedes realizar cualquier acción adicional que necesites con la fecha seleccionada
+        });
+    </script>
+{% endblock %}
