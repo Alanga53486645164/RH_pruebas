@@ -5,29 +5,36 @@
     <tbody>
     <tr>
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
-    <right><h3><a href="/participacion_agregar">Agregar Habilidad</a></h3></right>
-    <center><h3>HABILIDAD REGISTRADAS</h3></center>
+    <center><h3>PARTICIPACIONES REGISTRADAS</h3></center>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <thead>
       <tr>
-        <td color="white" bgcolor="blue">id</td>
-        <td color="white" bgcolor="blue">nombre</td>
-        <td color="white" bgcolor="blue">Calificacion</td>
+        <td color="white" bgcolor="yellow">id</td>
+        <td color="white" bgcolor="yellow">nombre</td>
+        <td color="white" bgcolor="yellow">Calificacion</td>
+        <td colspan="2" color="white" bgcolor="yellow"><center>opciones</center></td>
       </tr>
     </thead>
     <tbody>
     {% for i in comentarios %}
         <tr>
-        <td width="80%">
-           {i.0}
+        <td width="20%">
+           {{i.0}}
         </td>
-        <td width="80%">
-           {i.2}
+        <td width="20%">
+           {{i.1}}
         </td>
-        <td width="80%">
-           {i.3}
+        <td width="20%">
+           {{i.3}}
         </td>
 
+        <td bgcolor="#2B2D83" width="8%">
+         <center><a href="/participacion_editar/{{i.0}}" style="...">Editar</a></center>
+         </td>
+         <td bgcolor="#3C3EC5" width="8%">
+         <center><a href="/participacion_borrar/{{i.0}}" style="...">Borrar</a></center>
+         </td>
+         </tr>
     {% endfor %}
     </tbody>
     </table>

@@ -317,7 +317,32 @@ INSERT INTO `idioma` (`idIdioma`, `descripcion`) VALUES
 
 -- --------------------------------------------------------
 --
--- Estructura de tabla para la tabla `cursos`
+-- Estructura de tabla para la tabla `empleados`
+--
+
+CREATE TABLE IF NOT EXISTS `empleados` (
+  `idEmpleados` int(11) NOT NULL AUTO_INCREMENT,
+  `nom_empleados` varchar(50) NOT NULL,
+  PRIMARY KEY (`idEmpleados`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `participacion`
+--
+
+CREATE TABLE IF NOT EXISTS `participacion` (
+  `idempleados` int(11) NOT NULL,
+  `claificacion` int(4) NOT NULL,
+  FOREIGN KEY (`idempleados`) REFERENCES empleados(idEmpleados)
+ ) ;
+-- Estructura de tabla para la tabla `participacion`
+INSERT INTO `participacion` (`idempleados`, `claificacion`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(8, 6);
 --
 
 CREATE TABLE IF NOT EXISTS `cursos` (

@@ -425,11 +425,7 @@ def cursos():
     cursor = conn.cursor()
     cursor.execute('select idCursos, nom_cursos, descripcion, duracion, obj_de_aprendizaje, obligatorio from cursos order by idCursos')
     datos = cursor.fetchall()
-    cursor.execute('SELECT id_aparicion, id_curso, metodo_aplicacion, lugar, fecha_inicio, fecha_fin, encargado FROM apariciones_de_cursos ORDER BY id_aparicion')
-    datos_apariciones = cursor.fetchall()
-
-
-    return render_template("cursos.html", comentarios = datos,apariciones=datos_apariciones)
+    return render_template("cursos.html", comentarios = datos)
 
 
 @app.route('/cursos_agregar')
@@ -500,7 +496,7 @@ def cusrsos_borrar(id):
 def empleados():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
-    cursor.execute('select idEmpleado, nom_empleado from empleados order by idEmpleado')
+    cursor.execute('select idEmpleados, nom_empleados from empleados order by idEmpleados')
     datos = cursor.fetchall()
     return render_template("empleados.html", comentarios = datos)
 
@@ -514,7 +510,7 @@ def empleados_agregar():
 def empleados_editar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('select idEmpleado, nom_empleado from empleados where idEmpleado = %s', (id))
+    cursor.execute('select idEmpleados, nom_empleados from empleados where idEmpleados = %s', (id))
     dato  = cursor.fetchall()
     return render_template("empleados_edi.html", comentar=dato[0])
 
@@ -524,7 +520,7 @@ def empleados_fedita(id):
         nom=request.form['nom_empleado']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
         cursor = conn.cursor()
-        cursor.execute('update empleados set nom_empleado=%s where idEmpleado=%s', (nom, id))
+        cursor.execute('update empleados set nom_empleados=%s where idEmpleados=%s', (nom, id))
         conn.commit()
     return redirect(url_for('empleados'))
 
@@ -535,7 +531,7 @@ def empleados_fagrega():
         nom = request.form['nom_empleado']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
         cursor = conn.cursor()
-        cursor.execute('insert into empleados (nom_empleado) values (%s)',( nom))
+        cursor.execute('insert into empleados (nom_empleados) values (%s)',( nom))
         conn.commit()
     return redirect(url_for('empleados'))
 
@@ -544,7 +540,7 @@ def empleados_fagrega():
 def empleados_borrar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('delete from empleados where idEmpleado = {0}'.format(id))
+    cursor.execute('delete from empleados where idEmpleados = {0}'.format(id))
     conn.commit()
     return redirect(url_for('empleados'))
 
@@ -567,24 +563,28 @@ def empleados_borrar(id):
 def participacion():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
-    cursor.execute('select a.idEmpleado, a.nom_empleado, b.calificacion from empleados a, participacion b where a.idEmpleado = b.idEmpleado ')
+    cursor.execute('SELECT e.idEmpleados, e.nom_empleados, p.claificacion from empleados e left join participacion p ON e.idEmpleados = p.idempleados ')
     datos = cursor.fetchall()
+    
     return render_template("participacion.html", comentarios = datos)
 
 
 
-@app.route('/participacion_agregar')
-def participacion_agregar():
-    return render_template("participacion_agr.html")
+@app.route('/participacion_editar/<string:id>')
+def participacion_editar(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('select claificacion from participacion where idempleados = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("participacion_edi.html", comentar=dato[0])
 
-
-@app.route('/participacion_fagrega', methods=['POST'])
-def participacion_fagrega():
+@app.route('/participacion_fedita/<string:id>',methods=['POST'])
+def participacion_fedita(id):
     if request.method == 'POST':
-        cali = request.form['calificacion']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+        cali=request.form['claificacion']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
         cursor = conn.cursor()
-        cursor.execute('insert into participacion (calificacion) values (%s)',( cali))
+        cursor.execute('insert into participacion (claificacion) values (%s)',( cali))
         conn.commit()
     return redirect(url_for('participacion'))
 
@@ -914,6 +914,20 @@ def puesto_fedita(idP):
             cursor.execute('insert into puesto_has_habilidad(idPuesto,idHabilidad) values (%s,%s)', (idP, i))
             conn.commit()
     return redirect(url_for('puesto'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
