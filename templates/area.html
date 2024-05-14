@@ -1,145 +1,259 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://cdn-icons-png.freepik.com/512/6713/6713429.png">
+  <title>Area| Recursos Humanos</title>
+</head>
+<style>
+  body {
+    background-color: white;
+  }
+  table {
+    box-shadow: 10px 10px 20px black;
+  }
+
+  #editar a {
+    text-decoration: none;
+  }
+
+  #editar a:hover {
+
+    color: green;
+    text-decoration: underline;
+  }
+
+  #borrar {
+    background-image: linear-gradient(135deg,
+        #000000, #113a77, #239de4, #2781bd,
+        #239de4, #113a77, #0f0a0c);
+    background-size: 500%;
+    animation: fanimado 10s infinite;
+  }
+
+  @keyframes fanimado {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+
+  }
+
+  #agregar_a h3 a {
+    transition: all 1s;
+    text-decoration: none;
+  }
+
+  #agregar_a h3 a:hover {
+    transition: all 1s;
+    text-decoration: underline;
+    letter-spacing: 2px;
+  }
+
+  #borrar a {
+    text-align: center;
+    text-decoration: none;
+  }
+
+  #borrar:hover {
+    background-image: linear-gradient(135deg,
+        #000000, #5c1e1e, #e72525, #970606,
+        #e72525, #5c1e1e, #0f0a0c);
+    background-size: 500%;
+    animation: fanimado 10s infinite;
+  }
+
+  @keyframes fanimado {
+    0% {
+      background-position: 0% 40%;
+    }
+
+    50% {
+      background-position: 100% 40%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>
+
+<body>
+  {% extends "layout.html" %}
+
+  {% block content %}
   <!-- el array de aqui guarda unas variables que llegan desde el archivo python  -->
   {% set acciones = borrado,boolean,edita %}
 
-  <hr>
   {% set ns = namespace(prev=0) %}
 
   {% if titulo=='Curso' %}
-    {%- set ns.prev = ns.prev+1 %}
+  {%- set ns.prev = ns.prev+1 %}
   {% endif %}
 
   {% for x in acciones %}
-    <!-- x={{x}} <br> -->
-    {%- if x!=None and x!=False %} 
-      {%- set ns.prev = ns.prev+1 %}
-    {% endif -%} 
+  <!-- x={{x}} <br> -->
+  {%- if x!=None and x!=False %}
+  {%- set ns.prev = ns.prev+1 %}
+  {% endif -%}
   {% endfor %}
-<!-- {{comentarios}} -->
+  <!-- {{comentarios}} -->
   <!-- acciones={{ns.prev}} -->
-    <div id="booleanos" style="display:None">{{boolean}}</div>
-    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
-    <tbody>
-    <tr>
-    <td color="FFFFFF" bgcolor="#465F5A" valign="top">
-    <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
-    <center><h3>{{tabla_plural}} 
-      {% if male==True %}
-        REGISTRADOS
-      {% else %}
-        REGISTRADAS
-      {% endif %}
-    </h3></center>
-    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
-    <thead>
-      <tr>
-        {% if id_tabla==True %}
-          <td class="text-center" style="color:white" bgcolor="blue">ID</td>
-        {% endif %}
 
-        {% for columna in columnas %}
-          <td class="text-center" style="color:white" bgcolor="blue">{{columna}}</td>
-        {% endfor %}
 
-        <!-- con 'ctrl' + 'Esc ' puedes eliminar espacion entre renglones. Ejemplo :
-          Antes: 
-            borrado,(aqui se usa el comando)
-            boolean,(aqui se usa el comando)
-            edita
-          Despues
-            borrado,boolean,edita -->
-        <td class="text-center" bgcolor="black" colspan="{{ns.prev}}" style="color:white">Opciones</td>
-      </tr>
-    </thead>
-    <tbody>
-    {% set c=namespace(prev=0) %}
-    {% for i in comentarios %}
+
+<br>
+
+  <div id="booleanos" style="display:None">{{boolean}}</div>
+
+  <div class="tablac">
+    <table width="80%" cellpadding="0" style="border-style: none; margin-left: 10%;">
+      <tbody>
         <tr>
-        {% if id_tabla==True %}
-          <td>{{i.0}}</td> 
-        {% endif %}
+          <td style="color: white; background-color: rgb(106, 119, 124); border-style: none;" valign="to">
+            <right id="agregar_a">
+              <h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3>
+            </right>
+            <center>
+              <h3 style="color: rgb(0, 0, 0); text-shadow: 2px 2px 5px black;">{{tabla_plural}}
+                {% if male==True %}
+                REGISTRADOS
+                {% else %}
+                REGISTRADAS
+                {% endif %}
+              </h3>
+            </center>
+            <table width="100%" cellpadding="0" style="background-color: rgb(0, 0, 0); "><br>
+              <thead>
+                <tr>
+                  {% if id_tabla==True %}
+                  <td class="text-center" style="color:white">ID</td>
+                  {% endif %}
 
-        {% for campo in range(1,num_columnas+1) %}
-          
-          <td
-            {% if boolean != None %}
-class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} booleanTarget{% endif %}{% endfor %}{% endif %}"
-          >
-            {{ i[campo] }}
+                  {% for columna in columnas %}
+                  <td class="text-center" style="color:rgb(76, 155, 245);">
+                    <center>{{columna}}</center>
+                  </td>
+                  {% endfor %}
+
+                  <!-- con 'ctrl' + 'Esc ' puedes eliminar espacion entre renglones. Ejemplo :
+                  Antes: 
+                    borrado,(aqui se usa el comando)
+                    boolean,(aqui se usa el comando)
+                    edita
+                  Despues
+                    borrado,boolean,edita -->
+                  <td style="border-bottom: 1px solid white;" class="text-center" colspan="{{ns.prev}}"
+                    style="color:white">
+                    <center>Opciones</center>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {% set c=namespace(prev=0) %}
+                {% for i in comentarios %}
+                <tr>
+                  {% if id_tabla==True %}
+                  <td>{{i.0}}</td>
+                  {% endif %}
+
+                  {% for campo in range(1,num_columnas+1) %}
+
+                  <td style="border-bottom: .5px solid white;" {% if boolean !=None %}
+                    class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} booleanTarget{% endif %}{% endfor %}{% endif %}">
+                    {{ i[campo] }}
+                  </td>
+
+                  {% endfor %}
+
+                  {% if titulo=='Curso' %}
+                  <td class="puesto_has_curso">
+                    {% if puestos_cursos[c.prev] =="" %}
+                    NO HAY PUESTO ASOCIADO
+                    {% else %}
+                    |{{puestos_cursos[c.prev] }}</td>
+                  {% endif %}
+                  {% endif %}
+
+                  {% if edita !=False %}
+                  <td id="editar" style="border-left: 1px solid white;" bgcolor="black" width="8%">
+                    {% if titulo=="Curso" %}
+                    <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}">Editar</a></center>
+                    {% else %}
+                    <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}">Editar</a></center>
+                    {% endif %}
+                  </td>
+                  {% endif %}
+
+                  {% if titulo=="Curso" %}
+                  <td bgcolor="green">
+                    <center><a href="/Instanciar_curso:{{i.0}}">Activar Curso</a></center>
+                  </td>
+                  {% endif %}
+
+                  {% if titulo=="Curso" %}
+                  <td bgcolor="blue" width="8%">
+                    <center><a href="/Apariciones_curso:{{i.0}}">Ver Apariciones</a></center>
+                  </td>
+                  {% endif %}
+
+                  {% if borrado!=False %}
+                  <td id="borrar" width="8%">
+                    <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}">Borrar</a></center>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% set c.prev= c.prev+1 %}
+                {% endfor %}
+              </tbody>
+            </table>
           </td>
-
-        {% endfor %}
-
-        {% if titulo=='Curso' %}
-          <td class="puesto_has_curso">
-            {% if puestos_cursos[c.prev] =="" %}
-              NO HAY PUESTO ASOCIADO
-            {% else %}
-              |{{puestos_cursos[c.prev] }}</td>
-            {% endif %}
-        {% endif %}
-        
-        {% if edita !=False %}
-          <td bgcolor="#2B2D83" width="8%">
-          {% if titulo=="Curso" %}
-            <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
-          {% else %}
-            <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >Editar</a></center>
-          {% endif %}
-        </td>
-        {% endif %}
-
-        {% if titulo=="Curso" %}
-        <td bgcolor="#2B2D83">
-          <center><a href="/Instanciar_curso:{{i.0}}" >Activar Curso</a></center>
-        </td>
-        {% endif %}
-
-        {% if titulo=="Curso" %}
-        <td bgcolor="#2B2D83" width="8%">
-            <center><a href="/Apariciones_curso:{{i.0}}" >Ver Apariciones</a></center>
-          </td>
-        {% endif %}
-
-        {% if borrado!=False %}
-          <td bgcolor="#3C3EC5" width="8%">
-          <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}" >Borrar</a></center>
-        {% endif %}
-        </td>
         </tr>
-        {% set c.prev= c.prev+1 %}
-    {% endfor %}
-    <!-- </tbody>
+      </tbody>
     </table>
-    </td>
-    </tr>
-    </tbody>
-    </table> -->
+  </div>
+<br><br><br><br>
 
-    <script>
-      function IntToBoolean(int){
-        if(int==1){
-          return "SI"
-          return "Cierto"
-        }else{
-          return "NO"
-          return "Falso"
-        }
-      }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+  
 
-      booleanos=document.getElementsByClassName("booleanTarget")
-      for(let bool=0;bool<booleanos.length;bool++){
-        let txt=booleanos[bool].innerText
-        booleanos[bool].innerText=IntToBoolean(txt)
-      }
-      let puestos=document.getElementsByClassName("puesto_has_curso")
-      for(let index=0;index<puestos.length;index++){
-        puestos[index].innerHTML=(puestos[index].innerHTML.split(",").join("<br>-"))
-        puestos[index].innerHTML=puestos[index].innerHTML.replace("|","-")
-        // puestos[index].innerHTML
-      }
-    </script>
 
-{% endblock %}
+
+
+    function IntToBoolean(int) {
+      if (int == 1) {
+        return "SI"
+        return "Cierto"
+      } else {
+        return "NO"
+        return "Falso"
+      }
+    }
+
+    booleanos = document.getElementsByClassName("booleanTarget")
+    for (let bool = 0; bool < booleanos.length; bool++) {
+      let txt = booleanos[bool].innerText
+      booleanos[bool].innerText = IntToBoolean(txt)
+    }
+    let puestos = document.getElementsByClassName("puesto_has_curso")
+    for (let index = 0; index < puestos.length; index++) {
+      puestos[index].innerHTML = (puestos[index].innerHTML.split(",").join("<br>-"))
+      puestos[index].innerHTML = puestos[index].innerHTML.replace("|", "-")
+      // puestos[index].innerHTML
+    }
+  </script>
+
+  {% endblock %}
+</body>
+
+</html>

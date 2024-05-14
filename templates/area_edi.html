@@ -1,21 +1,102 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<!-- <form action="/EditaCatalogos:{{tabla}}" method="post"> -->
-<form action="/EditaCatalogos:{{tabla}}:{{id_campo}}" method="post">
-   <div class="container">
-          <div class="form-row">
-               <div class="col-xs-12 ">
-                <div class="mb-3">
-                      <label for="descripcion" class="form-label">{{campo}}</label>
-                      <input type="text" class="form-control" name="valor" id="valor" placeholder="area" value="{{comentar.1}}">
-                      <!--input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="area" value="{{comentar.1}}"-->
-                </div>
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" href="https://cdn-icons-png.freepik.com/512/6713/6713429.png">
+      <title>Area| Editar |Recursos Humanos</title>
+</head>
 
-                </div>
-          </div>
-    </div>
-          <button type="submit" class="btn btn-primary">Actualizar</button>
-</form>
+<style>
+      .c {
+            width: 100%;
+            
+            display: flex;
+            background-color: rgba(27, 247, 255, 0.233);
 
-{% endblock %}
+      }
+      .c .inf {
+            width: 50%;
+            min-height: 30vw;
+      }
+      .c .imag {
+            width: 50%;
+            height: 30vw;
+            background-image: url('https://media.istockphoto.com/id/1252476842/id/vektor/pengaturan-garis-neon-bersinar-di-ikon-tangan-terisolasi-pada-latar-belakang-hitam-ilustrasi.jpg?s=170667a&w=0&k=20&c=I4_1RrBvRi9-qFetAPucCe_XgvVgCQqdE7RdNcogv8k=');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+      }
+
+      .c .inf h1 {
+            text-align: center;
+      }
+      .c .inf p {
+            font-size: 18px;
+            margin-left: 10%;
+            width: 80%;
+            height: 100%;
+            text-align: center;
+      }
+
+      @media (max-width:1130px) {
+            .c {
+                  flex-direction: column;
+            }
+            .c .inf {
+                  width: 100%;
+            } 
+            .c .imag {
+                  width: 100%;
+            }
+      }
+</style>
+
+<body>
+      {% extends "layout.html" %}
+
+      {% block content %}
+      <!-- <img style="width: 1000px; height: 500px;" src="https://pandorafms.com/blog/wp-content/uploads/2018/05/mantenimiento-informatico-pfms-blog-1080x675.webp " alt=""> -->
+      <!-- <form action="/EditaCatalogos:{{tabla}}" method="post"> -->
+
+      <div class="c">
+            <div class="inf"><br>
+                  <h1>Área a Editar: Título del Área de Gestión de la Formación y el Desarrollo</h1><br><br><br>
+                  <p>Aquí podrás editar el título del área de Gestión de la Formación y el Desarrollo para que refleje
+                        mejor las funciones y objetivos específicos de este ámbito. Al ajustar el título, se busca una
+                        descripción más precisa y representativa de las actividades y metas, mejorando la comunicación y
+                        comprensión de su importancia dentro de la organización.</p>
+            </div>
+            <div class="imag"></div>
+      </div>
+
+      <div class="contenido">
+            <form action="/EditaCatalogos:{{tabla}}:{{id_campo}}" method="post">
+                  <div class="container2">
+                        <div class="form-row">
+                              <div class="col-xs-12 ">
+                                    <div class="mb-3">
+                                          <label for="descripcion" class="form-label">{{campo}}</label>
+                                          <input type="text" class="form-control" name="valor" id="valor"
+                                                placeholder="area" value="{{comentar.1}}">
+                                          <!--input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="area" value="{{comentar.1}}"-->
+                                    </div>
+
+                              </div>
+                        </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+      </div>
+
+      <br><br><br><br><br>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+      <script>
+
+      </script>
+      {% endblock %}
+</body>
+
+</html>
