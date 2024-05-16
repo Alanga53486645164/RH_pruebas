@@ -563,9 +563,8 @@ def empleados_borrar(id):
 def participacion():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
-    cursor.execute('SELECT e.idEmpleados, e.nom_empleados, p.claificacion from empleados e left join participacion p ON e.idEmpleados = p.idempleados ')
-    datos = cursor.fetchall()
-    
+    cursor.execute('select h.id_registro,h.idCursos,h.idEmpleados, h.calificacion, nom_empleados from cursos c,empleados e,curso_has_empleados h where e.idEmpleados=h.idEmpleados')
+    datos = cursor.fetchall()    
     return render_template("participacion.html", comentarios = datos)
 
 
@@ -574,7 +573,7 @@ def participacion():
 def participacion_editar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('select claificacion from participacion where idempleados = %s', (id))
+    cursor.execute('select claificacion from curso_has_empleados where id_empleados = %s', (id))
     dato  = cursor.fetchall()
     return render_template("participacion_edi.html", comentar=dato[0])
 
@@ -584,7 +583,7 @@ def participacion_fedita(id):
         cali=request.form['claificacion']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
         cursor = conn.cursor()
-        cursor.execute('insert into participacion (claificacion) values (%s)',( cali))
+        cursor.execute('insert into curso_has_empleados (claificacion) values (%s) WHERE id_empleados=%s',( cali, id))
         conn.commit()
     return redirect(url_for('participacion'))
 
@@ -593,7 +592,7 @@ def participacion_fedita(id):
 def participacion_borrar(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('delete from participacion, empleados where idEmpleado = {0}'.format(id))
+    cursor.execute('delete from curso_has_empleados, empleados where idEmpleado = {0}'.format(id))
     conn.commit()
     return redirect(url_for('participacion'))
 

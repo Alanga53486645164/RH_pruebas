@@ -327,15 +327,29 @@ CREATE TABLE IF NOT EXISTS `empleados` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 -- --------------------------------------------------------
 --
--- Estructura de tabla para la tabla `participacion`
+-- Volcado de datos para la tabla `empleados`
 --
+INSERT INTO `empleados` (`idEmpleados`, `nom_empleados`) VALUES
+(1, 'Obed');
 
-CREATE TABLE IF NOT EXISTS `participacion` (
-  `idempleados` int(11) NOT NULL,
-  `claificacion` int(4) NOT NULL,
+-- --------------------------------------------------------
 
-)  DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
--- Estructura de tabla para la tabla `participacion`
+--
+-- Estructura de tabla para la tabla `curso_has_empleados`
+--
+create table IF NOT EXISTS `curso_has_empleados`(
+	id_registro int(11) primary key auto_increment, 
+	idCursos int(11) NOT NULL, 
+	idEmpleados int(11) NOT NULL, 
+	#inicio date, 
+	#fin date, 
+	calificacion int(11) NOT NULL
+);
+-- Estructura de tabla para la tabla `curso_has_empleados`
+
+INSERT INTO `curso_has_empleados` (`id_registro`,`idCursos`, `idEmpleados`, `calificacion` ) VALUES
+(1, 1, 1, 10);
+
 --
 
 CREATE TABLE IF NOT EXISTS `cursos` (
@@ -346,11 +360,13 @@ CREATE TABLE IF NOT EXISTS `cursos` (
   `obj_de_aprendizaje` varchar(50) NOT NULL,
   `obligatorio` boolean NOT NULL,
   PRIMARY KEY (`idCursos`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `cursos`
 --
+INSERT INTO `cursos` (`idCursos`, `nom_cursos`,`descripcion`, `duracion`,`obj_de_aprendizaje`,`obligatorio`) VALUES
+(1, 'MECANOGRAFIA', 'Escribire Docunebtos de Texto', '3 MESES', 'Escribir mas rapido con teclado', 0);
 
 -- --------------------------------------------------------
 
@@ -377,6 +393,9 @@ INSERT INTO `mediopublic` (`idMedioPublic`, `descripcion`) VALUES
 (6, 'Radio'),
 (7, 'Televisión'),
 (8, 'Periódico Digital');
+
+
+
 
 -- --------------------------------------------------------
 
