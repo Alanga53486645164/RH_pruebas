@@ -61,7 +61,7 @@ def editar(tabla,id_campo):
     #     comentar=dato
     return render_template(template, comentar=comentar, campo=campos, tabla=table_name, id_campo=id_campo)
 
-@app.route('/catalogos:<string:tabla>>')
+@app.route('/catalogos:<string:tabla>')
 def area(tabla): 
     conexion=Admin()
     
