@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import pymysql
 from sql_admin import Admin
+#pip3 install colorama
+from colorama import init, Fore, Back, Style
+
 
 app = Flask(__name__)
 
@@ -11,6 +14,28 @@ def home():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('Notfound.html'), 404
+
+@app.route('/ActivarCurso:<int:id_curso>', methods=['POST'])
+def activar_curso(id_curso):
+    print(f'{Fore.GREEN}__form recibido')
+    Encargado=request.form['Encargado']
+    MetAplicacion=request.form['MetAplicacion']
+    fecha_inicio=request.form['fecha_inicio']
+    fecha_fin=request.form['fecha_fin']
+    lugar=request.form['lugar']
+
+    conexion=Admin()
+    conexion.execute('select id_modo from modo_aplicacion_curso where nombre="%s"'%(MetAplicacion))
+    id_modo=conexion.getResult()[0][0]
+
+    conexion.execute('select id_empleado from empleados where nombre="%s"'%(Encargado))
+    id_encargado=conexion.getResult()[0][0]
+    # id_metodo_aplicacion,lugar,id_curso,inicio,fin,id_encargado
+    query=('insert into curso_has_aparicion(id_metodo_aplicacion,lugar,id_curso,inicio,fin,id_encargado) values(%s,"%s","%s","%s","%s",%s)'
+        %(id_modo,lugar,id_curso,fecha_inicio,fecha_fin,id_encargado))
+    conexion.execute(query)
+
+    return redirect(url_for('area',tabla='cursos'))
 
 @app.route('/catalogosEdita:<string:tabla>:<int:id_campo>')
 def editar(tabla,id_campo):
@@ -36,7 +61,7 @@ def editar(tabla,id_campo):
     #     comentar=dato
     return render_template(template, comentar=comentar, campo=campos, tabla=table_name, id_campo=id_campo)
 
-@app.route('/catalogos:<string:tabla>')
+@app.route('/catalogos:<string:tabla>>')
 def area(tabla): 
     conexion=Admin()
     
@@ -245,10 +270,10 @@ def instanciarCurso(id_curso):
     conexion.getSQLCols("curso_has_aparicion",False)
     datos+=conexion.getResult(),
 
-    conexion.execute("select nombre from modo_aplicacion_curso")
+    conexion.execute("select nombre,id_modo from modo_aplicacion_curso")
     datos+=conexion.getResult(),
 
-    conexion.execute("select nombre from empleados")
+    conexion.execute("select nombre,id_empleado from empleados")
     datos+=conexion.getResult(),
 
     return render_template("newCurso.html",comentar=datos)
