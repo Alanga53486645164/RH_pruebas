@@ -1,0 +1,2 @@
+sintaxis(empieza a escribir a partir del "-"): nombre_libreria,nombre_libreria2,etc
+-colorama
