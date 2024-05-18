@@ -1,4 +1,5 @@
 import pymysql
+from colorama import init, Fore, Back, Style
 # import inserts
 
 db="rh3"
@@ -36,14 +37,14 @@ class Conexion:
             
     def execute_query(self,query):
         try:
-            print(query)
+            print(Back.MAGENTA+query+Back.RESET)
             ##Ejecuta la consulta
             self.cursor.execute(query)
             #continua si la expresion es posible
             
             #detecta la instruccion principal de la consulta
             c=self.detectar_Instruccion(query)
-            print("___Consulta exitosa")
+            print(f"{Back.CYAN}___Consulta exitosa{Back.RESET}")
 
             #    print(f"c={c}")
             if c==1 or c==3 or c==4:
@@ -57,7 +58,7 @@ class Conexion:
             return 1
         except Exception:
             ##consulta mal formulada o imposible
-            print("____________>Fallo La consulta")
+            print(f"{Back.RED}____________>Fallo La consulta{Back.RESET}")
             print()
             return -1
         
@@ -73,50 +74,50 @@ class Conexion:
                 return c
             c+=1
 
-    def inserts(self):
-        tablas=(
-            "productos(nombre,categoria,   n_ventas,precio,existencias,descripcion,img_presentacion)",
-        )
+    # def inserts(self):
+    #     tablas=(
+    #         "productos(nombre,categoria,   n_ventas,precio,existencias,descripcion,img_presentacion)",
+    #     )
 
-        #categorias: ('CONSOLAS'),('AUDIFONOS'),('MANDOS'),('TELEVISIONES'),('CELULARES'),('VIDEOJUEGOS')
+    #     #categorias: ('CONSOLAS'),('AUDIFONOS'),('MANDOS'),('TELEVISIONES'),('CELULARES'),('VIDEOJUEGOS')
 
-        #plataformas: ("XBOX ONE"), ("XBOX ONE SERIES X/S"), ("XBOX 360"), ("PLAY STATION 2"), ("PLAY STATION 3"),
-        #             ("PLAY STATION 4"), ("PLAY STATION 5"), ("NINTENDO SWITCH"), ("PC"), ("CELULAR")
-        queries=inserts.getQueries()
-        print(queries)
-        for c in range(0,len(queries)):
-            print("tabla= ",tablas[c])
-            for insert in queries[c]:
-                if( len(insert) ==5):
-                    in3=3
-                else:
-                    in3=2
+    #     #plataformas: ("XBOX ONE"), ("XBOX ONE SERIES X/S"), ("XBOX 360"), ("PLAY STATION 2"), ("PLAY STATION 3"),
+    #     #             ("PLAY STATION 4"), ("PLAY STATION 5"), ("NINTENDO SWITCH"), ("PC"), ("CELULAR")
+    #     queries=inserts.getQueries()
+    #     print(queries)
+    #     for c in range(0,len(queries)):
+    #         print("tabla= ",tablas[c])
+    #         for insert in queries[c]:
+    #             if( len(insert) ==5):
+    #                 in3=3
+    #             else:
+    #                 in3=2
                 
-                self.execute_query(f'INSERT INTO {tablas[c]} values( {insert[0]}  , {insert[1]} , {insert[in3]} )')
+    #             self.execute_query(f'INSERT INTO {tablas[c]} values( {insert[0]}  , {insert[1]} , {insert[in3]} )')
 
-                if(insert[1]==6):
-                    query_plata='INSERT INTO videojuego_has_plataforma VALUES'
-                    c2=0
-                    self.execute_query(f'select codigo from productos where nombre={insert[0]}')
-                    id=self.getFetch()[0][0]
+    #             if(insert[1]==6):
+    #                 query_plata='INSERT INTO videojuego_has_plataforma VALUES'
+    #                 c2=0
+    #                 self.execute_query(f'select codigo from productos where nombre={insert[0]}')
+    #                 id=self.getFetch()[0][0]
 
-                    for plataforma in insert[2]:
+    #                 for plataforma in insert[2]:
 
-                        query_plata+=f"({id},{plataforma})"
-                        if( c2 < len(insert[2])-1 ):
-                            query_plata+=","
-                        c2+=1
-                    self.execute_query(query_plata)
+    #                     query_plata+=f"({id},{plataforma})"
+    #                     if( c2 < len(insert[2])-1 ):
+    #                         query_plata+=","
+    #                     c2+=1
+    #                 self.execute_query(query_plata)
                     
-                if(len(insert[4])!=0):
-                    c2=0
-                    query="INSERT INTO imagenes_productos(direccion,codigo_producto) VALUES"
-                    for liga in insert[4]:
-                        query+=f"({liga},{id})"
-                        if( c2 < len(insert[4])-1 ):
-                            query+=","
-                        c2+=1
-                    self.execute_query(query)
+    #             if(len(insert[4])!=0):
+    #                 c2=0
+    #                 query="INSERT INTO imagenes_productos(direccion,codigo_producto) VALUES"
+    #                 for liga in insert[4]:
+    #                     query+=f"({liga},{id})"
+    #                     if( c2 < len(insert[4])-1 ):
+    #                         query+=","
+    #                     c2+=1
+    #                 self.execute_query(query)
                 
     def crear_tablas(self):
         instrucciones=("CREATE TABLE","INSERT INTO")
