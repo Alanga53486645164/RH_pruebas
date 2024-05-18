@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from install import *
 import pymysql
 from sql_admin import Admin
-#pip3 install colorama
 from colorama import init, Fore, Back, Style
 
 
@@ -15,6 +15,23 @@ def home():
 def page_not_found(error):
     return render_template('Notfound.html'), 404
 
+@app.route('/verApariciones:<string:id_curso>')
+def verAparicion(id_curso):
+    conexion=Admin()
+    query=f"select chp.id_registro, mac.nombre, chp.lugar, c.nombre, chp.inicio, chp.fin, e.nombre from curso_has_aparicion chp join cursos c on c.id_curso=chp.id_curso join empleados e on chp.id_encargado=e.id_empleado join modo_aplicacion_curso mac on mac.id_modo=chp.id_metodo_aplicacion where chp.id_curso={id_curso}"
+    conexion.execute(query)
+    datos=conexion.getResult()
+    print(Back.YELLOW,datos,Back.RESET)
+    # query=f"SELECT column_name,data_type FROM information_schema.columns  WHERE table_schema = 'rh3' AND table_name = 'curso_has_aparicion' and column_key !='PRI' order by ordinal_position"
+    return render_template('area.html', 
+            comentarios = datos, puestos_cursos=None,
+            titulo='Apariciones',tabla_plural='APARICIONES',male=False,
+                borrado=True, 
+                boolean=(),
+                edita=True,
+                id=id_curso,
+            columnas=('modo de aplicacion','lugar','curso','inicio','fin','encargado'), num_columnas=6,
+            acciones=0, n_acc=0, id_tabla=False)
 @app.route('/ActivarCurso:<int:id_curso>', methods=['POST'])
 def activar_curso(id_curso):
     print(f'{Fore.GREEN}__form recibido')
@@ -35,7 +52,7 @@ def activar_curso(id_curso):
         %(id_modo,lugar,id_curso,fecha_inicio,fecha_fin,id_encargado))
     conexion.execute(query)
 
-    return redirect(url_for('area',tabla='cursos'))
+    return redirect(url_for('area',tabla='cursos',condicion='NC'))
 
 @app.route('/catalogosEdita:<string:tabla>:<int:id_campo>')
 def editar(tabla,id_campo):
@@ -61,8 +78,8 @@ def editar(tabla,id_campo):
     #     comentar=dato
     return render_template(template, comentar=comentar, campo=campos, tabla=table_name, id_campo=id_campo)
 
-@app.route('/catalogos:<string:tabla>')
-def area(tabla): 
+@app.route('/catalogos:<string:tabla>:<string:condicion>')
+def area(tabla,condicion): 
     conexion=Admin()
     
     if(conexion.existeTabla(tabla)==None):
@@ -76,7 +93,14 @@ def area(tabla):
     id=conexion.tableToId(tabla) 
 
     #print(f"titulo={titulo}\nid={id}")
-    conexion.execute(f"select * from {tabla} order by {id} asc")
+    if(condicion=='NC'):
+        condicion=""
+    else:
+        condicion="WHERE "+condicion
+
+    query=f"select * from {tabla} {condicion} order by {id} asc"
+
+    conexion.execute(query)
     datos = conexion.getResult()
 
     plural,male=conexion.tablaPlural(titulo)
@@ -125,17 +149,23 @@ def area_fedita(tabla,id_campo):
 
         conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
         
-    return redirect(url_for('area',tabla=tabla))
+    return redirect(url_for('area',tabla=tabla),condicion='NC')
 
-@app.route('/catalogoBorrar:<string:titulo>:<string:id>')
-def area_borrar(titulo,id):
+@app.route('/catalogoBorrar:<string:titulo>:<string:id>:<string:id_aparicion>')
+def area_borrar(titulo,id,id_aparicion):
     
     conexion=Admin()    
     table_name=conexion.titleToTable(titulo)
     id_tabla=conexion.tableToId(table_name)
+    print("===========")
+    print(Back.RED+id_tabla+Back.RESET)
+    print(Back.RED+table_name+Back.RESET)
     conexion.execute('delete from {0} where {1} = {2}'.format(table_name,id_tabla,id))
     
-    return redirect(url_for('area',tabla=table_name))
+    if(titulo=='Apariciones'):
+        return redirect(url_for('verAparicion',id_curso=id_aparicion ))
+
+    return redirect(url_for('area',tabla=table_name,condicion='NC'))
 
 # @app.route('/area_agregar')
 @app.route('/catalogosAgregar:<string:tabla_titulo>:<string:id_campo>')
@@ -253,7 +283,7 @@ def area_fagrega(title,id_campo):
         #         values=f"id_puesto={puesto}"
         #         query=f"update puesto_has_curso set {values} where id_curso={id_curso} and id_puesto={puesto}"
         #         conexion.execute(query)
-    return redirect(url_for('area',tabla=table_name))
+    return redirect(url_for('area',tabla=table_name,condicion='NC'))
 
 # @app.route('/EditaCurso:<int:id_curso>')
 # def editaCurso(id_curso):
