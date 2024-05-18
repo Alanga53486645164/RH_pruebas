@@ -7,7 +7,7 @@
   <hr>
   {% set ns = namespace(prev=0) %}
 
-  {% if titulo=='Curso' %}
+  {% if titulo=='Curso' or titulo =='Apariciones' %}
     {%- set ns.prev = ns.prev+1 %}
   {% endif %}
 
@@ -17,14 +17,18 @@
       {%- set ns.prev = ns.prev+1 %}
     {% endif -%} 
   {% endfor %}
-<!-- {{comentarios}} -->
+{{comentarios}}
   <!-- acciones={{ns.prev}} -->
     <div id="booleanos" style="display:None">{{boolean}}</div>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <tbody>
     <tr>
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
-    <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
+      {% if tabla_plural=='APARICIONES' %}
+       <right><h3><a href="/Instanciar_curso:{{id}}">Agregar {{titulo}}</a></h3></right>
+      {% else %}
+        <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
+      {% endif %}
     <div style="display:none" id="titulo_plural">{{tabla_plural}}</div>
     <center><h3>{{tabla_plural}} 
       {% if male==True %}
@@ -40,8 +44,17 @@
           <td class="text-center" style="color:white" bgcolor="blue">ID</td>
         {% endif %}
 
+        {% set c_col=namespace(prev=0) %}
+        
         {% for columna in columnas %}
-          <td class="text-center" style="color:white" bgcolor="blue">{{columna}}</td>
+          {% set class=namespace(prev="") %}
+          {% if titulo=='Curso' and (c_col.prev==3 or c_col.prev==4 ) %}
+            <!--  -->
+            {% set class.prev= class.prev+' None None-lg' %}
+          {% endif %}
+          <td class="text-center{{class.prev}}" style="color:white" bgcolor="blue">{{columna}}</td>
+          
+          {% set c_col.prev=c_col.prev +1 %}
         {% endfor %}
 
         <!-- con 'ctrl' + 'Esc ' puedes eliminar espacion entre renglones. Ejemplo :
@@ -59,15 +72,29 @@
     {% for i in comentarios %}
         <tr>
         {% if id_tabla==True %}
-          <td>{{i.0}}</td> 
+          <td >{{i.0}}</td> 
         {% endif %}
 
         {% for campo in range(1,num_columnas+1) %}
-          
-          <td
-            {% if boolean != None %}
-class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} booleanTarget{% endif %}{% endfor %}{% endif %}"
-          >
+          {% set class=namespace(prev="") %}
+
+          {% if boolean != None %}
+            <!--  -->
+            {% set class.prev= class.prev+'text-center' %}
+            {% for booleano in boolean %}
+              {% if campo==booleano+1 %} 
+                <!--  -->
+                {% set class.prev= class.prev+' booleanTarget' %}                
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% if titulo=='Curso' and (campo==3 or campo==4 ) %}
+            <!--  -->
+            {% set class.prev= class.prev+' None None-lg' %}
+          {% endif %}
+
+          <td class="{{class}}">
             {{ i[campo] }}
           </td>
 
@@ -83,8 +110,13 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
         {% endif %}
         
         {% if edita !=False %}
-          <td bgcolor="#2B2D83" width="8%">
           {% if titulo=="Curso" %}
+            {% set class=namespace(prev="") %}
+            {% if titulo=='Curso' %}
+              <!--  -->
+              {% set class.prev= class.prev+' None None-lg' %}
+            {% endif %}
+          <td class="{{class.prev}}" bgcolor="#2B2D83" width="8%">
             <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
           {% else %}
             <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >Editar</a></center>
@@ -100,13 +132,22 @@ class="text-center{% for booleano in boolean %}{% if campo==booleano+1 %} boolea
 
         {% if titulo=="Curso" %}
         <td bgcolor="#2B2D83" width="8%">
-            <center><a href="/Apariciones_curso:{{i.0}}" >Ver Apariciones</a></center>
+            <!-- <center><a href="/Apariciones_curso:{{i.0}}" >Ver Apariciones</a></center> -->
+            <!-- <center><a href="/catalogos:curso_has_aparicion:id_curso={{i.0}}" >Ver Apariciones</a></center> -->
+            <center><a href="/verApariciones:{{i.0}}" >Ver Apariciones</a></center>
           </td>
         {% endif %}
 
+        {% if titulo=='Apariciones' %}
+          <td bgcolor="#3C3EC5" width="8%">
+          <center><a href="# " >Ver empleados participantes</a></center>
+          <td bgcolor="#3C3EC5" width="8%">
+          <center><a href="# " >Ver encargado</a></center>
+          {% endif %}
+        
         {% if borrado!=False %}
           <td bgcolor="#3C3EC5" width="8%">
-          <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}" >Borrar</a></center>
+          <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}{% if tabla_plural=='APARICIONES' %}:{{id}}{% else %}:NA{% endif %} " >Borrar</a></center>
         {% endif %}
         </td>
         </tr>
