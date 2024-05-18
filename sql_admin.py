@@ -1,5 +1,6 @@
-from conexion import Conexion
+from conexion import Conexion,init, Fore, Back, Style 
 from editor_texto import Editor
+# from colorama import init, Fore, Back, Style
 
 reiniciar_campos=False
 
@@ -14,10 +15,10 @@ class Admin():
     def execute(self,query):
         resu=self.cx.execute_query(query)
         return resu
-    
+
     def getResult(self):
         return self.cx.getFetch()
-    
+
     def close(self):
         self.cx.close()
 
@@ -30,27 +31,27 @@ class Admin():
         for palabra in palabras:
             tabla2+=palabra
             tabla2+=self.editor.addPlural(palabra)
-            
+
             if(len(palabras)!=1):
                 tabla2+=" "
 
         return tabla2, self.editor.isMale(tabla)
-    
+
     def getArrayDatos(self):
         return self.editor.getTables(),self.editor.getIds(),self.editor.getTableTitles()
-    
+
     def getTables(self):
         return self.editor.getTables()
-    
+
     def tableToId(self,table):
         return self.editor.tablaToId(table)
-    
+
     def tableToTitle(self,table):
         return self.editor.tablaToTitle(table)
-    
+
     def titleToTable(self,title):
         return self.editor.titleToTabla(title)
-    
+
     def existeTabla(self,tabla):
         return self.editor.existenciaTabla(tabla)
 
@@ -62,12 +63,42 @@ class Admin():
         query+="order by ordinal_position"
         self.execute(query)
         return self.getResult()
+
+    def getSQLForeignKeysFor(self,table):
+        # query=f"select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from information_schema.KEY_COLUMN_USAGE where table_schema='rh3'and table_name='{table}' and constraint_name!='PRIMARY'"
+        query=f"select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME,(select count(*) from information_schema.columns where table_schema='rh3' and table_name=referenced_table_name) as num_cols from information_schema.KEY_COLUMN_USAGE where table_schema='rh3'and table_name='{table}' and constraint_name!='PRIMARY'"
+        self.execute(query)
+        return self.getResult()
+        #    ('curso_has_aparicion',)
+        #select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from information_schema.KEY_COLUMN_USAGE where table_schema='rh3'and table_name='curso_has_aparicion' and constraint_name!='PRIMARY'
+
+        #(
+        #   ('id_curso', 'cursos', 'id_curso'),
+        #   ('id_metodo_aplicacion', 'modo_aplicacion_curso', 'id_modo'),
+        #   ('id_encargado', 'empleados', 'id_empleado')
+        #)
+    def makeJoinFor(self,table):
+        cols=self.colsToString(table,False)[0]
+        fk= self.getSQLForeignKeysFor(table)
+
+        query=''
+        c=0
+        for join in fk:
+            query+=f"JOIN {join[1]} ON {table}.{join[0]}={join[1]}.{join[2]} "
+            c+=1
+            
+        print(f'{Fore.GREEN}cols={cols}')
+        print(f'{Fore.RED}tk={fk}')
+        print(f'{Back.RED}query={query}{Fore.BLACK}')
+
+    def tableToSQLId(self,table_name):
+        SqlIds=()
     
     def getSQLTables(self):
         query=f"select table_name from information_schema.tables where table_schema='{self.cx.db}'"
         self.execute(query)
         return self.getResult()
-    
+
     def getColsFrom(self,table_name,primary_key):
         columnas=self.getSQLCols(table_name,primary_key)
         print("\n\n")
@@ -81,13 +112,14 @@ class Admin():
         #     print("\n\n")
         #     print(tabla,"=",columnas)
     def colsToString(self,table,primary_key):
-        
         return self.editor.columnsToString(self.getColsFrom(table,primary_key))
+
     def getColsNameFor(self,tabla):
         for tablas in self.editor.getColsName():
             if tablas.isTable(tabla):
                 return tablas.getCols()
         return None
+
     def getComillas(self,datatype):
         # comillas="varchar","date"
         comillas="int","tinyint","double","float"
@@ -105,9 +137,9 @@ class Admin():
         if len(booleanos)==0:
             return None
         return booleanos
-    
+
     # def getNAcciones(self,table_name):
     #     if(table_name=='')
 # admin=Admin()
 
-# admin.getColsFrom("puesto",False)
+# admin.makeJoinFor('curso_has_aparicion')
