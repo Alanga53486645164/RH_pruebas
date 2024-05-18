@@ -29,8 +29,27 @@
         a{
             color:white
         }
+        
         </style>
     {% endif %}
+
+    <style>
+        @media screen and (max-width:950px) {
+            
+            .navigation ul li {
+                background: rgb(34, 27, 27) !important;
+                ul li{
+                    background:rgb(53, 44, 44) !important;
+                    ul li{
+                        background:rgb(59, 51, 51) !important;
+                    }
+                }
+                ul li, ul li ul li{
+                    margin-left: 10%;
+                }
+            }
+        }
+    </style>
 
  {% block content %}
  {% endblock %}
@@ -43,33 +62,33 @@
         <nav class="navigation">
             <ul>
                 <li><a href="#">Contratación</a>
-                    <ul>
+                    <ul >
                         <li><a href="/puesto">PUESTO</a></li>
                         <li><a href="#">REQUISICIÓN</a></li>
                         <li><a href="#">VACANTES</a></li>
                         <li><a href="#">CANDIDATOS</a></li>
                     </ul>
                 </li>
-                <li><a href="#"> Catálogos</a>
+                <li><a href="#" > Catálogos</a>
                     <ul>
                         <li ><a href="#">Áreas y Competencias</a>
                             <ul >
-                                <li><a href="/catalogos:area">Área</a></li>
-                                <li><a href="/catalogos:carrera">Carrera</a></li>
-                                <li><a href="/catalogos:escolaridad">Escolaridad</a></li>
+                                <li><a href="/catalogos:area:NC">Área</a></li>
+                                <li><a href="/catalogos:carrera:NC">Carrera</a></li>
+                                <li><a href="/catalogos:escolaridad:NC">Escolaridad</a></li>
                             </ul>
-                    </li>
+                        </li>
                         <li><a href="#">Estado y Habilidades</a>
-                                <ul>
-                                    <li><a href="/catalogos:estado_civil">Estado Civil</a></li>
-                                    <li><a href="/catalogos:grado_avance">Grado de Avance</a></li>
-                                    <li><a href="/catalogos:habilidad">Habilidades</a></li>
-                                    <li><a href="/catalogos:idioma">Idiomas</a></li>
-                                </ul>
+                            <ul>
+                                <li><a href="/catalogos:estado_civil:NC">Estado Civil</a></li>
+                                <li><a href="/catalogos:grado_avance:NC">Grado de Avance</a></li>
+                                <li><a href="/catalogos:habilidad:NC">Habilidades</a></li>
+                                <li><a href="/catalogos:idioma:NC">Idiomas</a></li>
+                            </ul>
                         </li>
                         <li><a href="#">Ver cursos</a>
                             <ul>
-                                <li><a href="/catalogos:cursos">Cursos Existentes</a></li>
+                                <li><a href="/catalogos:cursos:NC">Cursos Existentes</a></li>
                                 <li><a href="#">Cursos Activos</a></li>
                                 <li><a href="#">Cursos Pasados</a></li>
                                 <li><a href="#">nombre del curso</a></li>
