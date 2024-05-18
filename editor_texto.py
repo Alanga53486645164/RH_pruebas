@@ -27,24 +27,25 @@ class Editor:
         self.ids=None
     
     def getMasculinos(self):
-        return ["Idioma","Grado de Avance","Estado Civil","Curso"]
+        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Apariciones']
     
     def getIds(self):
-        return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso"]
+        return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso","id_registro"]
     
     def getTables(self):
-        return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos"]
+        return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos","curso_has_aparicion"]
     
     def getColsName(self):
         # Nota:No se incluye al campo ID
         tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio'))
         tabl2=Tabla("area,carrera,escolaridad,estado_civil,grado_avance,habilidad,idioma",('Descripcion',))
+        tabl3=Tabla("curso_has_aparicion",('id_metodo_aplicacion','lugar','id_curso','inicio','fin','id_encargado'))
         return (
-            tabl,tabl2
+            tabl,tabl2,tabl3
         )
 
     def getTableTitles(self):
-        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso"]
+        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Apariciones"]
     
     def isVowel(self,letra):
         vocales=["a","e","i","o","u"]
