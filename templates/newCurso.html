@@ -4,34 +4,55 @@
     {{comentar.1}} <br>
     {{comentar.2}} <br>
     {{comentar.3}} <br>
+    {{comentar.4}} <br>
     <style>
         form{
             background-color: rgba(96, 85, 85, 0.763);
         }
     </style>
     <div class="container">
-        <form action="/ActivarCurso:{{comentar[0][0][0]}}" method="POST" class="row">
+        {% set id_reg=namespace(prev=0) %}
+
+        {% if edita==True %}
+            {% set id_reg.prev=comentar[4][0] %}
+        {% else %}
+            {% set id_reg.prev='NR' %}
+        {% endif %}
+
+        <form action="/ActivarCurso:{{comentar[0][0][0]}}:{{id_reg.prev}}" method="POST" class="row">
             <legend class="col-6">Lugar</legend>
-            <input name="lugar" required type="text" class="col-6">
+            <input name="lugar" required type="text" class="col-6" value="{% if edita==True %}{{comentar[4][1]}}{% endif %}">
 
             <legend class="col-6">Inicio</legend>
-            <input name="fecha_inicio" required class="col-6" type="date">
+            <input name="fecha_inicio" required class="col-6" type="date" value="{% if edita==True %}{{comentar[4][2]}}{% endif %}">
 
             <legend class="col-6">FIN</legend>
-            <input name="fecha_fin" required class="col-6" type="date">
+            <input name="fecha_fin" required class="col-6" type="date" value="{% if edita==True %}{{comentar[4][3]}}{% endif %}">
 
             <legend class="col-6">Encargado:</legend>
 
             <select class="col-6" name="Encargado">
                 {% for opcion in comentar[3] %}
-                    <option id={{opcion.1}}>{{opcion.0}}</option>
+                    {% set class=namespace(prev='') %}
+                    {% if edita==True %}
+                        {% if opcion.1 ==comentar[4][4] %}
+                            {% set class.prev= "Activo" %}
+                        {% endif %}
+                    {% endif %}
+                    <option id={{opcion.1}} class="{{class.prev}}">{{opcion.0}}</option>
                 {% endfor %}
             </select>
 
             <legend class="col-6">Metodo de Aplicacion:</legend>
             <select class="col-6" name="MetAplicacion">
                 {% for opcion in comentar[2] %}
-                    <option id={{opcion.1}}>{{opcion.0}}</option>
+                    {% set class=namespace(prev='') %}
+                    {% if edita==True %}
+                        {% if opcion.1 ==comentar[4][5] %}
+                            {% set class.prev= "Activo" %}
+                        {% endif %}
+                    {% endif %}
+                    <option id={{opcion.1}} class="{{class.prev}}">{{opcion.0}}</option>
                 {% endfor %}
             </select>
             <br>
@@ -40,4 +61,11 @@
     </div>
 
     <script src="../static/js/Fechas.js"></script>
+    <script>
+        let activos=document.getElementsByClassName('Activo')
+        let selects=document.getElementsByTagName('select')
+        for(let index=0;index<activos.length;index++){
+            selects[index].value=activos[index].value
+        }
+    </script>
 {% endblock %}
