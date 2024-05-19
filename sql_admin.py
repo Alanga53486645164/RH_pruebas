@@ -77,20 +77,21 @@ class Admin():
         #   ('id_metodo_aplicacion', 'modo_aplicacion_curso', 'id_modo'),
         #   ('id_encargado', 'empleados', 'id_empleado')
         #)
-    def makeJoinFor(self,table):
-        cols=self.colsToString(table,False)[0]
-        fk= self.getSQLForeignKeysFor(table)
+    def makeJoinFor(self,table_name):
+        cols=self.colsToString(table_name,False)[0]
+        fk= self.getSQLForeignKeysFor(table_name)
 
         query=''
         c=0
         for join in fk:
-            query+=f"JOIN {join[1]} ON {table}.{join[0]}={join[1]}.{join[2]} "
+            query+=f"JOIN {join[1]} ON {table_name}.{join[0]}={join[1]}.{join[2]} "
             c+=1
             
         print(f'{Fore.GREEN}cols={cols}')
         print(f'{Fore.RED}tk={fk}')
         print(f'{Back.RED}query={query}{Fore.BLACK}')
-
+        return query
+    
     def tableToSQLId(self,table_name):
         SqlIds=()
     

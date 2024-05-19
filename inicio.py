@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
 from install import *
+from flask import Flask, render_template, request, redirect, url_for, flash
 import pymysql
 from sql_admin import Admin
 from colorama import init, Fore, Back, Style
+from datetime import date,datetime
 
 
 app = Flask(__name__)
@@ -134,12 +135,21 @@ def area(tabla,condicion):
     id=conexion.tableToId(tabla) 
 
     #print(f"titulo={titulo}\nid={id}")
+    campos="*"
+    join=""
     if(condicion=='NC'):
         condicion=""
     else:
+        if condicion=='Activas':
+            print(Back.GREEN,"hoy",date.today())
+            condicion=f' fin >= {date.today()}'
+            #el metodo comentado servira una vez que desarrolle una funcion para hacer genocidio de datos
+            # join=conexion.makeJoinFor(tabla)
+            join='JOIN cursos ON curso_has_aparicion.id_curso=cursos.id_curso JOIN modo_aplicacion_curso ON curso_has_aparicion.id_metodo_aplicacion=modo_aplicacion_curso.id_modo JOIN empleados ON curso_has_aparicion.id_encargado=empleados.id_empleado'
+            campos='id_registro, modo_aplicacion_curso.nombre,lugar,cursos.nombre,inicio,fin,empleados.nombre'
         condicion="WHERE "+condicion
 
-    query=f"select * from {tabla} {condicion} order by {id} asc"
+    query=f"select {campos} from {tabla} {join} {condicion} order by {id} asc"
 
     conexion.execute(query)
     datos = conexion.getResult()

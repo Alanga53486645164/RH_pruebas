@@ -39,13 +39,13 @@ class Editor:
         # Nota:No se incluye al campo ID
         tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio'))
         tabl2=Tabla("area,carrera,escolaridad,estado_civil,grado_avance,habilidad,idioma",('Descripcion',))
-        tabl3=Tabla("curso_has_aparicion",('id_metodo_aplicacion','lugar','id_curso','inicio','fin','id_encargado'))
+        tabl3=Tabla("curso_has_aparicion",('metodo de aplicacion','lugar','curso','inicio','fin','encargado'))
         return (
             tabl,tabl2,tabl3
         )
 
     def getTableTitles(self):
-        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Apariciones"]
+        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Aparicion"]
     
     def isVowel(self,letra):
         vocales=["a","e","i","o","u"]
