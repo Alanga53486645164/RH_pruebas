@@ -19,7 +19,7 @@
             {% set id_reg.prev='NR' %}
         {% endif %}
 
-        <form action="/ActivarCurso:{{comentar[0][0][0]}}:{{id_reg.prev}}" method="POST" class="row">
+        <form action="/ActivarCurso:{{comentar[0][0][0]}}:{{id_reg.prev}}:{{redir}}" method="POST" class="row">
             <legend class="col-6">Lugar</legend>
             <input name="lugar" required type="text" class="col-6" value="{% if edita==True %}{{comentar[4][1]}}{% endif %}">
 
