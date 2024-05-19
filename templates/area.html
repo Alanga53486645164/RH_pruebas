@@ -25,7 +25,7 @@
     <tr>
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
       {% if tabla_plural=='APARICIONES' %}
-       <right><h3><a href="/Instanciar_curso:{{id}}">Agregar {{titulo}}</a></h3></right>
+       <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
       {% else %}
         <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
       {% endif %}
@@ -45,12 +45,24 @@
         {% endif %}
 
         {% set c_col=namespace(prev=0) %}
-        
+        <br>
+        {{columnas}}
+        <br>
+        {{comentarios.0}}
         {% for columna in columnas %}
           {% set class=namespace(prev="") %}
-          {% if titulo=='Curso' and (c_col.prev==3 or c_col.prev==4 ) %}
+          {% if titulo=='Curso' and (c_col.prev>=2 and c_col.prev<=4 ) %}
             <!--  -->
-            {% set class.prev= class.prev+' None None-lg' %}
+            {% if c_col.prev==4 %}
+              {% set class.prev= class.prev+' None None-md' %}
+            {% else %}
+              {% set class.prev= class.prev+' None None-lg' %}
+            {% endif %}
+
+          {% elif titulo=='Apariciones' and (c_col.prev==5 ) %}
+            <!--  -->
+              {% set class.prev= class.prev+' None None-md' %}
+
           {% endif %}
           <td class="text-center{{class.prev}}" style="color:white" bgcolor="blue">{{columna}}</td>
           
@@ -89,9 +101,16 @@
             {% endfor %}
           {% endif %}
 
-          {% if titulo=='Curso' and (campo==3 or campo==4 ) %}
-            <!--  -->
-            {% set class.prev= class.prev+' None None-lg' %}
+          {% if titulo=='Curso' and (campo>=3 and campo<=5 ) %}
+            {% if campo==5 %}
+              {% set class.prev= class.prev+' None None-md' %}
+            {% else %}
+              {% set class.prev= class.prev+' None None-lg' %}
+            {% endif %}
+
+          {% elif titulo=='Apariciones' and (campo==6 ) %}
+            
+              {% set class.prev= class.prev+' None None-md' %}
           {% endif %}
 
           <td class="{{class}}">
@@ -112,21 +131,27 @@
         {% if edita !=False %}
           {% if titulo=="Curso" %}
             {% set class=namespace(prev="") %}
+            
             {% if titulo=='Curso' %}
               <!--  -->
               {% set class.prev= class.prev+' None None-lg' %}
+
             {% endif %}
-          <td class="{{class.prev}}" bgcolor="#2B2D83" width="8%">
-            <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
+            <td class="{{class.prev}}" bgcolor="#2B2D83" width="8%">
+              <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
+          {% elif titulo=='Apariciones' %}
+            <td  bgcolor="#2B2D83" width="8%">
+              <center><a href="/Instanciar_curso:{{id}}:{{i.0}}" >Editar</a></center>
           {% else %}
-            <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >Editar</a></center>
+            <td  bgcolor="#2B2D83" width="8%">
+              <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >Editar</a></center>
           {% endif %}
         </td>
         {% endif %}
 
         {% if titulo=="Curso" %}
         <td bgcolor="#2B2D83">
-          <center><a href="/Instanciar_curso:{{i.0}}" >Activar Curso</a></center>
+          <center><a href="/Instanciar_curso:{{i.0}}:NR" >Activar Curso</a></center>
         </td>
         {% endif %}
 
@@ -141,7 +166,8 @@
         {% if titulo=='Apariciones' %}
           <td bgcolor="#3C3EC5" width="8%">
           <center><a href="# " >Ver empleados participantes</a></center>
-          <td bgcolor="#3C3EC5" width="8%">
+
+          <td bgcolor="#3C3EC5" width="8%" class="None None-md">
           <center><a href="# " >Ver encargado</a></center>
           {% endif %}
         
