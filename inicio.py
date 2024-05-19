@@ -54,15 +54,16 @@ def instanciarCurso(id_curso,id_registro):
     datos+=conexion.getResult(),
     edita=False
 
-    if( id_registro!='NR'):
+    if( id_registro!='NR' and id_registro!='CR'):
         conexion.execute("select id_registro,lugar,inicio,fin,id_encargado,id_metodo_aplicacion  from curso_has_aparicion where id_registro=%s"%(id_registro))
         datos+=conexion.getResult()
         edita=True
+        id_registro='NR'
+    
+    return render_template("newCurso.html",comentar=datos,edita=edita,redir=id_registro)
 
-    return render_template("newCurso.html",comentar=datos,edita=edita)
-
-@app.route('/ActivarCurso:<int:id_curso>:<string:id_registro>', methods=['POST'])
-def activar_curso(id_curso,id_registro):
+@app.route('/ActivarCurso:<int:id_curso>:<string:id_registro>:<string:redireccion>', methods=['POST'])
+def activar_curso(id_curso,id_registro,redireccion):
     print(f'{Fore.GREEN}__form recibido')
     Encargado=request.form['Encargado']
     MetAplicacion=request.form['MetAplicacion']
@@ -88,6 +89,10 @@ def activar_curso(id_curso,id_registro):
         %(id_modo,lugar,id_curso,fecha_inicio,fecha_fin,id_encargado))
     conexion.execute(query)
 
+    print(f"{Back.RED}{redireccion}{Back.RESET}")
+    if(redireccion=='NR'):
+        return redirect(url_for('verAparicion',id_curso=id_curso))
+    
     return redirect(url_for('area',tabla='cursos',condicion='NC'))
 
 @app.route('/catalogosEdita:<string:tabla>:<int:id_campo>')
