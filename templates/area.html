@@ -11,6 +11,10 @@
     {%- set ns.prev = ns.prev+1 %}
   {% endif %}
 
+  {% if  titulo=='Aparicion' %}
+    {%- set ns.prev = ns.prev+2 %}
+  {% endif %}
+
   {% for x in acciones %}
     <!-- x={{x}} <br> -->
     {%- if x!=None and x!=False %} 
@@ -49,6 +53,7 @@
         {{columnas}}
         <br>
         {{comentarios.0}}
+        
         {% for columna in columnas %}
           {% set class=namespace(prev="") %}
           {% if titulo=='Curso' and (c_col.prev>=2 and c_col.prev<=4 ) %}
@@ -59,7 +64,7 @@
               {% set class.prev= class.prev+' None None-lg' %}
             {% endif %}
 
-          {% elif titulo=='Apariciones' and (c_col.prev==5 ) %}
+          {% elif titulo=='Apariciones' or titulo=='Aparicion' and (c_col.prev==5 ) %}
             <!--  -->
               {% set class.prev= class.prev+' None None-md' %}
 
@@ -108,7 +113,7 @@
               {% set class.prev= class.prev+' None None-lg' %}
             {% endif %}
 
-          {% elif titulo=='Apariciones' and (campo==6 ) %}
+          {% elif titulo=='Apariciones' or titulo=='Aparicion' and (campo==6 ) %}
             
               {% set class.prev= class.prev+' None None-md' %}
           {% endif %}
@@ -139,7 +144,7 @@
             {% endif %}
             <td class="{{class.prev}}" bgcolor="#2B2D83" width="8%">
               <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
-          {% elif titulo=='Apariciones' %}
+          {% elif titulo=='Apariciones' or titulo=='Aparicion' %}
             <td  bgcolor="#2B2D83" width="8%">
               <center><a href="/Instanciar_curso:{{id}}:{{i.0}}" >Editar</a></center>
           {% else %}
@@ -163,7 +168,7 @@
           </td>
         {% endif %}
 
-        {% if titulo=='Apariciones' %}
+        {% if titulo=='Apariciones' or titulo=='Aparicion' %}
           <td bgcolor="#3C3EC5" width="8%">
           <center><a href="# " >Ver empleados participantes</a></center>
 
