@@ -18,6 +18,7 @@ def page_not_found(error):
 @app.route('/verApariciones:<string:id_curso>')
 def verAparicion(id_curso):
     conexion=Admin()
+    # query=f"select chp.id_registro, mac.nombre, chp.lugar, chp.inicio, chp.fin, e.nombre from curso_has_aparicion chp join cursos c on c.id_curso=chp.id_curso join empleados e on chp.id_encargado=e.id_empleado join modo_aplicacion_curso mac on mac.id_modo=chp.id_metodo_aplicacion where chp.id_curso={id_curso}"
     query=f"select chp.id_registro, mac.nombre, chp.lugar, c.nombre, chp.inicio, chp.fin, e.nombre from curso_has_aparicion chp join cursos c on c.id_curso=chp.id_curso join empleados e on chp.id_encargado=e.id_empleado join modo_aplicacion_curso mac on mac.id_modo=chp.id_metodo_aplicacion where chp.id_curso={id_curso}"
     conexion.execute(query)
     datos=conexion.getResult()
@@ -26,14 +27,42 @@ def verAparicion(id_curso):
     return render_template('area.html', 
             comentarios = datos, puestos_cursos=None,
             titulo='Apariciones',tabla_plural='APARICIONES',male=False,
-                borrado=True, 
+                borrado=True,
                 boolean=(),
                 edita=True,
                 id=id_curso,
+                id_tabla=True,
             columnas=('modo de aplicacion','lugar','curso','inicio','fin','encargado'), num_columnas=6,
-            acciones=0, n_acc=0, id_tabla=False)
-@app.route('/ActivarCurso:<int:id_curso>', methods=['POST'])
-def activar_curso(id_curso):
+            # columnas=('modo de aplicacion','lugar','inicio','fin','encargado'), num_columnas=5,
+            acciones=0, n_acc=0)
+
+@app.route('/Instanciar_curso:<int:id_curso>:<string:id_registro>')
+def instanciarCurso(id_curso,id_registro):
+    conexion=Admin()
+
+    datos=()
+    conexion.execute("select * from cursos where id_curso=%s"%(id_curso))
+    datos+=conexion.getResult(),
+    
+    conexion.getSQLCols("curso_has_aparicion",False)
+    datos+=conexion.getResult(),
+
+    conexion.execute("select nombre,id_modo from modo_aplicacion_curso")
+    datos+=conexion.getResult(),
+
+    conexion.execute("select nombre,id_empleado from empleados")
+    datos+=conexion.getResult(),
+    edita=False
+
+    if( id_registro!='NR'):
+        conexion.execute("select id_registro,lugar,inicio,fin,id_encargado,id_metodo_aplicacion  from curso_has_aparicion where id_registro=%s"%(id_registro))
+        datos+=conexion.getResult()
+        edita=True
+
+    return render_template("newCurso.html",comentar=datos,edita=edita)
+
+@app.route('/ActivarCurso:<int:id_curso>:<string:id_registro>', methods=['POST'])
+def activar_curso(id_curso,id_registro):
     print(f'{Fore.GREEN}__form recibido')
     Encargado=request.form['Encargado']
     MetAplicacion=request.form['MetAplicacion']
@@ -42,11 +71,18 @@ def activar_curso(id_curso):
     lugar=request.form['lugar']
 
     conexion=Admin()
+    
     conexion.execute('select id_modo from modo_aplicacion_curso where nombre="%s"'%(MetAplicacion))
     id_modo=conexion.getResult()[0][0]
 
     conexion.execute('select id_empleado from empleados where nombre="%s"'%(Encargado))
     id_encargado=conexion.getResult()[0][0]
+
+    if(id_registro!="NR"):
+        query="update curso_has_aparicion set id_metodo_aplicacion=%s, lugar='%s', inicio='%s',fin='%s', id_encargado=%s where id_registro=%s"%(id_modo,lugar,fecha_inicio,fecha_fin,id_encargado,id_registro)
+        conexion.execute(query)
+        
+        return redirect(url_for('verAparicion',id_curso=id_curso))
     # id_metodo_aplicacion,lugar,id_curso,inicio,fin,id_encargado
     query=('insert into curso_has_aparicion(id_metodo_aplicacion,lugar,id_curso,inicio,fin,id_encargado) values(%s,"%s","%s","%s","%s",%s)'
         %(id_modo,lugar,id_curso,fecha_inicio,fecha_fin,id_encargado))
@@ -70,7 +106,7 @@ def editar(tabla,id_campo):
     conexion.execute(f"select * from {table_name}  where {id_tabla} ={id_campo}")
     dato=conexion.getResult()
 
-    campos= conexion.colsToString(table_name,False)[0]
+    campos= conexion.colsToString(table_name,False)[0].split(',')
 
     comentar=dato[0]
     # if table_name=="cursos":
@@ -149,7 +185,7 @@ def area_fedita(tabla,id_campo):
 
         conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
         
-    return redirect(url_for('area',tabla=tabla),condicion='NC')
+    return redirect(url_for('area',tabla=tabla,condicion='NC'))
 
 @app.route('/catalogoBorrar:<string:titulo>:<string:id>:<string:id_aparicion>')
 def area_borrar(titulo,id,id_aparicion):
@@ -288,26 +324,6 @@ def area_fagrega(title,id_campo):
 # @app.route('/EditaCurso:<int:id_curso>')
 # def editaCurso(id_curso):
 #     return redirect("")
-
-@app.route('/Instanciar_curso:<int:id_curso>')
-def instanciarCurso(id_curso):
-    conexion=Admin()
-
-    datos=()
-    conexion.execute("select * from cursos where id_curso=%s"%(id_curso))
-    datos+=conexion.getResult(),
-    
-    conexion.getSQLCols("curso_has_aparicion",False)
-    datos+=conexion.getResult(),
-
-    conexion.execute("select nombre,id_modo from modo_aplicacion_curso")
-    datos+=conexion.getResult(),
-
-    conexion.execute("select nombre,id_empleado from empleados")
-    datos+=conexion.getResult(),
-
-    return render_template("newCurso.html",comentar=datos)
-
 
 @app.route('/puesto')
 def puesto():
