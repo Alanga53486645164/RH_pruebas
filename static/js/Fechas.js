@@ -11,13 +11,13 @@ class Fecha{
         this.day=date[2]
     }
     getYear(){
-        return this.year
+        return parseInt( this.year)
     }
     getMonth(){
-        return this.month
+        return parseInt( this.month)
     }
     getDay(){
-        return this.day
+        return parseInt( this.day)
     }
     getDate(){
         return ""+this.getYear()+"-"+this.getMonth()+"-"+this.getDay()
@@ -30,16 +30,19 @@ class Fecha{
                 return null
             } 
         }
-
+        console.log(otra_fecha.getYear()+"=="+this.getYear());
+        if(otra_fecha.getYear()==this.getYear()){
+            console.error('mismo AÑO IF');
+        }
         if (otra_fecha.getYear()<this.getYear()){
             // el otro año es menor
             console.error("Somos el año MAyor");
             return false
         }
-
+        
         if (otra_fecha.getYear()>this.getYear){
             console.error("Somos el año menor");
-
+            
             // el otro año es mayor
             return true
         }
@@ -81,9 +84,13 @@ function FechaMasLejana(Fecha1,Fecha2){
 function InicioMenorQue() {
     // let padre = e.target.parentNode;
     
-    if(FechaMasLejana(inicio.value, fin.value)===2){
-        // boton.validity.valid=false
-        alert("La fecha de fin debe ser mayor a la fecha de inicio")
+    // if(FechaMasLejana(inicio.value, fin.value)===2){
+    //     // boton.validity.valid=false
+    //     alert("La fecha de fin debe ser mayor a la fecha de inicio")
+    //     return -1
+    // }
+    if (inicio.value>fin.value){
+        alert('La fecha de fin debe ser mayor a la de inicio')
         return -1
     }
     // boton.validity.valid=true
@@ -93,7 +100,7 @@ function InicioMenorQue() {
 let inicio = document.getElementsByName("fecha_inicio")[0]
     let fin = document.getElementsByName("fecha_fin")[0]
 
-    fin.addEventListener('change', InicioMenorQue);
+    // fin.addEventListener('change', InicioMenorQue);
 
     let boton=document.getElementsByName("Enviar")[0]
     let padre=document.getElementsByTagName("form")[0]
