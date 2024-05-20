@@ -145,3 +145,14 @@ body.onresize=function (){
     }
 }
 adaptarVisibilidad();
+
+
+// const resizeObserver = new ResizeObserver(entries => {
+//     for (let entry of entries) {
+//         console.log('Size changed:', entry.contentRect);
+//         console.log('New width:', entry.contentRect.width);
+//         console.log('New height:', entry.contentRect.height);
+//     }
+// });
+
+// resizeObserver.observe(content);
