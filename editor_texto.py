@@ -37,7 +37,7 @@ class Editor:
     
     def getColsName(self):
         # Nota:No se incluye al campo ID
-        tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio'))
+        tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio','Numero de Ediciones'))
         tabl2=Tabla("area,carrera,escolaridad,estado_civil,grado_avance,habilidad,idioma",('Descripcion',))
         tabl3=Tabla("curso_has_aparicion",('metodo de aplicacion','lugar','curso','inicio','fin','encargado'))
         return (
