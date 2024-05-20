@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row" style="padding-left:20%; padding-right:20%; background-color: #2c2c2c; color:aliceblue; border-radius: 6%;">
+        <div class="col-12">
+            <h3>
+                <br>
+                <br>
+                <CENTER> <b> Agregar Empleado </b> </CENTER>
+            </h3>
+            <br>
+            <br>
+            <form class="row g-3"  action="/trabajador_fagrega" method="post">
+      
+               <div class="col-md-6">
+                  <label for="idArea" class="form-label">Área de trabajador</label>
+                   <select  name="idArea" id="idArea" class = "form-select">
+                       <option  selected="true" disabled="disabled">Elige...</option>
+                        {%
+                           for i in catArea
+                        %}
+                           <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                   </select>
+            
+               </div>
+               <div class="col-md-6">
+                <label for="idPuesto" class="form-label"> Puesto de trabajador</label>
+                 <select  name="idPuesto" id="idPuesto" class = "form-select">
+                     <option  selected="true" disabled="disabled">Elige...</option>
+                      {%
+                         for i in catPuesto
+                      %}
+                         <option value="{{i.0}}">{{i.1}}</option>
+                      {% endfor %}
+                 </select>
+          
+             </div>
+               <div class="col-md-6">
+                  <label for="nomTrab" class="form-label">Nombre del Trabajador</label>
+                  <input type="text" class="form-control" name="nomtrab" id="nomtrab"></input>
+               </div>
+
+               <div class="col-md-6">
+                   <label for="edad" class="form-label">Edad</label>
+                   <input type="text" class="form-control" name="edad" id="edad"></input>
+               </div>
+               <div class="col-md-4">
+                   <label for="sexo" class="form-label">Sexo</label>
+                    <select name="sexo" id="sexo" class = "form-select">
+                     <option selected="true" disabled="disabled">Elige...</option>
+                        <option value="Indistinto">Indistinto</option>
+                        <option value="Hombre">Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                   </select>
+               </div>
+               <div class="col-md-4">
+                   <label for="idEstadoCivil" class="form-label">Estado Civil</label>
+                    <select name="idEstadoCivil" id="idEstadoCivil" class = "form-select">
+                       <option selected="true" disabled="disabled">Elige...</option>
+                        {%
+                           for i in catEdoCivil
+                        %}
+                           <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                   </select>
+            
+               </div>
+               <div class="col-md-4">
+                   <label for="idEscolaridad" class="form-label">Escolaridad</label>
+                    <select name="idEscolaridad" id="idEscolaridad" class = "form-select" onChange="miFunc1()">
+                       <option selected="true" disabled="disabled">Elige...</option>
+                        {%
+                           for i in catEscolaridad
+                        %}
+                           <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                   </select>
+                    <script>
+                       function miFunc1(){
+                        var esco = document.getElementById('idEscolaridad').value;
+                            if (esco == 1)
+                             {document.getElementById('idGradoAvance').disabled=true;
+                              document.getElementById('idCarrera').disabled=true;}
+                            else
+                             {document.getElementById('idGradoAvance').disabled=false;
+                              document.getElementById('idCarrera').disabled=false;}
+                        }
+                    </script>
+               </div>
+               <div class="col-md-4">
+                   <label for="idGradoAvance" class="form-label">Grado Avance</label>
+                    <select name="idGradoAvance" id="idGradoAvance" class = "form-select">
+                       <option selected="true" disabled="disabled">Elige...</option>
+                        {%
+                           for i in catGradoAvance
+                        %}
+                           <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-4">
+                    <label for="idCarrera" class="form-label">Carrera / Especialidad</label>
+                    <select name="idCarrera" id="idCarrera" class = "form-select">
+                       <option selected="true" disabled="disabled">Elige...</option>
+                        {%
+                           for i in catCarrera
+                        %}
+                           <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                   </select>
+            
+               </div>
+               
+           
+         
+            
+               <div class="col-12">
+                      <button type="submit" class="btn btn-primary">Enviar</button>
+            
+                </div>
+            </form>
+         <br>
+         <br>
+         <br><br>
+   
+</div>
+</div>
+</div>
+{% endblock %}
