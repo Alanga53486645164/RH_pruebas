@@ -27,7 +27,7 @@ class Editor:
         self.ids=None
     
     def getMasculinos(self):
-        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Apariciones',"Trabajador"]
+        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Aparicion',"Trabajador"]
     
     def getIds(self):
         return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso","id_registro","idTrabajador"]

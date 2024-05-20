@@ -27,7 +27,7 @@ def verAparicion(id_curso):
     # query=f"SELECT column_name,data_type FROM information_schema.columns  WHERE table_schema = 'rh3' AND table_name = 'curso_has_aparicion' and column_key !='PRI' order by ordinal_position"
     return render_template('area.html',
             comentarios = datos, puestos_cursos=None,
-            titulo='Apariciones',tabla_plural='APARICIONES',male=False,
+            titulo='Aparicion',tabla_plural='APARICIONES',male=False,
                 borrado=True,
                 boolean=(),
                 edita=True,
@@ -37,13 +37,16 @@ def verAparicion(id_curso):
             # columnas=('modo de aplicacion','lugar','inicio','fin','encargado'), num_columnas=5,
             acciones=0, n_acc=0)
 
-@app.route('/Instanciar_curso:<int:id_curso>:<string:id_registro>')
+@app.route('/Instanciar_curso:<string:id_curso>:<string:id_registro>')
 def instanciarCurso(id_curso,id_registro):
     conexion=Admin()
 
     datos=()
-    conexion.execute("select * from cursos where id_curso=%s"%(id_curso))
-    datos+=conexion.getResult(),
+    if(id_curso!='NC'):
+        conexion.execute("select * from cursos where id_curso=%s"%(id_curso))
+        datos+=conexion.getResult(),
+    else:
+        datos+=None,
 
     conexion.getSQLCols("curso_has_aparicion",False)
     datos+=conexion.getResult(),
@@ -54,6 +57,12 @@ def instanciarCurso(id_curso,id_registro):
     conexion.execute("select NombreTrab,idTrabajador from trabajadores")
     datos+=conexion.getResult(),
     edita=False
+    #idPuesto,
+    cursos=None
+    if id_curso=='NC':
+        # conexion.execute(f'select nomPuesto from puesto')
+        conexion.execute(f'select nombre from cursos')
+        cursos=conexion.getResult()
 
     if( id_registro!='NR' and id_registro!='CR'):
         conexion.execute("select id_registro,lugar,inicio,fin,id_encargado,id_metodo_aplicacion  from curso_has_aparicion where id_registro=%s"%(id_registro))
@@ -61,11 +70,12 @@ def instanciarCurso(id_curso,id_registro):
         edita=True
         id_registro='NR'
 
-    return render_template("newCurso.html",comentar=datos,edita=edita,redir=id_registro)
+    return render_template("newCurso.html",comentar=datos,edita=edita,redir=id_registro,cursos=cursos)
 
-@app.route('/ActivarCurso:<int:id_curso>:<string:id_registro>:<string:redireccion>', methods=['POST'])
+@app.route('/ActivarCurso:<string:id_curso>:<string:id_registro>:<string:redireccion>', methods=['POST'])
 def activar_curso(id_curso,id_registro,redireccion):
     print(f'{Fore.GREEN}__form recibido')
+    
     Encargado=request.form['Encargado']
     MetAplicacion=request.form['MetAplicacion']
     fecha_inicio=request.form['fecha_inicio']
@@ -73,7 +83,16 @@ def activar_curso(id_curso,id_registro,redireccion):
     lugar=request.form['lugar']
 
     conexion=Admin()
+    activos=False
 
+    if(id_curso=='CP'):
+        NombreCurso=request.form['curso']
+        print(request.form)
+        conexion.execute('select id_curso from cursos where nombre="%s"'%(NombreCurso))
+        id_curso=conexion.getResult()[0][0]
+        activos=True
+
+    print(f"{Back.RED}{id_curso}")
     conexion.execute('select id_modo from modo_aplicacion_curso where nombre="%s"'%(MetAplicacion))
     id_modo=conexion.getResult()[0][0]
 
@@ -208,7 +227,7 @@ def area(tabla,condicion):
                 boolean=booleanos,
                 edita=edita,
             columnas=titulo_columnas, num_columnas=n_columnas,
-            acciones=0, n_acc=0, id_tabla=showId,condicion=ci
+            acciones=0, n_acc=0, id_tabla=showId,condicion=ci,id=None
             )
 
 @app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
@@ -233,11 +252,12 @@ def area_borrar(titulo,id,id_aparicion):
     table_name=conexion.titleToTable(titulo)
     id_tabla=conexion.tableToId(table_name)
     print("===========")
-    print(Back.RED+id_tabla+Back.RESET)
-    print(Back.RED+table_name+Back.RESET)
+    print(f"{Back.RED}{id_tabla}{Back.RESET}")
+    print(f"{Back.RED}{table_name}{Back.RESET}")
     conexion.execute('delete from {0} where {1} = {2}'.format(table_name,id_tabla,id))
 
-    if(titulo=='Apariciones'):
+    print(titulo)
+    if(titulo=='Aparicion'):
         return redirect(url_for('verAparicion',id_curso=id_aparicion ))
 
     return redirect(url_for('area',tabla=table_name,condicion='NC'))

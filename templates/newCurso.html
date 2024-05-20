@@ -22,7 +22,19 @@
     <div class="dis-None" id="restriccion">1{{restriccion_fecha}}</div>
     <div class="container">
 
-        <form action="/ActivarCurso:{{comentar[0][0][0]}}:{{id_reg.prev}}:{{redir}}" method="POST" class="row">
+        <form action="/ActivarCurso:{% if comentar[0]!=None %}{{comentar[0][0][0]}}{% else %}CP{% endif %}:{{id_reg.prev}}:{{redir}}" method="POST" class="row">
+            
+            {% if cursos!= None %}
+                <legend class="col-6">Curso</legend>
+                <select name="curso">
+                    {% set cbucle=namespace(prev=0) %}
+                    {% for c in cursos %}
+                        <option class="{% if cbucle.prev==0 %}Activo{% endif %} value="">{{c.0}}</option>
+                        {% set cbucle.prev=1 %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+
             <legend class="col-6">Lugar</legend>
             <input name="lugar" required type="text" class="col-6" value="{% if edita==True %}{{comentar[4][1]}}{% endif %}">
 

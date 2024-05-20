@@ -1,74 +1,74 @@
-class Fecha{
-    constructor(fecha_string) {
-        let date=fecha_string.split("-")
+// class Fecha{
+//     constructor(fecha_string) {
+//         let date=fecha_string.split("-")
 
-        if(fecha_string.length!=10 || date.length!=3 || date[0].length!=4 || date[1].length!=2){
-            // creo que no necesita el ultimo de :  date[1].length!=2
-            return null
-        }
-        this.year=date[0]
-        this.month=date[1]
-        this.day=date[2]
-    }
-    getYear(){
-        return parseInt( this.year)
-    }
-    getMonth(){
-        return parseInt( this.month)
-    }
-    getDay(){
-        return parseInt( this.day)
-    }
-    getDate(){
-        return ""+this.getYear()+"-"+this.getMonth()+"-"+this.getDay()
-    }
-    isBoforeThan(otra_fecha){
-        if(otra_fecha.getYear==undefined){
-            // no es un objeto de la clase 'Fecha'
-            otra_fecha= new Fecha(otra_fecha)
-            if(otra_fecha==null){
-                return null
-            } 
-        }
-        console.log(otra_fecha.getYear()+"=="+this.getYear());
-        if(otra_fecha.getYear()==this.getYear()){
-            console.error('mismo AÑO IF');
-        }
-        if (otra_fecha.getYear()<this.getYear()){
-            // el otro año es menor
-            console.error("Somos el año MAyor");
-            return false
-        }
+//         if(fecha_string.length!=10 || date.length!=3 || date[0].length!=4 || date[1].length!=2){
+//             // creo que no necesita el ultimo de :  date[1].length!=2
+//             return null
+//         }
+//         this.year=date[0]
+//         this.month=date[1]
+//         this.day=date[2]
+//     }
+//     getYear(){
+//         return parseInt( this.year)
+//     }
+//     getMonth(){
+//         return parseInt( this.month)
+//     }
+//     getDay(){
+//         return parseInt( this.day)
+//     }
+//     getDate(){
+//         return ""+this.getYear()+"-"+this.getMonth()+"-"+this.getDay()
+//     }
+//     isBoforeThan(otra_fecha){
+//         if(otra_fecha.getYear==undefined){
+//             // no es un objeto de la clase 'Fecha'
+//             otra_fecha= new Fecha(otra_fecha)
+//             if(otra_fecha==null){
+//                 return null
+//             } 
+//         }
+//         console.log(otra_fecha.getYear()+"=="+this.getYear());
+//         if(otra_fecha.getYear()==this.getYear()){
+//             console.error('mismo AÑO IF');
+//         }
+//         if (otra_fecha.getYear()<this.getYear()){
+//             // el otro año es menor
+//             console.error("Somos el año MAyor");
+//             return false
+//         }
         
-        if (otra_fecha.getYear()>this.getYear){
-            console.error("Somos el año menor");
+//         if (otra_fecha.getYear()>this.getYear){
+//             console.error("Somos el año menor");
             
-            // el otro año es mayor
-            return true
-        }
-        console.error("Mismo año")
-        // estamos en el mismo año
-        if(otra_fecha.getMonth()<this.getMonth()){
-            // el otro es antes que nosotros
-            return false
-        }
+//             // el otro año es mayor
+//             return true
+//         }
+//         console.error("Mismo año")
+//         // estamos en el mismo año
+//         if(otra_fecha.getMonth()<this.getMonth()){
+//             // el otro es antes que nosotros
+//             return false
+//         }
         
-        if(otra_fecha.getMonth()>this.getMonth()){
-            // el otro es depsues de nosotros
-            return true
-        }
-        console.error("Mismo mes")
-        //estamos en el mismo mes
-        console.error(otra_fecha.getDay(),"<=",this.getDay());
-        if(otra_fecha.getDay()<=this.getDay()){
-            // el otro dia esta antes de nosotros
-            return false
-        } 
-        console.error("Somos fecha menor")
-        //somos la fecha menor
-        return true
-    }
-}
+//         if(otra_fecha.getMonth()>this.getMonth()){
+//             // el otro es depsues de nosotros
+//             return true
+//         }
+//         console.error("Mismo mes")
+//         //estamos en el mismo mes
+//         console.error(otra_fecha.getDay(),"<=",this.getDay());
+//         if(otra_fecha.getDay()<=this.getDay()){
+//             // el otro dia esta antes de nosotros
+//             return false
+//         } 
+//         console.error("Somos fecha menor")
+//         //somos la fecha menor
+//         return true
+//     }
+// }
 function FechaMasLejana(Fecha1,Fecha2){
     date1=new Fecha(Fecha1)
     date2=new Fecha(Fecha2)
@@ -88,7 +88,7 @@ function completarNumero(n){
 }
 function getToday(){
     hoy=new Date()
-    return hoy.getFullYear()+'-'+completarNumero(hoy.getMonth())+'-'+completarNumero(hoy.getDate())
+    return hoy.getFullYear()+'-'+(completarNumero(hoy.getMonth()+1))+'-'+completarNumero(hoy.getDate())
 }
 
 function InicioMenorQue() {
@@ -105,14 +105,16 @@ function InicioMenorQue() {
     // return -1
     if(restriccion.innerHTML!='' && inicio.value<hoy){
         alert('la fecha de inicio debe ser despues de la fecha actual')
+        console.log('-1');
         return -1
-    }else{
-        alert('fecha de inicio corecta')
-    }
+    } 
+    console.log('fecha_inicio mayor a fecha actual');
     if (inicio.value>fin.value){
         alert('La fecha de fin debe ser mayor a la de inicio')
+        console.log('-2');
         return -1
     }
+    console.log('todo correco');
     // boton.validity.valid=true
     return 1
 }

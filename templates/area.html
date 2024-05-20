@@ -30,7 +30,10 @@
     <tr>
       
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
-      {% if tabla_plural=='APARICIONES' %}
+      
+      {% if tabla_plural=='APARICIONES' and id==None %}
+       <right><h3><a href="/Instanciar_curso:NC:NR">Agregar {{titulo}}</a></h3></right>
+      {% elif tabla_plural=='APARICIONES' %}
        <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
       {% elif titulo=='Trabajador' %}
         <right><h3><a href="/trabajador_agregar">Agregar {{titulo}}</a></h3></right>
