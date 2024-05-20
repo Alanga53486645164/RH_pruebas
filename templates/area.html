@@ -4,7 +4,7 @@
   <!-- el array de aqui guarda unas variables que llegan desde el archivo python  -->
   {% set acciones = borrado,boolean,edita %}
 
-  <hr>
+  <!-- {{acciones}} <br> -->
   {% set ns = namespace(prev=0) %}
 
   {% if titulo=='Curso' or titulo =='Apariciones' %}
@@ -21,12 +21,12 @@
       {%- set ns.prev = ns.prev+1 %}
     {% endif -%} 
   {% endfor %}
-{{comentarios}}
-  <!-- acciones={{ns.prev}} -->
-    <div id="booleanos" style="display:None">{{boolean}}</div>
+<!-- {{comentarios}} -->
+    <div id="booleanos" class="dis-None">{{boolean}}</div>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <tbody>
     <tr>
+      
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
       {% if tabla_plural=='APARICIONES' %}
        <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
@@ -35,10 +35,14 @@
       {% endif %}
     <div style="display:none" id="titulo_plural">{{tabla_plural}}</div>
     <center><h3>{{tabla_plural}} 
-      {% if male==True %}
-        REGISTRADOS
+      {% if condicion!='NC' %}
+        {{condicion}}
       {% else %}
-        REGISTRADAS
+        {% if male==True %}
+          REGISTRADOS
+        {% else %}
+          REGISTRADAS
+        {% endif %}
       {% endif %}
     </h3></center>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
@@ -49,27 +53,27 @@
         {% endif %}
 
         {% set c_col=namespace(prev=0) %}
-        <br>
+        <!-- <br>
         {{columnas}}
         <br>
-        {{comentarios.0}}
+        {{comentarios.0}} -->
         
         {% for columna in columnas %}
           {% set class=namespace(prev="") %}
-          {% if titulo=='Curso' and (c_col.prev>=2 and c_col.prev<=4 ) %}
+          {% if titulo=='Curso' and (c_col.prev>=2 and c_col.prev<=5 ) %}
             <!--  -->
-            {% if c_col.prev==4 %}
+            {% if c_col.prev>=4 and c_col.prev<=5 %}
               {% set class.prev= class.prev+' None None-md' %}
             {% else %}
               {% set class.prev= class.prev+' None None-lg' %}
             {% endif %}
 
-          {% elif titulo=='Apariciones' or titulo=='Aparicion' and (c_col.prev==5 ) %}
+          {% elif (titulo=='Apariciones' or titulo=='Aparicion') and (c_col.prev==5 ) %}
             <!--  -->
               {% set class.prev= class.prev+' None None-md' %}
 
           {% endif %}
-          <td class="text-center{{class.prev}}" style="color:white" bgcolor="blue">{{columna}}</td>
+          <td class="text-center{{class.prev}}" style="color:white" bgcolor="blue">{{columna}}{{c_col.prev}}</td>
           
           {% set c_col.prev=c_col.prev +1 %}
         {% endfor %}
@@ -106,14 +110,14 @@
             {% endfor %}
           {% endif %}
 
-          {% if titulo=='Curso' and (campo>=3 and campo<=5 ) %}
-            {% if campo==5 %}
+          {% if titulo=='Curso' and (campo>=3 and campo<=6 ) %}
+            {% if campo==5 or campo==6 %}
               {% set class.prev= class.prev+' None None-md' %}
             {% else %}
               {% set class.prev= class.prev+' None None-lg' %}
             {% endif %}
 
-          {% elif titulo=='Apariciones' or titulo=='Aparicion' and (campo==6 ) %}
+          {% elif (titulo=='Apariciones' or titulo=='Aparicion') and (campo==6 ) %}
             
               {% set class.prev= class.prev+' None None-md' %}
           {% endif %}
@@ -132,20 +136,17 @@
               |{{puestos_cursos[c.prev] }}</td>
             {% endif %}
         {% endif %}
-        
+        <!-- and edita_cancelado.prev!=True  -->
         {% if edita !=False %}
           {% if titulo=="Curso" %}
             {% set class=namespace(prev="") %}
-            
-            {% if titulo=='Curso' %}
               <!--  -->
-              {% set class.prev= class.prev+' None None-lg' %}
+            {% set class.prev= class.prev+' None None-lg' %}
 
-            {% endif %}
             <td class="{{class.prev}}" bgcolor="#2B2D83" width="8%">
               <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
           {% elif titulo=='Apariciones' or titulo=='Aparicion' %}
-            <td  bgcolor="#2B2D83" width="8%">
+            <td  bgcolor="#2B2D83" class="None None-md" width="8%">
               <center><a href="/Instanciar_curso:{{id}}:{{i.0}}" >Editar</a></center>
           {% else %}
             <td  bgcolor="#2B2D83" width="8%">
@@ -177,7 +178,7 @@
           {% endif %}
         
         {% if borrado!=False %}
-          <td bgcolor="#3C3EC5" width="8%">
+          <td bgcolor="#3C3EC5" class="{% if titulo=='Curso' %}None None-sm{% endif %}"  width="8%">
           <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}{% if tabla_plural=='APARICIONES' %}:{{id}}{% else %}:NA{% endif %} " >Borrar</a></center>
         {% endif %}
         </td>
