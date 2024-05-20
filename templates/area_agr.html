@@ -26,41 +26,44 @@
             <div class="mb-3">
                 {% for dato in range(cDatos) %}
                     <!-- Titlo del campo -->
-                    <label for="descripcion" class="form-label">{{datos[dato]}}</label>
-                    
-                    <!-- de ser booleno el campo a llanar -->
-                    {% if boolean !=None %}
-                        {% for booleano in boolean %}
-                            {% if dato==booleano %}
-                                <select name="{{datos[dato]}}" class="boolean" style="width:100%">
-                                    <option >True</option>
-                                    <option >False</option>
-                                </select>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <!-- 
-                        cuadro input para ingresar el dato.
-                        Tiene la mecanica de ocultado y reprimido cuando el campo es 
-                            booleano 
-                    -->
-                    <input required autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
-                        class="form-control {% if boolean!=None %}{% for booleano in boolean %}{% if dato==booleano or (dato==5 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{% endif %}{{col}}"
-                        value="{{fetch[0][dato]}}"
-                    ></input>
-                    <!-- cuadros de seleccion de los puestos -->
-                    {% if dato ==5 and titulo=="Curso" %}
-                        <!-- cuadro input que almacenara los ids de los pestos seleccionados -->
-                        <input type="text" style="display:none3" name="puestos">
-                        <br>
-                        <!-- boton para seleccion de todos los puestos -->
-                        <input class="agregarPresionado"type="checkbox" name="Todos">
-                        Todos <br>
-                        {% for puesto in fetch[1:] %}
-                            <input class="agregarPresionado"type="checkbox" name="puesto-{{puesto[0]}}">
-                            {{puesto[1]}}
+                    {% if( titulo=='Curso' and dato!=5) or titulo!='Curso' %}
+                        
+                        <label for="descripcion" class="form-label">{{datos[dato]}}({{dato}})</label>
+                        
+                        <!-- de ser booleno el campo a llanar -->
+                        {% if boolean !=None %}
+                            {% for booleano in boolean %}
+                                {% if dato==booleano %}
+                                    <select name="{{datos[dato]}}" class="boolean" style="width:100%">
+                                        <option >True</option>
+                                        <option >False</option>
+                                    </select>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <!-- 
+                            cuadro input para ingresar el dato.
+                            Tiene la mecanica de ocultado y reprimido cuando el campo es 
+                                booleano 
+                        -->
+                        <input required autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
+                            class="form-control {% if boolean!=None %}{% for booleano in boolean %}{% if dato==booleano or (dato==6 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{% endif %}{{col}}"
+                            value="{{fetch[0][dato]}}"
+                        ></input>
+                        <!-- cuadros de seleccion de los puestos -->
+                        {% if dato ==6 and titulo=="Curso" %}
+                            <!-- cuadro input que almacenara los ids de los pestos seleccionados -->
+                            <input type="text" style="display:none3" name="puestos">
                             <br>
-                        {% endfor %}
+                            <!-- boton para seleccion de todos los puestos -->
+                            <input class="agregarPresionado"type="checkbox" name="Todos">
+                            Todos <br>
+                            {% for puesto in fetch[1:] %}
+                                <input class="agregarPresionado"type="checkbox" name="puesto-{{puesto[0]}}">
+                                {{puesto[1]}}
+                                <br>
+                            {% endfor %}
+                        {% endif %}
                     {% endif %}
                     <!-- {% if titulo=='Curso' and dato==2 %}
                         <select name="tiempo" id="">
@@ -68,7 +71,7 @@
                             <option >Dias</option>
                         </select>
                     {% endif %} -->
-
+                        <!-- <br> -->
                 {% endfor %}
                 </div>
             </div>
