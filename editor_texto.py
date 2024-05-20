@@ -27,25 +27,26 @@ class Editor:
         self.ids=None
     
     def getMasculinos(self):
-        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Apariciones']
+        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Apariciones',"Trabajador"]
     
     def getIds(self):
-        return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso","id_registro"]
+        return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso","id_registro","idTrabajador"]
     
     def getTables(self):
-        return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos","curso_has_aparicion"]
+        return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos","curso_has_aparicion","trabajadores"]
     
     def getColsName(self):
         # Nota:No se incluye al campo ID
         tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio','Numero de Ediciones'))
         tabl2=Tabla("area,carrera,escolaridad,estado_civil,grado_avance,habilidad,idioma",('Descripcion',))
         tabl3=Tabla("curso_has_aparicion",('metodo de aplicacion','lugar','curso','inicio','fin','encargado'))
+        tabl4=Tabla("trabajadores",("Puesto","Edad","Sexo","Estado Civil","Nombre"))
         return (
-            tabl,tabl2,tabl3
+            tabl,tabl2,tabl3,tabl4
         )
 
     def getTableTitles(self):
-        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Aparicion"]
+        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Aparicion","Trabajador"]
     
     def isVowel(self,letra):
         vocales=["a","e","i","o","u"]

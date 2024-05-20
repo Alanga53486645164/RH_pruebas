@@ -169,6 +169,10 @@ def area(tabla,condicion):
         join='JOIN cursos ON curso_has_aparicion.id_curso=cursos.id_curso JOIN modo_aplicacion_curso ON curso_has_aparicion.id_metodo_aplicacion=modo_aplicacion_curso.id_modo JOIN trabajadores ON curso_has_aparicion.id_encargado=trabajadores.idTrabajador'
         condicion="WHERE "+condicion
 
+    if tabla=='trabajadores':
+        campos='trabajadores.idTrabajador,p.nomPuesto,trabajadores.edad,trabajadores.sexo, ec.descripcion ,NombreTrab'
+        join="join estado_civil ec on ec.idEstadoCivil=trabajadores.idEstadoCivil join puesto p on p.idPuesto=trabajadores.idPuesto"
+
     query=f"select {campos} from {tabla} {join} {condicion} order by {id} asc"
 
     conexion.execute(query)
