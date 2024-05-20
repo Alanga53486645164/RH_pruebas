@@ -692,6 +692,53 @@ def puesto_fedita(idP):
 
 
 
+@app.route('/trabajador_agregar')
+def trabajador_agregar():
+    conn = pymysql.connect(host='localhost', user='root', passwd='risemivicio125', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('select idArea, descripcion from area ')
+    datos1 = cursor.fetchall()
+
+    
+
+    cursor.execute('select idEstadoCivil, descripcion from estado_civil ')
+    datos2 = cursor.fetchall()
+
+    cursor.execute('select idEscolaridad, descripcion from escolaridad ')
+    datos3 = cursor.fetchall()
+
+    cursor.execute('select idGradoAvance, descripcion from grado_avance ')
+    datos4 = cursor.fetchall()
+
+    cursor.execute('select idCarrera, descripcion from carrera ')
+    datos5 = cursor.fetchall()
+
+    cursor.execute('select idIdioma, descripcion from idioma ')
+    datos6 = cursor.fetchall()
+
+    cursor.execute('select idHabilidad, descripcion from habilidad ')
+    datos7 = cursor.fetchall()
+
+    cursor.execute('select idPuesto, nomPuesto from puesto ')
+    datos8= cursor.fetchall()
+
+    return render_template("trabajador_agr.html", catArea=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
+                           catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7, catPuesto=datos8)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True
         ,port=5001

@@ -13,6 +13,8 @@
 
   {% if  titulo=='Aparicion' %}
     {%- set ns.prev = ns.prev+2 %}
+  {% elif titulo=='Trabajador' %}
+    {%- set ns.prev = ns.prev+2 %}
   {% endif %}
 
   {% for x in acciones %}
@@ -30,6 +32,9 @@
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
       {% if tabla_plural=='APARICIONES' %}
        <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
+      {% elif titulo=='Trabajador' %}
+        <right><h3><a href="/trabajador_agregar">Agregar {{titulo}}</a></h3></right>
+        <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
       {% else %}
         <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
       {% endif %}
@@ -137,6 +142,21 @@
             {% endif %}
         {% endif %}
         <!-- and edita_cancelado.prev!=True  -->
+        {% if titulo=='Trabajador' %}
+            <td bgcolor="#2B2D83" width="6%">
+            <center><a href="/trabajo_fdetalle/{{i.0}}" class="btn btn-outline-info btn-sm ">Detalles</a></center>
+            </td>
+            <td bgcolor="#2B2D83" width="6%">
+            <center><a href="/CursosTrab/{{i.0}}" class="btn btn-outline-info btn-sm ">Capacitacion</a></center>
+            </td>
+            <!-- <td bgcolor="#2B2D83" width="6%">
+            <center><a href="/trabajador_editar/{{i.0}}" class="btn btn-outline-info btn-sm ">Editar</a></center>
+            </td>
+            <td bgcolor="#3C3EC5" width="6%">
+            <center><a href="/trabajadores_borrar/{{i.0}}" class="btn btn-outline-primary btn-sm">Borrar</a></center>
+            </td> -->
+        {% endif %}
+
         {% if edita !=False %}
           {% if titulo=="Curso" %}
             {% set class=namespace(prev="") %}
