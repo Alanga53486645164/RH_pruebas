@@ -75,7 +75,7 @@ class Admin():
         #(
         #   ('id_curso', 'cursos', 'id_curso'),
         #   ('id_metodo_aplicacion', 'modo_aplicacion_curso', 'id_modo'),
-        #   ('id_encargado', 'empleados', 'id_empleado')
+        #   ('id_encargado', 'trabajadores', 'id_empleado')
         #)
     def makeJoinFor(self,table_name):
         cols=self.colsToString(table_name,False)[0]
