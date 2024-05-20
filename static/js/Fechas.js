@@ -80,6 +80,16 @@ function FechaMasLejana(Fecha1,Fecha2){
     console.log("Fecha 2(",date2.getDate(),") es menor")
     return 2
 }
+function completarNumero(n){
+    if (n<10){
+        return('0'+n)
+    }
+    return n
+}
+function getToday(){
+    hoy=new Date()
+    return hoy.getFullYear()+'-'+completarNumero(hoy.getMonth())+'-'+completarNumero(hoy.getDate())
+}
 
 function InicioMenorQue() {
     // let padre = e.target.parentNode;
@@ -89,6 +99,16 @@ function InicioMenorQue() {
     //     alert("La fecha de fin debe ser mayor a la fecha de inicio")
     //     return -1
     // }
+    hoy=getToday()
+
+    console.log(inicio.value,'<',hoy);
+    // return -1
+    if(restriccion.innerHTML!='' && inicio.value<hoy){
+        alert('la fecha de inicio debe ser despues de la fecha actual')
+        return -1
+    }else{
+        alert('fecha de inicio corecta')
+    }
     if (inicio.value>fin.value){
         alert('La fecha de fin debe ser mayor a la de inicio')
         return -1
@@ -98,27 +118,27 @@ function InicioMenorQue() {
 }
 // FechaMasLejana('2024-02-12','2024-02-12')
 let inicio = document.getElementsByName("fecha_inicio")[0]
-    let fin = document.getElementsByName("fecha_fin")[0]
+let fin = document.getElementsByName("fecha_fin")[0]
 
-    // fin.addEventListener('change', InicioMenorQue);
+// fin.addEventListener('change', InicioMenorQue);
 
-    let boton=document.getElementsByName("Enviar")[0]
-    let padre=document.getElementsByTagName("form")[0]
-    
-    padre.addEventListener("submit",function enviar(e){
-        // alert('SUBMIT')
-        if (InicioMenorQue()===-1){ 
-            // alert('PREVENT')
-            e.preventDefault()
-            return
-        }
-        // alert('SE DEBE ENVIAR')
-        // let selects=document.getElementsByTagName('select')
-        // for(index=0;index<selects.length;index++){
-        //     let targetName= selects[index].getAttribute('data-targetName')
-        //     let target= document.getElementsByName(targetName)
+let boton=document.getElementsByName("Enviar")[0]
+let padre=document.getElementsByTagName("form")[0]
 
-        // }
-    })
+padre.addEventListener("submit",function enviar(e){
+    // alert('SUBMIT')
+    if (InicioMenorQue()===-1){ 
+        // alert('PREVENT')
+        e.preventDefault()
+        return
+    }
+    // alert('SE DEBE ENVIAR')
+    // let selects=document.getElementsByTagName('select')
+    // for(index=0;index<selects.length;index++){
+    //     let targetName= selects[index].getAttribute('data-targetName')
+    //     let target= document.getElementsByName(targetName)
 
-    // let selects= document.getElementsByTagName("select")
+    // }
+})
+let restriccion= document.getElementById('restriccion')
+// let selects= document.getElementsByTagName("select")

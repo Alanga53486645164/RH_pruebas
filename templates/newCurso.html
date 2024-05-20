@@ -5,19 +5,22 @@
     {{comentar.2}} <br>
     {{comentar.3}} <br>
     {{comentar.4}} <br>
+    
+    {% set id_reg=namespace(prev=0) %}
+
+    {% if edita==True %}
+        {% set id_reg.prev=comentar[4][0] %}
+    {% else %}
+        {% set id_reg.prev='NR' %}
+    {% endif %}
+    
     <style>
         form{
             background-color: rgba(96, 85, 85, 0.763);
         }
     </style>
+    <div class="dis-None" id="restriccion">1{{restriccion_fecha}}</div>
     <div class="container">
-        {% set id_reg=namespace(prev=0) %}
-
-        {% if edita==True %}
-            {% set id_reg.prev=comentar[4][0] %}
-        {% else %}
-            {% set id_reg.prev='NR' %}
-        {% endif %}
 
         <form action="/ActivarCurso:{{comentar[0][0][0]}}:{{id_reg.prev}}:{{redir}}" method="POST" class="row">
             <legend class="col-6">Lugar</legend>

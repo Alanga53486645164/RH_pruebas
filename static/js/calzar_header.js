@@ -1,4 +1,3 @@
-let header=document.getElementById('header')
 let target='void'
 document.body.onresize=function (){
     // console.error('cambio el header')
@@ -7,7 +6,7 @@ document.body.onresize=function (){
 }
 
 function cambiarTamaño(target){
-    header=document.getElementById('header')
+    let header=document.getElementsByClassName('header')[0]
     target.style.marginTop=header.clientHeight+"px"
 }
 function iniciarResize(){
