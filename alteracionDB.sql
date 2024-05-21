@@ -1,5 +1,7 @@
 use rh3;
 drop table if exists empleados;
+drop table if exists trabajadores;
+
 drop table if exists cursos;
 drop table if exists puesto_has_cursos;
 drop table if exists curso_has_empleados;
@@ -73,14 +75,6 @@ create table curso_has_aparicion(
 insert into curso_has_aparicion(id_metodo_aplicacion,lugar,id_curso,edicion,inicio,fin,id_encargado) values
 	(1,"Area 51",1,1,"2002-04-02","2002-04-20",2),
 	(3,"NO HAY",2,1,"2002-03-27","2002-04-15",3);
-    
-/*
-drop table if exists trabajadores_cursos;
-CREATE TABLE `trabajadores_cursos` (
-  `idTrabajador` int(11) NOT NULL,
-  `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-*/
 
 drop table if exists curso_has_empleados;
 create table curso_has_empleados(
@@ -96,5 +90,3 @@ insert into curso_has_empleados(id_empleado,id_curso,calificacion) values
     (2,1,8),*/
     (5,1,null),(5,2,null),(5,3,null),(1,1,null),(1,2,null),(1,3,null),(1,1,null),(8,2,null),(9,3,null),(5,1,null),(8,2,null),(5,2,null);
     
-#INSERT INTO `trabajadores_cursos` VALUES (5,1),(5,2),(5,3),(1,1),(1,2),(1,3),(1,1),(8,2),(9,3),(5,1),(8,2),(5,2);
-

@@ -1,7 +1,8 @@
 import pymysql
 from colorama import init, Fore, Back, Style
-# import inserts
+# import os
 
+# os.chdir('./')
 db="rh3"
 
 # create database cuentan;
@@ -18,11 +19,15 @@ class Conexion:
 
     instrucciones=["use","insert","select","update","delete"]
     
-    def __init__(self,database,num_columns,num_tablas):
+    def __init__(self,database,num_columns,num_tablas,version,archivoSQL):
         self.ConexionSQL()
         self.n_tab=num_tablas
         self.db=database
         self.n_cols=num_columns
+
+        self.version=version
+        self.archivoSQL=archivoSQL
+        
         self.cursor = self.conn.cursor()
 
         self.conectarDB("")
@@ -73,60 +78,24 @@ class Conexion:
             if((SinEspacios.split(inst))[0]==""):
                 return c
             c+=1
-
-    # def inserts(self):
-    #     tablas=(
-    #         "productos(nombre,categoria,   n_ventas,precio,existencias,descripcion,img_presentacion)",
-    #     )
-
-    #     #categorias: ('CONSOLAS'),('AUDIFONOS'),('MANDOS'),('TELEVISIONES'),('CELULARES'),('VIDEOJUEGOS')
-
-    #     #plataformas: ("XBOX ONE"), ("XBOX ONE SERIES X/S"), ("XBOX 360"), ("PLAY STATION 2"), ("PLAY STATION 3"),
-    #     #             ("PLAY STATION 4"), ("PLAY STATION 5"), ("NINTENDO SWITCH"), ("PC"), ("CELULAR")
-    #     queries=inserts.getQueries()
-    #     print(queries)
-    #     for c in range(0,len(queries)):
-    #         print("tabla= ",tablas[c])
-    #         for insert in queries[c]:
-    #             if( len(insert) ==5):
-    #                 in3=3
-    #             else:
-    #                 in3=2
-                
-    #             self.execute_query(f'INSERT INTO {tablas[c]} values( {insert[0]}  , {insert[1]} , {insert[in3]} )')
-
-    #             if(insert[1]==6):
-    #                 query_plata='INSERT INTO videojuego_has_plataforma VALUES'
-    #                 c2=0
-    #                 self.execute_query(f'select codigo from productos where nombre={insert[0]}')
-    #                 id=self.getFetch()[0][0]
-
-    #                 for plataforma in insert[2]:
-
-    #                     query_plata+=f"({id},{plataforma})"
-    #                     if( c2 < len(insert[2])-1 ):
-    #                         query_plata+=","
-    #                     c2+=1
-    #                 self.execute_query(query_plata)
-                    
-    #             if(len(insert[4])!=0):
-    #                 c2=0
-    #                 query="INSERT INTO imagenes_productos(direccion,codigo_producto) VALUES"
-    #                 for liga in insert[4]:
-    #                     query+=f"({liga},{id})"
-    #                     if( c2 < len(insert[4])-1 ):
-    #                         query+=","
-    #                     c2+=1
-    #                 self.execute_query(query)
-                
-    def crear_tablas(self):
-        instrucciones=("CREATE TABLE","INSERT INTO")
-
+ 
     def crear_DB(self,extension):
         self.execute_query(f"create schema {self.db+extension}")
         self.execute_query(f"use {self.db+extension}")
-        self.crear_tablas()
 
+        query=open(self.archivoSQL,"r").read()
+        self.execute_query(query)
+
+        query='create table version( version int not null); insert into version values(%s);'%(self.version)
+        self.execute_query(self.version)
+        # self.crear_tablas()
+
+    def getVersion(self):
+        r=self.execute_query('select version from version')
+        if r==-1:
+            return None
+        return self.getFetch()[0]
+        
     def conectarDB(self,extension):
         # print("\n\n\n CONECTAR")
         use="use "+self.db+extension
@@ -136,43 +105,52 @@ class Conexion:
             self.crear_DB(extension)
         # else:
         #     #existe la db
-        #     #    print("EXISTE LA DB")
-        #     query=f"SELECT count(*) FROM information_schema.columns WHERE table_schema = '{self.db+extension}' AND table_name = 'cuentas'"
-        #     self.execute_query(query)
-        #     result1=self.getFetch()[0][0]
+        #     print("EXISTE LA DB")
 
-        #     query=f"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{self.db+extension}';"
-        #     self.execute_query(query)
+        #     ver=self.getVersion()
+        #     if ver ==None or ver <self.version:
+        #         self.crear_DB()
 
-        #     result2=self.getFetch()[0][0]
 
-        #     # print(f"\n\nRestult={result1} ? {self.n_cols}      ;     result2={result2} ? {self.n_tab}")
 
-        #     if(result1==self.n_cols and result2==self.n_tab):
-        #         #la db coincide en numero de tablas, y columnas de la tabla cuentas
-        #         query="select count(*) from cuentas where nombre and telefono and edad and id_cuenta and email and psw and foto_perfil"
-        #         resu=self.execute_query(query)
-        #         print("______>",resu)
-        #         if(resu!=-1):
-        #             #    print("\nES LA DB CORRECTA\n")
-        #             #la database es correcta, en campos y longuitud
-        #             return None
-        #         # print("\n\nPUNTO 1")
-        #         self.execute_query(f"drop schema {self.db}")
-        #         self.crear_DB(extension)
-        #         return None
-        #     # print("\n\nPUNTO 2")
-        #     if extension=="":
-        #         # print("\n\nPUNTO ")
 
-        #         #    print("\nPRIMER FALLO\n")
-        #         #es el primer fallo
-        #         self.conectarDB("1")
-        #     else:
-        #         # print("\n\nPUNTO 3")
-        #         #    print("\nFALLO N\n")
-        #         #ya van varias bd a las que se intento conectar
-        #         self.conectarDB(str(int(extension)+1))
+        
+            # query=f"SELECT count(*) FROM information_schema.columns WHERE table_schema = '{self.db+extension}' AND table_name = 'cuentas'"
+            # self.execute_query(query)
+            # result1=self.getFetch()[0][0]
+
+            # query=f"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{self.db+extension}';"
+            # self.execute_query(query)
+
+            # result2=self.getFetch()[0][0]
+
+            # print(f"\n\nRestult={result1} ? {self.n_cols}      ;     result2={result2} ? {self.n_tab}")
+
+            # if(result1==self.n_cols and result2==self.n_tab):
+            #     #la db coincide en numero de tablas, y columnas de la tabla cuentas
+            #     query="select count(*) from cuentas where nombre and telefono and edad and id_cuenta and email and psw and foto_perfil"
+            #     resu=self.execute_query(query)
+            #     print("______>",resu)
+            #     if(resu!=-1):
+            #         #    print("\nES LA DB CORRECTA\n")
+            #         #la database es correcta, en campos y longuitud
+            #         return None
+            #     # print("\n\nPUNTO 1")
+            #     self.execute_query(f"drop schema {self.db}")
+            #     self.crear_DB(extension)
+            #     return None
+            # # print("\n\nPUNTO 2")
+            # if extension=="":
+            #     # print("\n\nPUNTO ")
+
+            #     #    print("\nPRIMER FALLO\n")
+            #     #es el primer fallo
+            #     self.conectarDB("1")
+            # else:
+            #     # print("\n\nPUNTO 3")
+            #     #    print("\nFALLO N\n")
+            #     #ya van varias bd a las que se intento conectar
+            #     self.conectarDB(str(int(extension)+1))
 
     def getFetch(self):
         return self.fetch
@@ -183,9 +161,3 @@ class Conexion:
     def close(self):
         self.conn.close()
         self.cursor.close()
-
-
-# cx=Conexion("cuentan",7,8)
-
-# cx.inserts()
-# cx.execute_query("drop schema cuentan")

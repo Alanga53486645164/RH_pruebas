@@ -8,15 +8,18 @@ class Admin():
     columnas=9
     tablas=15
     database="rh3"
+    version="2"
+    archivoSQL='rh3Unido.sql'
+
     def __init__(self):
-        self.cx=Conexion(self.database,self.columnas,self.tablas)
+        self.cx=Conexion(self.database,self.columnas,self.tablas,self.version,self.archivoSQL)
         self.editor=Editor()
 
     def execute(self,query):
         resu=self.cx.execute_query(query)
         return resu
 
-    def getResult(self):
+    def Fetch(self):
         return self.cx.getFetch()
 
     def close(self):
@@ -62,13 +65,13 @@ class Admin():
             query+=" and column_key !='PRI' "
         query+="order by ordinal_position"
         self.execute(query)
-        return self.getResult()
+        return self.Fetch()
 
     def getSQLForeignKeysFor(self,table):
         # query=f"select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from information_schema.KEY_COLUMN_USAGE where table_schema='rh3'and table_name='{table}' and constraint_name!='PRIMARY'"
         query=f"select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME,(select count(*) from information_schema.columns where table_schema='rh3' and table_name=referenced_table_name) as num_cols from information_schema.KEY_COLUMN_USAGE where table_schema='rh3'and table_name='{table}' and constraint_name!='PRIMARY'"
         self.execute(query)
-        return self.getResult()
+        return self.Fetch()
         #    ('curso_has_aparicion',)
         #select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from information_schema.KEY_COLUMN_USAGE where table_schema='rh3'and table_name='curso_has_aparicion' and constraint_name!='PRIMARY'
 
@@ -98,7 +101,7 @@ class Admin():
     def getSQLTables(self):
         query=f"select table_name from information_schema.tables where table_schema='{self.cx.db}'"
         self.execute(query)
-        return self.getResult()
+        return self.Fetch()
 
     def getColsFrom(self,table_name,primary_key):
         columnas=self.getSQLCols(table_name,primary_key)

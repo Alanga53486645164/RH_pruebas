@@ -22,7 +22,7 @@ def verAparicion(id_curso):
     # query=f"select chp.id_registro, mac.nombre, chp.lugar, chp.inicio, chp.fin, e.nombre from curso_has_aparicion chp join cursos c on c.id_curso=chp.id_curso join trabajadores e on chp.id_encargado=e.idTrabajador join modo_aplicacion_curso mac on mac.id_modo=chp.id_metodo_aplicacion where chp.id_curso={id_curso}"
     query=f"select chp.id_registro, mac.nombre, chp.lugar, c.nombre, chp.inicio, chp.fin, e.NombreTrab from curso_has_aparicion chp join cursos c on c.id_curso=chp.id_curso join trabajadores e on chp.id_encargado=e.idTrabajador join modo_aplicacion_curso mac on mac.id_modo=chp.id_metodo_aplicacion where chp.id_curso={id_curso}"
     conexion.execute(query)
-    datos=conexion.getResult()
+    datos=conexion.Fetch()
     print(Back.YELLOW,datos,Back.RESET)
     # query=f"SELECT column_name,data_type FROM information_schema.columns  WHERE table_schema = 'rh3' AND table_name = 'curso_has_aparicion' and column_key !='PRI' order by ordinal_position"
     return render_template('area.html',
@@ -44,29 +44,29 @@ def instanciarCurso(id_curso,id_registro):
     datos=()
     if(id_curso!='NC'):
         conexion.execute("select * from cursos where id_curso=%s"%(id_curso))
-        datos+=conexion.getResult(),
+        datos+=conexion.Fetch(),
     else:
         datos+=None,
 
     conexion.getSQLCols("curso_has_aparicion",False)
-    datos+=conexion.getResult(),
+    datos+=conexion.Fetch(),
 
     conexion.execute("select nombre,id_modo from modo_aplicacion_curso")
-    datos+=conexion.getResult(),
+    datos+=conexion.Fetch(),
 
     conexion.execute("select NombreTrab,idTrabajador from trabajadores")
-    datos+=conexion.getResult(),
+    datos+=conexion.Fetch(),
     edita=False
     #idPuesto,
     cursos=None
     if id_curso=='NC':
         # conexion.execute(f'select nomPuesto from puesto')
         conexion.execute(f'select nombre from cursos')
-        cursos=conexion.getResult()
+        cursos=conexion.Fetch()
 
     if( id_registro!='NR' and id_registro!='CR'):
         conexion.execute("select id_registro,lugar,inicio,fin,id_encargado,id_metodo_aplicacion  from curso_has_aparicion where id_registro=%s"%(id_registro))
-        datos+=conexion.getResult()
+        datos+=conexion.Fetch()
         edita=True
         id_registro='NR'
 
@@ -89,15 +89,15 @@ def activar_curso(id_curso,id_registro,redireccion):
         NombreCurso=request.form['curso']
         print(request.form)
         conexion.execute('select id_curso from cursos where nombre="%s"'%(NombreCurso))
-        id_curso=conexion.getResult()[0][0]
+        id_curso=conexion.Fetch()[0][0]
         activos=True
 
     print(f"{Back.RED}{id_curso}")
     conexion.execute('select id_modo from modo_aplicacion_curso where nombre="%s"'%(MetAplicacion))
-    id_modo=conexion.getResult()[0][0]
+    id_modo=conexion.Fetch()[0][0]
 
     conexion.execute('select idTrabajador from trabajadores where NombreTrab="%s"'%(Encargado))
-    id_encargado=conexion.getResult()[0][0]
+    id_encargado=conexion.Fetch()[0][0]
 
     if(id_registro!="NR"):
         query="update curso_has_aparicion set id_metodo_aplicacion=%s, lugar='%s', inicio='%s',fin='%s', id_encargado=%s where id_registro=%s"%(id_modo,lugar,fecha_inicio,fecha_fin,id_encargado,id_registro)
@@ -107,7 +107,7 @@ def activar_curso(id_curso,id_registro,redireccion):
     # id_metodo_aplicacion,lugar,id_curso,inicio,fin,id_encargado
 
     conexion.execute('select veces_aparecido from cursos where id_curso=%s'%(id_curso))
-    edicion=int(conexion.getResult()[0][0])
+    edicion=int(conexion.Fetch()[0][0])
     edicion+=1
 
     tupla=(id_modo,lugar,id_curso,fecha_inicio,fecha_fin,id_encargado,str(edicion))
@@ -138,7 +138,7 @@ def editar(tabla,id_campo):
     id_tabla=conexion.tableToId(table_name)
 
     conexion.execute(f"select * from {table_name}  where {id_tabla} ={id_campo}")
-    dato=conexion.getResult()
+    dato=conexion.Fetch()
 
     campos= conexion.colsToString(table_name,False)[0].split(',')
 
@@ -195,7 +195,7 @@ def area(tabla,condicion):
     query=f"select {campos} from {tabla} {join} {condicion} order by {id} asc"
 
     conexion.execute(query)
-    datos = conexion.getResult()
+    datos = conexion.Fetch()
 
     plural,male=conexion.tablaPlural(titulo)
     plural=plural.upper()
@@ -214,7 +214,7 @@ def area(tabla,condicion):
         titulo_columnas+="Puestos Aplicables",
         for curso in datos:
             conexion.execute(f"select p.nomPuesto from puesto_has_cursos pc join puesto p on pc.id_puesto=p.idPuesto where id_curso={curso[0]}")
-            p=conexion.getResult()
+            p=conexion.Fetch()
             puestos=""
             for puesto in p:
                 puestos+=puesto[0]+","
@@ -285,7 +285,7 @@ def area_agregar(tabla_titulo,id_campo):
         id_table=conexion.tableToId("cursos")
 
         conexion.execute(f"select {dato} from cursos where {id_table}={id_campo}")
-        fetch =conexion.getResult()
+        fetch =conexion.Fetch()
     else:
         fetch=()
         array=()
@@ -295,9 +295,9 @@ def area_agregar(tabla_titulo,id_campo):
 
     if(nombre_tabla=="cursos"):
         conexion.execute("select idPuesto,nomPuesto from puesto order by idPuesto desc")
-        # res=conexion.getResult()
+        # res=conexion.Fetch()
         titulo_columnas+="Puestos a los que va dirigido :",
-        fetch+=conexion.getResult()
+        fetch+=conexion.Fetch()
 
     cant_datos=len(titulo_columnas)
     return render_template("area_agr.html",
@@ -374,7 +374,7 @@ def area_fagrega(title,id_campo):
         puestos=request.form['puestos']
         puestos=puestos.replace("puesto-","").split("|")[1:]
         conexion.execute("select id_curso from cursos where nombre='%s'"%(datos[2]))
-        id_curso=conexion.getResult()[0]
+        id_curso=conexion.Fetch()[0]
 
         query="delete from puesto_has_cursos where id_curso=%s"%(id_curso)
         conexion.execute(query)
@@ -405,7 +405,7 @@ def puesto():
 
 
     conexion.execute('select idPuesto, nomPuesto from puesto order by idPuesto')
-    datos = conexion.getResult()
+    datos = conexion.Fetch()
 
     return render_template("puesto.html", pue = datos, dat='   ', catArea = '   ', catEdoCivil = '   ', catEscolaridad = '   ',
                            catGradoAvance = '    ', catCarrera = '    ', catIdioma = ' ', catHabilidad = ' ')
@@ -418,34 +418,34 @@ def puesto_fdetalle(idP):
 
 
     conexion.execute('select idPuesto, nomPuesto from puesto order by idPuesto')
-    datos = conexion.getResult()
+    datos = conexion.Fetch()
 
     conexion.execute(f"""select idPuesto,codPuesto,idArea,nomPuesto,puestoJefeSup,jornada,remunMensual,prestaciones,descripcionGeneral,
             funciones,edad,sexo,idEstadoCivil,idEscolaridad,idGradoAvance,idCarrera,experiencia,conocimientos,manejoEquipo,'
             'reqFisicos,reqPsicologicos,responsabilidades,condicionesTrabajo from puesto where idPuesto = {idP}""" )
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
 
     conexion.execute('select a.idArea, a.descripcion from area a, puesto b where a.idArea = b.idArea and b.idPuesto = %s'%(idP))
-    datos1 = conexion.getResult()
+    datos1 = conexion.Fetch()
 
     conexion.execute('select a.idEstadoCivil, a.descripcion from estado_civil a, puesto b where a.idEstadoCivil = b.idEstadoCivil and b.idPuesto = %s'%(idP))
-    datos2 = conexion.getResult()
+    datos2 = conexion.Fetch()
 
     conexion.execute('select a.idEscolaridad, a.descripcion from escolaridad a, puesto b where a.idEscolaridad = b.idEscolaridad and b.idPuesto = %s'%(idP))
-    datos3 = conexion.getResult()
+    datos3 = conexion.Fetch()
 
     conexion.execute('select a.idGradoAvance, a.descripcion from grado_avance a, puesto b where a.idGradoAvance = b.idGradoAvance and b.idPuesto = %s'%(idP))
-    datos4 = conexion.getResult()
+    datos4 = conexion.Fetch()
 
     conexion.execute('select a.idCarrera, a.descripcion from carrera a, puesto b where a.idCarrera = b.idCarrera and b.idPuesto = %s'%(idP))
-    datos5 = conexion.getResult()
+    datos5 = conexion.Fetch()
 
     conexion.execute('select a.idPuesto, b.idIdioma, b.descripcion from puesto a, idioma b, puesto_has_idioma c '
                    'where a.idPuesto = c.idPuesto and b.idIdioma = c.idIdioma and a.idPuesto = %s'%(idP))
-    datos6 = conexion.getResult()
+    datos6 = conexion.Fetch()
 
     conexion.execute(f'select a.idPuesto, b.idHabilidad, b.descripcion from puesto a, habilidad b, puesto_has_habilidad c where a.idPuesto = c.idPuesto and b.idHabilidad = c.idHabilidad and a.idPuesto = {idP}')
-    datos7 = conexion.getResult()
+    datos7 = conexion.Fetch()
     return render_template("puesto.html", pue = datos, dat=dato[0], catArea=datos1[0], catEdoCivil=datos2[0], catEscolaridad=datos3[0],
                            catGradoAvance=datos4[0], catCarrera=datos5[0], catIdioma=datos6, catHabilidad=datos7)
 
@@ -469,25 +469,25 @@ def puesto_agrOp2():
     conexion=Admin()
 
     conexion.execute('select idArea, descripcion from area ')
-    datos1 = conexion.getResult()
+    datos1 = conexion.Fetch()
 
     conexion.execute('select idEstadoCivil, descripcion from estado_civil ')
-    datos2 = conexion.getResult()
+    datos2 = conexion.Fetch()
 
     conexion.execute('select idEscolaridad, descripcion from escolaridad ')
-    datos3 = conexion.getResult()
+    datos3 = conexion.Fetch()
 
     conexion.execute('select idGradoAvance, descripcion from grado_avance ')
-    datos4 = conexion.getResult()
+    datos4 = conexion.Fetch()
 
     conexion.execute('select idCarrera, descripcion from carrera ')
-    datos5 = conexion.getResult()
+    datos5 = conexion.Fetch()
 
     conexion.execute('select idIdioma, descripcion from idioma ')
-    datos6 = conexion.getResult()
+    datos6 = conexion.Fetch()
 
     conexion.execute('select idHabilidad, descripcion from habilidad ')
-    datos7 = conexion.getResult()
+    datos7 = conexion.Fetch()
 
     return render_template("puesto_agrOp2.html", catArea=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
                            catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7)
@@ -551,12 +551,12 @@ def puesto_fagrega():
 
 
     conexion.execute('select idPuesto from puesto where idPuesto=(select max(idPuesto) from puesto) ')
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
     idpue = dato[0]
     idP = idpue[0]
 
     conexion.execute('select count(*) from idioma ')
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
     nidio = dato[0]
     ni = nidio[0] + 1
 
@@ -567,7 +567,7 @@ def puesto_fagrega():
 
 
     conexion.execute('select count(*) from habilidad ')
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
     nhab = dato[0]
     nh =nhab[0]+1
 
@@ -590,51 +590,51 @@ def puesto_editar(idP):
     conexion.execute('select idPuesto,codPuesto,idArea,nomPuesto,puestoJefeSup,jornada,remunMensual,prestaciones,descripcionGeneral,'
         'funciones,edad,sexo,idEstadoCivil,idEscolaridad,idGradoAvance,idCarrera,experiencia,conocimientos,manejoEquipo,'
         'reqFisicos,reqPsicologicos,responsabilidades,condicionesTrabajo from puesto where idPuesto = %s'%(idP))
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
 
     conexion.execute('select idArea, descripcion from area ')
-    datos1 = conexion.getResult()
+    datos1 = conexion.Fetch()
 
     conexion.execute('select idEstadoCivil, descripcion from estado_civil ')
-    datos2 = conexion.getResult()
+    datos2 = conexion.Fetch()
 
     conexion.execute('select idEscolaridad, descripcion from escolaridad ')
-    datos3 = conexion.getResult()
+    datos3 = conexion.Fetch()
 
     conexion.execute('select idGradoAvance, descripcion from grado_avance ')
-    datos4 = conexion.getResult()
+    datos4 = conexion.Fetch()
 
     conexion.execute('select idCarrera, descripcion from carrera ')
-    datos5 = conexion.getResult()
+    datos5 = conexion.Fetch()
 
     conexion.execute('select idIdioma, descripcion from idioma ')
-    datos6 = conexion.getResult()
+    datos6 = conexion.Fetch()
 
     conexion.execute('select idHabilidad, descripcion from habilidad ')
-    datos7 = conexion.getResult()
+    datos7 = conexion.Fetch()
 
     conexion.execute('select a.idArea, a.descripcion from area a, puesto b where a.idArea = b.idArea and b.idPuesto = %s'%(idP))
-    datos11 = conexion.getResult()
+    datos11 = conexion.Fetch()
 
     conexion.execute('select a.idEstadoCivil, a.descripcion from estado_civil a, puesto b where a.idEstadoCivil = b.idEstadoCivil and b.idPuesto = %s'%(idP))
-    datos12 = conexion.getResult()
+    datos12 = conexion.Fetch()
 
     conexion.execute('select a.idEscolaridad, a.descripcion from escolaridad a, puesto b where a.idEscolaridad = b.idEscolaridad and b.idPuesto = %s'%(idP))
-    datos13 = conexion.getResult()
+    datos13 = conexion.Fetch()
 
     conexion.execute('select a.idGradoAvance, a.descripcion from grado_avance a, puesto b where a.idGradoAvance = b.idGradoAvance and b.idPuesto = %s'%(idP))
-    datos14 = conexion.getResult()
+    datos14 = conexion.Fetch()
 
     conexion.execute('select a.idCarrera, a.descripcion from carrera a, puesto b where a.idCarrera = b.idCarrera and b.idPuesto = %s'%(idP))
-    datos15 = conexion.getResult()
+    datos15 = conexion.Fetch()
 
     conexion.execute('select a.idPuesto, b.idIdioma, b.descripcion from puesto a, idioma b, puesto_has_idioma c '
                    'where a.idPuesto = c.idPuesto and b.idIdioma = c.idIdioma and a.idPuesto = %s'%(idP))
-    datos16 = conexion.getResult()
+    datos16 = conexion.Fetch()
 
     conexion.execute('select a.idPuesto, b.idHabilidad, b.descripcion from puesto a, habilidad b, puesto_has_habilidad c '
                    'where a.idPuesto = c.idPuesto and b.idHabilidad = c.idHabilidad and a.idPuesto = %s'%(idP))
-    datos17 = conexion.getResult()
+    datos17 = conexion.Fetch()
 
 
     return render_template("puesto_edi.html", dat=dato[0], catArea=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
@@ -687,7 +687,7 @@ def puesto_fedita(idP):
 
 
     conexion.execute('select count(*) from idioma ')
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
     nidio = dato[0]
     ni = nidio[0] + 1
 
@@ -698,7 +698,7 @@ def puesto_fedita(idP):
 
 
     conexion.execute('select count(*) from habilidad ')
-    dato = conexion.getResult()
+    dato = conexion.Fetch()
     nhab = dato[0]
     nh = nhab[0] + 1
 
