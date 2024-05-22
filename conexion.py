@@ -1,5 +1,6 @@
 import pymysql
 from colorama import init, Fore, Back, Style
+from open import SQLFile
 # import os
 
 # os.chdir('./')
@@ -52,13 +53,17 @@ class Conexion:
             print(f"{Back.CYAN}___Consulta exitosa{Back.RESET}")
 
             #    print(f"c={c}")
-            if c==1 or c==3 or c==4:
-                #insert,update
-                self.conn.commit()
-            elif c==2:
-                #select
+            if c==2:
                 self.fetch=self.cursor.fetchall()
-            #     return self.fetch
+            else:
+                self.conn.commit()
+            # if c==1 or c==3 or c==4:
+            #     #insert,update
+            #     self.conn.commit()
+            # elif c==2:
+            #     #select
+            #     self.fetch=self.cursor.fetchall()
+            # #     return self.fetch
                 
             return 1
         except Exception:
@@ -78,13 +83,40 @@ class Conexion:
             if((SinEspacios.split(inst))[0]==""):
                 return c
             c+=1
- 
+    def executeSQLFile(self):
+        file=SQLFile()
+        with open("rh3Unido.sql", "r",encoding="utf-8") as archivo:
+            c=0
+            ba=None
+            while True:
+                instrcciones=file.getSQLines(archivo)
+                print(c)
+
+                for i in instrcciones:
+                    self.execute_query(i)
+                
+                print("P____________ESPACIO_____________*")
+                if not instrcciones[-1:]:
+                    break
+                c+=1
+                ba=instrcciones
+
+        # with open(self.archivoSQL, "r",encoding="utf-8") as archivo:
+        #     while True:
+        #         instrcciones=file.getSQLines(archivo)
+        #         #
+        #         for i in instrcciones:
+        #             self.execute_query(i)
+                
+        #         print("P____________ESPACIO_____________*")
+        #         if not instrcciones:
+        #             break
+
     def crear_DB(self,extension):
         self.execute_query(f"create schema {self.db+extension}")
         self.execute_query(f"use {self.db+extension}")
 
-        query=open(self.archivoSQL,"r").read()
-        self.execute_query(query)
+        self.executeSQLFile()
 
         query='create table version( version int not null); insert into version values(%s);'%(self.version)
         self.execute_query(self.version)
