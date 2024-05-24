@@ -6,7 +6,7 @@ reiniciar_campos=False
 
 class Admin():
     database="rh3"
-    version="3"
+    version="1"
     archivoSQL='rh3_uni.sql'
 
     def __init__(self):
