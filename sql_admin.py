@@ -5,14 +5,12 @@ from editor_texto import Editor
 reiniciar_campos=False
 
 class Admin():
-    columnas=9
-    tablas=15
     database="rh3"
-    version="2"
-    archivoSQL='rh3Unido.sql'
+    version="3"
+    archivoSQL='rh3_uni.sql'
 
     def __init__(self):
-        self.cx=Conexion(self.database,self.columnas,self.tablas,self.version,self.archivoSQL)
+        self.cx=Conexion(self.database,self.version,self.archivoSQL)
         self.editor=Editor()
 
     def execute(self,query):

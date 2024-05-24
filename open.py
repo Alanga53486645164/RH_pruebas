@@ -25,10 +25,58 @@ class SQLFile():
     # asi como almacear las pars incompletad y unirlas cuando se complete la instrccion
     primera_mitad=None
     bloque=None
+ 
+    def LastIncomplete(self):
+        if self.bloque[-1:]!="":
+            #el ultimo split del texto esta lleno, es decir, el bloque no termino en ';'.Por ende,
+                #tomo la mitad de una intruccion que continuara en el siguiente bloque
+            self.primera_mitad=self.bloque[-1:][0]
+            self.bloque=self.bloque[:-1]
+            return 1
+        #todas las instrucciones estan completas
+        self.primera_mitad=None
+        return -1
 
-    def media_instruccion(self):
+    def esPuntoYComa(self,bloque):
+        return (len(bloque)==2  and bloque[0].replace(' ','')=='' and bloque[1].replace(' ','')=='')
+    
+    def isMidInstruccion(self):
+        return (self.primera_mitad!=None)
+    
+    def unirInstruccion(self):
+        if self.esPuntoYComa(self.bloque) or self.isMidInstruccion() ==False:
+            #solo se tomo un misero ';'
+                            # O
+            #en el bucle pasado no hubo instruccion incompleta al final
+            #no hay necesidad de unir
+                # (condicionales en order de acuerdo a lo aqui dicho)
+            return -1
+        
+        if len(self.bloque)==1:
+            #el bucle pasado tomo la mitad de una instruccion
+            #   y el actual tomo otra parte, pero no la final
+            self.primera_mitad+=self.bloque[0]
+            return 1
+        
+        #bucle pasado tomo la primer mitad de una intruccion
+        #   eso significa que ya tenemos la instruccion completa
+        #hay que unir ambas partes
+        if self.bloque[0]=='':
+            # emplieza el bloque con un ';', seguido de una instruccion, tal vez incompleta.Eso se vera en la siguiente fase
+            self.bloque[0]=self.primera_mitad
+            return 2
+        #empieza el bloque con una instruccion, pueden ser varias
+        self.bloque[0]= self.primera_mitad+self.bloque[0]
+        #unidas
+        return 3
+        
+
+    def getSQLines(self,archivo): 
+        #quitamos los espacios en blanco de mas
+        self.bloque= archivo.read(3500).replace('  ',' ')
+        print(self.bloque)
         #separamos por lineas sql
-        bloque=self.bloque.split(";") 
+        self.bloque=self.bloque.split(";") 
         # escenarios:
 
         # instruccion incompleta:
@@ -41,47 +89,9 @@ class SQLFile():
         # varias:
         #     ['abd','sads','']
         
-        if self.isPrimera_mitad() ==1:
-            self.primera_mitad=bloque[len(bloque)-1]
+        self.unirInstruccion()
 
-        if self.primera_mitad!=None:
-            #bucle pasado tomo la primer mitad de una intruccion
-            #hay que unir ambas partes
-            bloque[0]=self.primera_mitad+bloque[0]
-            #unidas
+        self.LastIncomplete()
+        return self.bloque
 
-        if len(bloque) >1:
-            #tomaste mas de una instruccion
-            self.bloques+=bloque,
-        else:
-            #tomamos la parte media de una instruccion
-        
-            self.bloques+=bloque,
-        
-            self.bloques[len(self.bloques)]=bloque[0]
-
-                
-    def isPrimera_mitad(self,bloque):
-        if bloque[-1:]!="":
-            #el ultimo split del texto esta lleno, es decir, el bloque no termino en ';'.Por ende,
-                #tomo la mitad de una intruccion que continuara en el siguiente bloque
-            return 1
-        else:
-            #todas las instrucciones estan completas
-            self.primera_mitad=None
-            return -1
-
-    def getSQLines(self,archivo): 
-        #quitamos los saltos de linea
-        self.bloque= archivo.read(3500).replace('\n','')
-        print(self.bloque)
-
-        #el bucle pasado tomo una instruccion incompleta
-        self.mitad_faltante()
-
-        #el bucle actual tomo el centro de una instruccion
-        self.media_instruccion()
-
-        #el bucle tomo la primer mitad de una instruccion
-        self.primera_mitad()
         

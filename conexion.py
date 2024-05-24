@@ -4,7 +4,6 @@ from open import SQLFile
 # import os
 
 # os.chdir('./')
-db="rh3"
 
 # create database cuentan;
 # use cuentan;
@@ -12,6 +11,8 @@ db="rh3"
 
 class Conexion:
     conn=None
+    archivoVersion='dbVersion.txt'
+    print=True
     cursor=None
     db=None
     fetch=None
@@ -20,19 +21,28 @@ class Conexion:
 
     instrucciones=["use","insert","select","update","delete"]
     
-    def __init__(self,database,num_columns,num_tablas,version,archivoSQL):
+    def __init__(self,database,version,archivoSQL):
         self.ConexionSQL()
-        self.n_tab=num_tablas
         self.db=database
-        self.n_cols=num_columns
 
         self.version=version
         self.archivoSQL=archivoSQL
         
         self.cursor = self.conn.cursor()
 
-        self.conectarDB("")
 
+        self.conectarDB(self.getArchivoVersionDB())
+    
+    def getArchivoVersionDB(self):
+        try:
+            return open(self.archivoVersion,'r').read()
+        except Exception:
+            open(self.archivoVersion,'x')
+            return ''
+    
+    def setNewFileVersion(self,version):
+        open(self.archivoVersion,'w').write(version)
+    
     def ConexionSQL(self):
         try:
             self.conn= pymysql.connect(host='localhost', user='root', password="risemivicio125")
@@ -43,7 +53,11 @@ class Conexion:
             
     def execute_query(self,query):
         try:
-            print(Back.MAGENTA+query+Back.RESET)
+            #print(Back.MAGENTA+query+Back.RESET)
+            if( self.print):
+                print(query)
+            else:
+                print(query[:20])
             ##Ejecuta la consulta
             self.cursor.execute(query)
             #continua si la expresion es posible
@@ -57,17 +71,12 @@ class Conexion:
                 self.fetch=self.cursor.fetchall()
             else:
                 self.conn.commit()
-            # if c==1 or c==3 or c==4:
-            #     #insert,update
-            #     self.conn.commit()
-            # elif c==2:
-            #     #select
-            #     self.fetch=self.cursor.fetchall()
-            # #     return self.fetch
                 
             return 1
         except Exception:
             ##consulta mal formulada o imposible
+            if( self.print==False):
+                print(query)
             print(f"{Back.RED}____________>Fallo La consulta{Back.RESET}")
             print()
             return -1
@@ -83,46 +92,42 @@ class Conexion:
             if((SinEspacios.split(inst))[0]==""):
                 return c
             c+=1
+    
     def executeSQLFile(self):
-        file=SQLFile()
-        with open("rh3Unido.sql", "r",encoding="utf-8") as archivo:
+        self.file=SQLFile()
+        self.showQuery(False)
+        with open(self.archivoSQL, "r",encoding="utf-8") as archivo:
             c=0
             ba=None
             while True:
-                instrcciones=file.getSQLines(archivo)
+                self.instrucciones=self.file.getSQLines(archivo)
                 print(c)
 
-                for i in instrcciones:
+                for i in self.instrucciones: 
                     self.execute_query(i)
                 
-                print("P____________ESPACIO_____________*")
-                if not instrcciones[-1:]:
+                if self.instrucciones==[''] or self.instrucciones==[]:
                     break
                 c+=1
-                ba=instrcciones
-
-        # with open(self.archivoSQL, "r",encoding="utf-8") as archivo:
-        #     while True:
-        #         instrcciones=file.getSQLines(archivo)
-        #         #
-        #         for i in instrcciones:
-        #             self.execute_query(i)
-                
-        #         print("P____________ESPACIO_____________*")
-        #         if not instrcciones:
-        #             break
+        self.showQuery(True)
 
     def crear_DB(self,extension):
+        if(extension!=''):
+            extension=f'_{extension}'
+        self.execute_query(f"drop schema if exists {self.db+extension}")
         self.execute_query(f"create schema {self.db+extension}")
         self.execute_query(f"use {self.db+extension}")
 
+        query='create table version( version int not null);'
+        self.execute_query(query)
+        query='insert into version values(%s);'%(self.version)
+        self.execute_query(query)
+
         self.executeSQLFile()
 
-        query='create table version( version int not null); insert into version values(%s);'%(self.version)
-        self.execute_query(self.version)
         # self.crear_tablas()
 
-    def getVersion(self):
+    def getFromVersion(self):
         r=self.execute_query('select version from version')
         if r==-1:
             return None
@@ -130,59 +135,46 @@ class Conexion:
         
     def conectarDB(self,extension):
         # print("\n\n\n CONECTAR")
-        use="use "+self.db+extension
+        print('conectar')
+        use="use "+self.db
+        if extension!='':
+            use+=f'_{extension}'
+
         if self.execute_query(use)==-1:
+            print('No existe la db')
             #fallo la conexion a la db
             #no existe
+            if self.getArchivoVersionDB()!=extension:
+                # la extension/version libre de la db no concuerda con la marcada en el archivo de Version
+                self.setNewFileVersion(extension)
+
             self.crear_DB(extension)
-        # else:
-        #     #existe la db
-        #     print("EXISTE LA DB")
+            return 
+        #existe la db
+        print("EXISTE LA DB")
 
-        #     ver=self.getVersion()
-        #     if ver ==None or ver <self.version:
-        #         self.crear_DB()
+        #select a la tabla version en la DB
+        ver=self.getFromVersion()
+        if ver ==None:
+            print('no es nuestra db(no existe tabla version)')
+            #no esta agregada la tabla de version, es decir, no es nuestra base de datos
+            if extension=="": 
+                #es el primer fallo
+                self.conectarDB("1")
+            else: 
+                #ya van varias bd a las que se intento conectar
+                self.conectarDB(str(int(extension)+1))
+            return
+        print(f'VERSION ={ver[0]}')
+        print(f'VERSION 2 ={self.version}')
 
-
-
-
-        
-            # query=f"SELECT count(*) FROM information_schema.columns WHERE table_schema = '{self.db+extension}' AND table_name = 'cuentas'"
-            # self.execute_query(query)
-            # result1=self.getFetch()[0][0]
-
-            # query=f"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{self.db+extension}';"
-            # self.execute_query(query)
-
-            # result2=self.getFetch()[0][0]
-
-            # print(f"\n\nRestult={result1} ? {self.n_cols}      ;     result2={result2} ? {self.n_tab}")
-
-            # if(result1==self.n_cols and result2==self.n_tab):
-            #     #la db coincide en numero de tablas, y columnas de la tabla cuentas
-            #     query="select count(*) from cuentas where nombre and telefono and edad and id_cuenta and email and psw and foto_perfil"
-            #     resu=self.execute_query(query)
-            #     print("______>",resu)
-            #     if(resu!=-1):
-            #         #    print("\nES LA DB CORRECTA\n")
-            #         #la database es correcta, en campos y longuitud
-            #         return None
-            #     # print("\n\nPUNTO 1")
-            #     self.execute_query(f"drop schema {self.db}")
-            #     self.crear_DB(extension)
-            #     return None
-            # # print("\n\nPUNTO 2")
-            # if extension=="":
-            #     # print("\n\nPUNTO ")
-
-            #     #    print("\nPRIMER FALLO\n")
-            #     #es el primer fallo
-            #     self.conectarDB("1")
-            # else:
-            #     # print("\n\nPUNTO 3")
-            #     #    print("\nFALLO N\n")
-            #     #ya van varias bd a las que se intento conectar
-            #     self.conectarDB(str(int(extension)+1))
+        if int(ver[0])!=int(self.version):
+            print('la db esta desactualizada')
+            # el campo version en la DB no concuerda con el que deberia ser
+            self.crear_DB(extension)
+            return 
+        else:
+            print('DB ACTUAL SIN NECESIDAD DE CAMBIOS')
 
     def getFetch(self):
         return self.fetch
@@ -193,3 +185,6 @@ class Conexion:
     def close(self):
         self.conn.close()
         self.cursor.close()
+    
+    def showQuery(self,booleano):
+        self.print=booleano
