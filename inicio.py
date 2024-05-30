@@ -1,24 +1,31 @@
+# modulo para instalar las librerias necesarias
+# from install import *
+#fin
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql
 
-from flask import Flask, render_template, request, redirect, url_for, flash
-import pymysql
 import os
-from flask import Flask, send_file
-from docx import Document
+from flask import send_file
+# from docx import Document
 import sqlite3
-import docx2pdf
-import pythoncom
+# import docx2pdf
+# import pythoncom
 
-from flask import Flask, render_template, request, redirect, send_file, url_for, flash, send_file
-import pymysql
-from docx import Document
-import os
 from conexion import conectar
+
+# equipo 7
+from sql_admin import Admin
+from colorama import init, Fore, Back, Style
+from datetime import date
 
 
 app = Flask(__name__)
 app.secret_key='1234'
+
+
+# fin equipo 7
+
 @app.route('/')
 def home():
     return render_template("home.html")
