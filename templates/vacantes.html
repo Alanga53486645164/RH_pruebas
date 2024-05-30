@@ -1,0 +1,64 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <section id="tablaar" class="container">
+      <table id="tablar" class="margTabla" width="70%" border="1" cellpadding="0" bordercolor="#000000">
+        <tbody>
+          <tr>
+            <td color="FFFFFF" bgcolor="lightblue" valign="top">
+              
+              <center><h3>VACANTES AUTORIZADAS</h3></center>
+              <table width="70%" border="1" cellpadding="0" bordercolor="#000000">
+                <thead>
+                  <tr>
+                    <td bgcolor="white">ID</td>
+                    <td bgcolor="white">ConseVR</td>
+                    <td bgcolor="white">Fuente del Candidato</td>
+                    <td bgcolor="white">Inicio de la fecha de publicación</td>
+                    <td bgcolor="white">Fin de la fecha de publicación</td>
+                    <td bgcolor="white">Publicada</td>
+                    <td bgcolor="white">Observaciones</td>
+                    <td bgcolor="white">Candidato Seleccionado</td>
+                    <td bgcolor="white">Fecha de Contratación</td>
+                    <td bgcolor="white">ID de la Requisición</td>
+                    <td bgcolor="white">ID del Puesto</td>
+                    <td bgcolor="white">Editar</td>
+                    <td bgcolor="white">Borrar</td>
+                    <td bgcolor="white">Crear Anuncio</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for dato in comentarios %}
+                  <tr>
+                    <td>{{ dato[0] }}</td>
+                    <td>{{ dato[1] }}</td>
+                    <td>{{ dato[2] }}</td>
+                    <td>{{ dato[3] }}</td>
+                    <td>{{ dato[4] }}</td>
+                    <td>{{ dato[5] }}</td>
+                    <td>{{ dato[6] }}</td>
+                    <td>{{ dato[7] }}</td>
+                    <td>{{ dato[8] }}</td>
+                    <td>{{ dato[9] }}</td>
+                    <td>{{ dato[10] }}</td>
+                    <td bgcolor="#2B2D83"><center><a href="/vacante_editar/{{ dato[0] }}">Editar</a></center></td>
+                    <td bgcolor="#3C3EC5"><center><a href="/vacante_borrar/{{ dato[0] }}">Borrar</a></center></td>
+                    <td bgcolor="#3C3EC5"><center><a href="/form">Crear</a></center></td>
+
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>
+
+{% endblock %}

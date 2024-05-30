@@ -1,0 +1,81 @@
+{% extends "layout2.html" %}
+{% block content %}
+<style>
+    body {
+        background-color: #F6E7EA; 
+        font-family: Arial, sans-serif;
+    }
+    table {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+        border-collapse: collapse;
+        background-color: #E8C4BB;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #A55F4F;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #A55F4F;
+        color: white;
+    }
+    h3 {
+        color: #6E3E33;
+        margin-bottom: 10px;
+    }
+    a {
+        color: #6E3E33;
+        text-decoration: none;
+        font-size: 14px; 
+    }
+    a:hover {
+        color: #9E6558;
+    }
+    .button-container {
+        margin-left: 10%;
+        margin-right: 10%;
+        display: flex;
+        justify-content: flex-end; 
+        margin-bottom: 10px;
+    }
+    .button-container a {
+        margin-left: 10%;
+        margin-right: 10%;
+        padding: 6px 12px;
+        border: 1px solid #6E3E33;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .button-container a:hover {
+        background-color: #A55F4F;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>Candidato</th>
+            <th>Puesto</th>
+            <th>Estado</th>
+            <th>Generar contrato</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidato in comentarios %}
+        <tr>
+            <td>{{ candidato.1 }}</td>
+            <td>{{ candidato.2 }}</td>
+            <td>{{ candidato.3 }}</td>
+            <td>
+                <form action="/generar_documento_word/{{ candidato.0 }}" method="post">
+                    <button type="submit" class="btn btn-primary">Contrato</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

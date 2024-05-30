@@ -1,0 +1,118 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+<div class="containeraut">
+    <div class="row">
+        <div class="col-md-12">
+            <label for="titu">conseVR</label>
+        </div>
+    </div>        
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+            <input type="text" name="titu" id="titu" value="{{solicitexist[1]}}" class="form-control" readonly>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-4">
+        Fuente candidato
+        </div>   
+    <div class="col-md-4">
+        Fecha de publicacion
+    </div>
+    <div class="col-md-4">
+        Fin fecha de publicacion
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text"  name="noms" id="noms" class="form-control" readonly value="{{solicitexist[2]}}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="nomc" id="nomc" class="form-control" readonly value="{{solicitexist[3]}}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="jefs" id="jefs" class="form-control" readonly value="{{solicitexist[4]}}">       
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            Publicadas
+        </div>
+        <div class="col-md-4">
+            Observaciones
+        </div>
+        <div class="col-md-4">
+            Candidato seleccionado
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" name="hor" id="hor" class="form-control" readonly value="{{solicitexist[5]}}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="raz" id="raz" class="form-control" readonly value="{{solicitexist[6]}}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="dur" id="dur" class="form-control" readonly value="{{solicitexist[7]}}">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            Fecha de contratacion
+        </div>
+        <div class="col-md-4">
+            requisicion
+        </div>
+        <div class="col-md-4">
+            puesto
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" name="sue" id="sue" class="form-control" readonly value="{{solicitexist[8]}}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="eda" id="eda" class="form-control" readonly value="{{solicitexist[9]}}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="sex" id="sex" class="form-control" readonly value="{{solicitexist[10]}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+        Estado
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="text" name="est" id="est" class="form-control" readonly value="{{solicitexist[11]}}">
+        </div>
+    </div>
+   
+
+
+</form>
+    <br><br>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-3 text-center">
+            <form action="/aut">
+                <input type="submit" value="AUTORIZAR" name="autorizar" id="autorizar" style="background-color: rgb(0, 255, 0);" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="col-md-3 text-center">
+            <form action="/noaut">
+                <input type="submit" value="NO AUTORIZAR" name="noautorizar" id="noautorizar" style="background-color: rgb(210, 0, 0);" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    
+
+
+{% endblock %}

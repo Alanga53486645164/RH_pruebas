@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block content %}
+Crear Vacanteeee
+
+<form id="formwhite" class="row g-3" action="/registrovacan" method="POST">
+    <div class="col-md-12">
+       <label for="nomPuesto" class="form-label">Nombre del Puesto</label>
+       <input type="text" class="form-control" name="nomPuesto" id="nomPuesto" required>
+    </div>
+    <div class="col-md-6">
+       <label for="codPuesto" class="form-label">Código de Puesto</label>
+       <input type="text" class="form-control" name="codPuesto" id="codPuesto" required>
+    </div>
+    <div class="col-md-6">
+       <label for="idArea" class="form-label">Área de adscripción</label>
+       <input type="text" class="form-control" name="idArea" id="idArea" required>
+    </div>
+    <div class="col-md-12">
+       <label for="puestoJefeSup" class="form-label">Puesto del Jefe Superior</label>
+       <input type="text" class="form-control" name="puestoJefeSup" id="puestoJefeSup" required>
+    </div>
+    <div class="col-md-8">
+       <label for="jornada" class="form-label">Jornada</label>
+       <input type="text" class="form-control" name="jornada" id="jornada" required>
+    </div>
+    <div class="col-md-4">
+       <label for="remunMensual" class="form-label">Remuneración Mensual</label>
+       <input type="text" class="form-control" name="remunMensual" id="remunMensual" required>
+    </div>
+    <div class="col-md-12">
+       <label for="prestaciones" class="form-label">Prestaciones</label>
+       <input type="text" class="form-control" name="prestaciones" id="prestaciones" required>
+    </div>
+    <div class="col-md-12">
+       <label for="descripcionGeneral" class="form-label">Descripción General</label>
+       <input type="text" class="form-control" name="descripcionGeneral" id="descripcionGeneral" required>
+    </div>
+    <div class="col-md-12">
+        <label for="funciones" class="form-label">Funciones</label>
+        <input type="text" class="form-control" name="funciones" id="funciones" required>
+    </div>
+    <div class="col-md-4">
+        <label for="edad" class="form-label">Edad</label>
+        <input type="text" class="form-control" name="edad" id="edad" required>
+    </div>
+    <div class="col-md-4">
+        <label for="sexo" class="form-label">Sexo</label>
+        <input type="text" class="form-control" name="sexo" id="sexo" required>
+    </div>
+    <div class="col-md-4">
+        <label for="idEstadoCivil" class="form-label">Estado Civil</label>
+        <input type="text" class="form-control" name="idEstadoCivil" id="idEstadoCivil" required>
+    </div>
+    <div class="col-md-4">
+        <label for="idEscolaridad" class="form-label">Escolaridad</label>
+        <input type="text" class="form-control" name="idEscolaridad" id="idEscolaridad" required>
+    </div>
+    <div class="col-md-4">
+        <label for="idGradoAvance" class="form-label">Grado Avance</label>
+        <input type="text" class="form-control" name="idGradoAvance" id="idGradoAvance" required>
+    </div>
+    <div class="col-md-4">
+        <label for="idCarrera" class="form-label">Carrera</label>
+        <input type="text" class="form-control" name="idCarrera" id="idCarrera" required>
+    </div>
+    <div class="col-md-12">
+        <label for="experiencia" class="form-label">Experiencia</label>
+        <input type="text" class="form-control" name="experiencia" id="experiencia" required>
+    </div>
+    <div class="col-md-12">
+        <label for="conocimientos" class="form-label">Conocimientos</label>
+        <input type="text" class="form-control" name="conocimientos" id="conocimientos" required>
+     </div>
+     <div class="col-md-12">
+         <label for="manejoEquipo" class="form-label">ManejoEquipo</label>
+         <input type="text" class="form-control" name="manejoEquipo" id="manejoEquipo" required>
+     </div>
+     <div class="col-md-12">
+         <label for="reqFisicos" class="form-label">Requisitos Físicos</label>
+         <input type="text" class="form-control" name="reqFisicos" id="reqFisicos" required>
+     </div>
+     <div class="col-md-12">
+         <label for="reqPsicologicos" class="form-label">Requisitos Psicológicos</label>
+         <input type="text" class="form-control" name="reqPsicologicos" id="reqPsicologicos" required>
+     </div>
+     <div class="col-md-12">
+         <label for="responsabilidades" class="form-label">Responsabilidades</label>
+         <input type="text" class="form-control" name="responsabilidades" id="responsabilidades" required>
+     </div>
+     <div class="col-md-12">
+         <label for="condicionesTrabajo" class="form-label">Condiciones de Trabajo</label>
+         <input type="text" class="form-control" name="condicionesTrabajo" id="condicionesTrabajo" required>
+     </div>
+      <div class="col-6">
+         <label for="idiomas" class="form-label">Idiomas</label>
+         <input type="text" class="form-control" name="idiomas" id="idiomas" required>
+      </div>
+      <div class="col-6">
+        <label for="habilidades" class="form-label">Habilidades</label>
+        <input type="text" class="form-control" name="habilidades" id="habilidades" required>
+      </div>
+     <div class="col-12">
+         <button type="submit" class="btn btn-primary">Publicar</button>
+     </div>
+ </form>
+ 
+
+{% endblock %}

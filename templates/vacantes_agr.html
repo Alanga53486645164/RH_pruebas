@@ -1,0 +1,102 @@
+{% extends "layout2.html" %}
+{% block content %}
+<h3>
+    <CENTER> <b id="h2form"> Agregar Vacante </b> </CENTER>
+</h3>
+   <br>
+   <br>
+   <br>
+<div class="row">
+      <div class="col-12">
+          <section id="tablaar" class="container">
+            <form id="formwhite" action="/vacante_fagrega" method="post">
+            <div class="container">
+                    <div class="form-row">
+                        <div class="col-xs-12 ">
+                            <div class="mb-3">
+                              <label for="fuenteCandidato" class="form-label">Fuente del Candidato</label>
+                              <input type="text" class="form-control" name="fuenteCandidato" id="fuenteCandidato"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12 ">
+                            <div class="mb-3">
+                                <label for="inicioFechaPublic" class="form-label">Inicio de la fecha de publicación</label>
+                                <input type="date" class="form-control" name="inicioFechaPublic" id="inicioFechaPublic"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12 ">
+                            <div class="mb-3">
+                                <label for="finFechaPublic" class="form-label">Fin de la fecha de publicación</label>
+                                <input type="date" class="form-control" name="finFechaPublic" id="finFechaPublic"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12">
+                            <div class="mb-3">
+                                <label for="publicada" class="form-label">Publicada</label>
+                                <select class="form-control" name="publicada" id="publicada">
+                                    <option  selected="true" disabled="disabled">Elige...</option>
+                                    {% for dato in opciones_publicada %}
+                                        <option value="{{ dato }}">{{ dato }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12 ">
+                            <div class="mb-3">
+                                <label for="observaciones" class="form-label">Observaciones</label>
+                                <input type="text" class="form-control" name="observaciones" id="observaciones"></input>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-xs-12 ">
+                            <div class="mb-3">
+                                <label for="fechaContratacion" class="form-label">Fecha de Contratacion</label>
+                                <input type="date" class="form-control" name="fechaContratacion" id="fechaContratacion"></input>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-xs-12">
+                            <div class="mb-3">
+                                <label for="idRequisicion" class="form-label">ID de la Requisicion</label>
+                                <select class="form-control" name="idRequisicion" id="idRequisicion">
+                                    <option  selected="true" disabled="disabled">Elige...</option>
+                                    {% for opcion in opciones_publicada3 %}
+                                        <option value="{{ opcion }}">{{ opcion }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12">
+                            <div class="mb-3">
+                                <label for="idPuesto" class="form-label">ID del Puesto</label>
+                                <select class="form-control" name="idPuesto" id="idPuesto">
+                                    <option  selected="true" disabled="disabled">Elige...</option>
+                                    {% for opcion in opciones_publicada4 %}
+                                        <option value="{{ opcion }}">{{ opcion }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                  <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+      </section>
+</div>
+</div>
+{% endblock %}

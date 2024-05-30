@@ -1,0 +1,101 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+<div class="row">
+      <div class="col-12">
+          <section id="tablaar" class="container">
+            <form id="formwhite" action="/vacante_fedita/{{comentar.0}}" method="post">
+            <div class="container">
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="conseVR" class="form-label">ConseVR</label>
+                              <input type="number" class="form-control" name="conseVR" id="conseVR" placeholder="conseVR" value="{{comentar.1}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="fuenteCandidato" class="form-label">Fuente del Candidato</label>
+                              <input type="text" class="form-control" name="fuenteCandidato" id="fuenteCandidato" placeholder="Fuente del Candidato" value="{{comentar.2}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="inicioFechaPublic" class="form-label">inicio de la Fecha de Publicación</label>
+                              <input type="date" class="form-control" name="inicioFechaPublic" id="inicioFechaPublic" placeholder="inicio de la Fecha de Publicación" value="{{comentar.3}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="finFechaPublic" class="form-label">fin de la Fecha de Publicación</label>
+                              <input type="date" class="form-control" name="finFechaPublic" id="finFechaPublic" placeholder="fin de la Fecha de Publicación" value="{{comentar.4}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="publicada" class="form-label">publicada</label>
+                                    <input type="number" class="form-control" name="publicada" id="publicada" placeholder="publicada" value="{{comentar.5}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="observaciones" class="form-label">Observaciones </label>
+                                    <input type="text" class="form-control" name="observaciones" id="observaciones" placeholder="Observaciones" value="{{comentar.6}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="candidatoSelecc" class="form-label">Candidato Seleccionado</label>
+                                    <input type="number" class="form-control" name="candidatoSelecc" id="candidatoSelecc" placeholder="Candidato Seleccionado" value="{{comentar.7}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="fechaContratacion" class="form-label">Fecha de Contratación</label>
+                                    <input type="date" class="form-control" name="fechaContratacion" id="fechaContratacion" placeholder="Fecha de Contratación" value="{{comentar.8}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="idRequisicion" class="form-label">ID de la Requisicion</label>
+                                    <input type="number" class="form-control" name="idRequisicion" id="idRequisicion" placeholder="ID de la Requisicion" value="{{comentar.9}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="idPuesto" class="form-label">ID del Puesto</label>
+                                    <input type="number" class="form-control" name="idPuesto" id="idPuesto" placeholder="ID del Puesto" value="{{comentar.10}}">
+                              </div>
+                        </div>
+                  </div>
+            </div>
+                  <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+      </section>
+</div>
+</div>
+
+
+{% endblock %}

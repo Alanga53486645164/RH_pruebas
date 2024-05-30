@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+      <div class="col-12">
+            <section id="tablaar" class="container">
+                  <form id="formwhite" action="/escolaridad_fedita/{{comentar.0}}" method="post">
+                        <div class="container">
+                              <div class="form-row">
+                                    <div class="col-xs-12 ">
+                                          <div class="mb-3">
+                                                <label for="descripcion" class="form-label">Escolaridad</label>
+                                                <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Escolaridad" value="{{comentar.1}}">
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                  </form>
+           </section>
+      </div>
+</div>
+{% endblock %}

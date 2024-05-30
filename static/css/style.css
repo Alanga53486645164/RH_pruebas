@@ -1,0 +1,151 @@
+.navbar{
+    box-shadow: 0 2px 4px #000000;
+    background-color: rgb(0,2,122);
+}
+
+.navbar-nav{
+    color: #ffffff;
+}
+
+.navbar-nav .nav-link:hover{
+    color: #9bebff;
+}
+
+.navbar-brand{
+    color: #ffffff;
+}
+
+.navbar-brand:hover{
+    color: #9bebff;
+}
+
+.nav-link{
+    color: #ffffff;
+}
+
+.nav-link:hover{
+    color: #9bebff;
+}
+
+#tablaar{
+    padding-block: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-color:#010052;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 16px 14px 20px #001aff8c;
+    overflow-x:auto;
+}
+
+#tablaar2{
+    color: #ffffff;
+    padding-block: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-color:#010052;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 16px 14px 20px #001aff8c;
+    overflow-x:auto;
+}
+
+
+
+.navbar-toggler{
+    color: white;
+}
+
+.navbar-toggler-icon {
+    background-image: url(/static/imagenes/businessman_team_recruitment_employee_resources_human_resource_icon_210723.ico);   
+}
+
+/*#tablaar::before{
+    content: "";
+    position: absolute;
+    height: 300px ;
+    width: 300px;
+    background-image: conic-gradient(purple 20deg, transparent 120deg);
+    animation: rotar 2s linear infinite ;
+}
+
+@keyframes rotar{
+    form{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+#tablaar::after{
+    content:"";
+    position: absolute;
+    height: 250px;
+    width: 190px;
+    background-color: rgba(0, 0, 0, 0.7);
+} */
+
+
+.margTabla{
+    padding: 20px;
+    margin-bottom:auto;
+}
+
+#tablar {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 2px solid #000; 
+    font-family: 'Courier New', Courier, monospace;
+    width: 100%;
+    table-layout: auto;
+    @font-face {
+        font-family: 'fuente';
+        src: url(/static/fuente/Callingstone.ttf);
+    }
+    
+}
+
+#tdx{
+ background-color: #ffffff;
+}
+
+#tablar td, #tablar th {
+    border: 1px solid #000; 
+    padding: 8px;
+    text-align: center; 
+}
+
+#formwhite{
+    color: white;
+}
+
+#h2form{
+    color: white;
+}
+
+#tablar tbody tr:nth-child(even) {
+    background-color: #f2f2f2; 
+}
+
+#detalles{
+    display: none;
+    padding-block: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-color:#010052;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 16px 14px 20px #001aff8c;
+    overflow-x:auto;
+}
+
+body{
+    margin:0;
+    padding: 0;
+    height: 100vh;
+    background-image: url(/static/imagenes/fondos-de-pantalla-3d-paisaje.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    backdrop-filter: blur(5px);
+    background-position: center;
+    
+}
