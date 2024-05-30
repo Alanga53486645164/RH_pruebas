@@ -7,6 +7,10 @@ from datetime import date,datetime
 
 
 app = Flask(__name__)
+# nuevos nombres:
+# area_agr.html  -> catalogos_agr.html 
+# area_edi.html  -> catalogos_edi.html 
+# area.html  -> catalogos.html 
 
 @app.route('/')
 def home():
@@ -25,7 +29,7 @@ def verAparicion(id_curso):
     datos=conexion.Fetch()
     print(Back.YELLOW,datos,Back.RESET)
     # query=f"SELECT column_name,data_type FROM information_schema.columns  WHERE table_schema = 'rh3' AND table_name = 'curso_has_aparicion' and column_key !='PRI' order by ordinal_position"
-    return render_template('area.html',
+    return render_template('catalogos.html',
             comentarios = datos, puestos_cursos=None,
             titulo='Aparicion',tabla_plural='APARICIONES',male=False,
                 borrado=True,
@@ -122,10 +126,10 @@ def activar_curso(id_curso,id_registro,redireccion):
     if(redireccion=='NR'):
         return redirect(url_for('verAparicion',id_curso=id_curso))
 
-    return redirect(url_for('area',tabla='cursos',condicion='NC'))
+    return redirect(url_for('mostrarCatalogo',tabla='cursos',condicion='NC'))
 
 @app.route('/catalogosEdita:<string:tabla>:<int:id_campo>')
-def editar(tabla,id_campo):
+def editarCatalogo(tabla,id_campo):
     #como 'tabla' recibe el titulo de la tabla
     conexion=Admin()
     table_name=conexion.titleToTable(tabla)
@@ -133,7 +137,7 @@ def editar(tabla,id_campo):
     if(table_name==None):
         return redirect("/")
 
-    template="area_edi.html"
+    template="catalogos_edi.html"
 
     id_tabla=conexion.tableToId(table_name)
 
@@ -147,12 +151,14 @@ def editar(tabla,id_campo):
     #     template="newCurso.html"
     #     comentar=dato
     return render_template(template, comentar=comentar, campo=campos, tabla=table_name, id_campo=id_campo)
+# editar
 
 @app.route('/catalogos:<string:tabla>:<string:condicion>')
-def area(tabla,condicion):
+def mostrarCatalogo(tabla,condicion):
     conexion=Admin()
 
-    if(conexion.existeTabla(tabla)==None or(tabla=='curso_has_aparicion' and condicion=='NC')):
+    if(conexion.existeTabla(tabla)==None ):
+        # or(tabla=='curso_has_aparicion' and condicion=='NC')
         return redirect("/")
 
     permitir_borrado=True
@@ -166,7 +172,7 @@ def area(tabla,condicion):
     campos="*"
     join=""
     ci=condicion.upper()
-    if(condicion=='NC'):
+    if(condicion=='NC' and tabla!='curso_has_aparicion'):
         condicion=""
     else:
         hoy=date.today()
@@ -182,11 +188,14 @@ def area(tabla,condicion):
 
         elif condicion=='Pendientes':
             condicion=f' inicio > "{hoy}"'
+        else:
+            condicion=''
         #el metodo comentado servira una vez que desarrolle una funcion para hacer genocidio de datos
         # join=conexion.makeJoinFor(tabla)
         campos='id_registro, modo_aplicacion_curso.nombre,lugar,cursos.nombre,inicio,fin,trabajadores.NombreTrab,edicion'
         join='JOIN cursos ON curso_has_aparicion.id_curso=cursos.id_curso JOIN modo_aplicacion_curso ON curso_has_aparicion.id_metodo_aplicacion=modo_aplicacion_curso.id_modo JOIN trabajadores ON curso_has_aparicion.id_encargado=trabajadores.idTrabajador'
-        condicion="WHERE "+condicion
+        if(condicion!=''):
+            condicion="WHERE "+condicion
 
     if tabla=='trabajadores':
         campos='trabajadores.idTrabajador,p.nomPuesto,trabajadores.edad,trabajadores.sexo, ec.descripcion ,NombreTrab'
@@ -220,7 +229,7 @@ def area(tabla,condicion):
                 puestos+=puesto[0]+","
             puestos_cursos+=puestos[:-1],
 
-    return render_template("area.html",
+    return render_template("catalogos.html",
             comentarios = datos, n_registros=n_registros, puestos_cursos=puestos_cursos,
             titulo=titulo,tabla_plural=plural,male=male,
                 borrado=permitir_borrado,
@@ -229,9 +238,10 @@ def area(tabla,condicion):
             columnas=titulo_columnas, num_columnas=n_columnas,
             acciones=0, n_acc=0, id_tabla=showId,condicion=ci,id=None
             )
+# area
 
 @app.route('/EditaCatalogos:<string:tabla>:<int:id_campo>',methods=['POST'])
-def area_fedita(tabla,id_campo):
+def catalogo_edita(tabla,id_campo):
     if request.method == 'POST':
         valor=request.form['valor']
 
@@ -243,10 +253,11 @@ def area_fedita(tabla,id_campo):
 
         conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
 
-    return redirect(url_for('area',tabla=tabla,condicion='NC'))
+    return redirect(url_for('mostrarCatalogo',tabla=tabla,condicion='NC'))
+#area_fedita
 
 @app.route('/catalogoBorrar:<string:titulo>:<string:id>:<string:id_aparicion>')
-def area_borrar(titulo,id,id_aparicion):
+def catalogo_borrar(titulo,id,id_aparicion):
 
     conexion=Admin()
     table_name=conexion.titleToTable(titulo)
@@ -260,11 +271,11 @@ def area_borrar(titulo,id,id_aparicion):
     if(titulo=='Aparicion'):
         return redirect(url_for('verAparicion',id_curso=id_aparicion ))
 
-    return redirect(url_for('area',tabla=table_name,condicion='NC'))
+    return redirect(url_for('mostrarCatalogo',tabla=table_name,condicion='NC'))
+# area_borrar
 
-# @app.route('/area_agregar')
 @app.route('/catalogosAgregar:<string:tabla_titulo>:<string:id_campo>')
-def area_agregar(tabla_titulo,id_campo):
+def catalogo_agregar(tabla_titulo,id_campo):
     # if tabla_titulo=="Curso":
     #     return render_template("cursos_agr.html"
 
@@ -300,19 +311,15 @@ def area_agregar(tabla_titulo,id_campo):
         fetch+=conexion.Fetch()
 
     cant_datos=len(titulo_columnas)
-    return render_template("area_agr.html",
+    return render_template("catalogos_agr.html",
         columna=dato,titulo=tabla_titulo
         ,datos=titulo_columnas,boolean=booleanos,cDatos=cant_datos,none=None,
         fetch=fetch,id_campo=id_campo
     )
+#area_agregar
 
-# @app.route('/cursos_agregar')
-# def cursos_agregar():
-#     return render_template("cursos_agr.html")
-
-# @app.route('/area_fagrega', methods=['POST'])
 @app.route('/catalogoPUSH:<string:title>:<string:id_campo>', methods=['POST'])
-def area_fagrega(title,id_campo):
+def catalogo_aplicar_cambio(title,id_campo):
     if request.method != 'POST':
         return
 
@@ -392,11 +399,8 @@ def area_fagrega(title,id_campo):
         #         values=f"id_puesto={puesto}"
         #         query=f"update puesto_has_curso set {values} where id_curso={id_curso} and id_puesto={puesto}"
         #         conexion.execute(query)
-    return redirect(url_for('area',tabla=table_name,condicion='NC'))
-
-# @app.route('/EditaCurso:<int:id_curso>')
-# def editaCurso(id_curso):
-#     return redirect("")
+    return redirect(url_for('mostrarCatalogo',tabla=table_name,condicion='NC'))
+#area_fagrega
 
 @app.route('/puesto')
 def puesto():
