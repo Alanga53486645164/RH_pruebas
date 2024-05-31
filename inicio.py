@@ -1,5 +1,5 @@
 # modulo para instalar las librerias necesarias
-# from install import *
+from install import *
 #fin
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
@@ -21,6 +21,8 @@ app.secret_key='1234'
 from sql_admin import Admin
 from colorama import init, Fore, Back, Style
 from datetime import date
+
+conectar()
 
 @app.route('/verApariciones:<string:id_curso>')
 def verAparicion(id_curso):
@@ -214,18 +216,18 @@ def mostrarCatalogo(tabla,condicion):
     if tabla=='curso_has_empleados':
         campos='curso_has_empleados.id_registro, trabajadores.NombreTrab, curso_has_empleados.calificacion'
         join='join trabajadores on trabajadores.idTrabajador=curso_has_empleados.id_empleado'
-
+        # condicion="WHERE id_curso ="+ci
     query=f"select {campos} from {tabla} {join} {condicion} order by {id} asc"
 
     conexion.execute(query)
     datos = conexion.Fetch()
 
     plural,male=conexion.tablaPlural(titulo)
+    titulo_columnas=conexion.getColsNameFor(tabla)
     if tabla=='curso_has_empleados':
-        plural=titulo
+        plural=titulo 
     plural=plural.upper()
 
-    titulo_columnas=conexion.getColsNameFor(tabla)
     tipo_datos=conexion.colsToString(tabla,False)[1]
 
     booleanos=conexion.searchBooleanSQL(tipo_datos)
@@ -266,10 +268,15 @@ def catalogo_edita(tabla,id_campo):
         campos= conexion.colsToString(tabla,True)[0]
         campos=campos.split(",")
         id_tabla=campos[0]
-        otro=campos[1]
+        index=1
+        print(tabla)
+        if(tabla=='curso_has_empleados'):
+            index=3
+        otro=campos[index]
 
-        conexion.execute('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
-
+        query=('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
+        # print(f"{Back.RED}{query}{Back.RESET}")
+        conexion.execute(query)
     return redirect(url_for('mostrarCatalogo',tabla=tabla,condicion='NC'))
 #area_fedita
 
@@ -308,8 +315,14 @@ def catalogo_agregar(tabla_titulo,id_campo):
     #     titulo_columnas=['nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio']
     booleanos=conexion.searchBooleanSQL(tipo_datos)
 
+    id_campo=''+id_campo
+    id_campo=id_campo.split('_C')
+    editar=True
+    if(len(id_campo)>1):
+        editar=False
+    id_campo=(id_campo[0])
 
-    if id_campo!="%":
+    if id_campo!="%" and editar==True:
         id_campo=int(id_campo)
         id_table=conexion.tableToId("cursos")
 
@@ -328,11 +341,17 @@ def catalogo_agregar(tabla_titulo,id_campo):
         titulo_columnas+="Puestos a los que va dirigido :",
         fetch+=conexion.Fetch()
 
+    # print(f'{Back.RED}__________')
+    if(nombre_tabla=="curso_has_empleados"):
+        conexion.execute("select idTrabajador,NombreTrab from trabajadores order by idTrabajador desc")
+        # res=conexion.Fetch() 
+        fetch+=conexion.Fetch()
+
     cant_datos=len(titulo_columnas)
     return render_template("catalogos_agr.html",
         columna=dato,titulo=tabla_titulo
         ,datos=titulo_columnas,boolean=booleanos,cDatos=cant_datos,none=None,
-        fetch=fetch,id_campo=id_campo
+        fetch=fetch,id_campo=id_campo,editar=editar
     )
 #area_agregar
 
@@ -358,6 +377,7 @@ def catalogo_aplicar_cambio(title,id_campo):
     print(f"{Back.WHITE}{Nombre_columnas}{Back.RESET}")
 
     uniones=""
+    
 
     for col in range(len(Nombre_columnas)):
         column=Nombre_columnas[col]
@@ -369,10 +389,19 @@ def catalogo_aplicar_cambio(title,id_campo):
         if col <len(Nombre_columnas)-1:
             uniones+=","
 
-    if id_campo=="%":
+    print(uniones)
+    print(f'{datos}')
+    if id_campo=="%" or title=='Trabajadores en el curso':
         if(table_name=='cursos'):
             uniones+=",0"
-
+        if(title=='Trabajadores en el curso'):
+            datos=list(datos)  
+            campos=datos[1].split(',')[1:]
+            datos[1]=','.join(campos)
+            conexion.execute('select idTrabajador from trabajadores where NombreTrab="%s"'%(datos[2]))
+            id_campo=conexion.Fetch()[0][0]
+            datos[2]=id_campo      
+            datos=tuple(datos)       
         conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
     else:
         sets=""

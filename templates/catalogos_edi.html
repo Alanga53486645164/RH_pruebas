@@ -6,14 +6,19 @@
 <!-- <form action="/EditaCatalogos:{{tabla}}" method="post"> -->
 <form action="/EditaCatalogos:{{tabla}}:{{id_campo}}" method="post">
    <div class="container">
+    {% set validacion=namespace(prev='') %}
         {% set c=namespace(prev=1) %}
         {% for camp in campo %}
             <div class="form-row">
                 <div class="col-xs-12 ">
                     <div class="mb-3">
+                        {% if tabla=='curso_has_empleados' and c.prev==3 %}
+                            {% set validacion.prev='min=0 max=10 type=number ' %}
+                        {% endif %}
+
                         {% if (tabla!='curso_has_empleados') or (tabla=='curso_has_empleados' and c.prev==3) %}
                             <label for="descripcion" class="form-label texto-sombreado">{{camp}}</label>
-                            <input autofocus required type="text" class="form-control" name="valor" id="valor" placeholder="area" value="{{comentar[c.prev]}}">
+                            <input autofocus {{validacion.prev}} required class="form-control" name="valor" id="valor" placeholder="{{camp}}" value="{{comentar[c.prev]}}">
                         {% endif %}
                         <!--input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="area" value="{{comentar.1}}"-->
                     </div>

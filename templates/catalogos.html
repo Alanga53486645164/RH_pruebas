@@ -35,11 +35,8 @@
        <right><h3><a href="/Instanciar_curso:NC:NR">Agregar {{titulo}}</a></h3></right>
       {% elif tabla_plural=='APARICIONES' %}
        <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
-      {% elif titulo=='Trabajador' %}
-        <right><h3><a href="/trabajador_agregar">Agregar {{titulo}}</a></h3></right>
-        <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
       {% else %}
-        <right><h3><a href="/catalogosAgregar:{{titulo}}:%">Agregar {{titulo}}</a></h3></right>
+        <right><h3><a href="/catalogosAgregar:{{titulo}}:{% if titulo=='Trabajadores en el curso' %}{{condicion}}_C{% else %}%{% endif %}">Agregar {{titulo}}</a></h3></right>
       {% endif %}
     <div style="display:none" id="titulo_plural">{{tabla_plural}}</div>
     <center><h3>{{tabla_plural}} 

@@ -17,8 +17,8 @@
 {{fetch}}
    <br> -->
    <br>
-   <br>
-<form action="/catalogoPUSH:{{titulo}}:{{id_campo}}" method="post">
+   <br>{{fetch}}
+<form action="/catalogoPUSH:{{titulo}}:{{id_campo}}{% if editar %}_E{% endif %}" method="post">
     <input type="text" style="display:none" name="n_puestos" value="{{num_puestos}}">
     <div class="container">
         <div class="form-row">
@@ -41,33 +41,44 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-                        <!-- 
-                            cuadro input para ingresar el dato.
-                            Tiene la mecanica de ocultado y reprimido cuando el campo es 
-                                booleano 
-                        -->
-                        <input required autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
-                            class="form-control {% if boolean!=None %}{% for booleano in boolean %}{% if dato==booleano or (dato==6 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{% endif %}{{col}}"
-                            value="{{fetch[0][dato]}}"
-                        ></input>
-                        <!-- cuadros de seleccion de los puestos -->
-                        {% if dato ==6 and titulo=="Curso" %}
-                            <!-- cuadro input que almacenara los ids de los pestos seleccionados -->
-                            <input type="text" style="display:none" name="puestos">
+                        
+                        {% if titulo=='Trabajadores en el curso' and dato==0 %}
                             <br>
-                            <!-- boton para seleccion de todos los puestos -->
-                            <input class="agregarPresionado"type="checkbox" name="Todos">
-                            <span class="texto-sombreado">
-                                Todos 
-                            </span>
+                            <select name="{{datos[dato]}}" class="w-100" id="">
+                                {% for empleado in fetch[1:] %}
+                                    <option >{{empleado[1]}}</option>
+                                {% endfor %}
+                            </select> 
                             <br>
-                            {% for puesto in fetch[1:] %}
-                                <input class="agregarPresionado"type="checkbox" name="puesto-{{puesto[0]}}">
+                        {% else %}
+                            <!-- 
+                                cuadro input para ingresar el dato.
+                                Tiene la mecanica de ocultado y reprimido cuando el campo es 
+                                    booleano 
+                            -->
+                            <input {% if titulo!='Trabajadores en el curso' %}required{% endif %} autofocus type="text" name="{{datos[dato]}}" id="descripcion"  
+                                class="form-control {% if boolean!=None %}{% for booleano in boolean %}{% if dato==booleano or (dato==6 and titulo=='Curso') %}borrado{% endif %}{% endfor %}{% endif %}{{col}}"
+                                value="{{fetch[0][dato]}}"
+                            ></input>
+                            <!-- cuadros de seleccion de los puestos -->
+                            {% if dato ==6 and titulo=="Curso" %}
+                                <!-- cuadro input que almacenara los ids de los pestos seleccionados -->
+                                <input type="text" style="display:none" name="puestos">
+                                <br>
+                                <!-- boton para seleccion de todos los puestos -->
+                                <input class="agregarPresionado"type="checkbox" name="Todos">
                                 <span class="texto-sombreado">
-                                    {{puesto[1]}}
+                                    Todos 
                                 </span>
                                 <br>
-                            {% endfor %}
+                                {% for puesto in fetch[1:] %}
+                                    <input class="agregarPresionado"type="checkbox" name="puesto-{{puesto[0]}}">
+                                    <span class="texto-sombreado">
+                                        {{puesto[1]}}
+                                    </span>
+                                    <br>
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                     <!-- {% if titulo=='Curso' and dato==2 %}

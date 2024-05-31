@@ -7,7 +7,7 @@ reiniciar_campos=False
 class Admin():
     columnas=9
     tablas=15
-    database="rh3_2"
+    database=open('db.txt','r').read()
     version="2"
     archivoSQL='rh3_uni_nv.sql'
 
