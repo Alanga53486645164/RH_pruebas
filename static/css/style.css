@@ -2,7 +2,12 @@
     box-shadow: 0 2px 4px #000000;
     background-color: rgb(0,2,122);
 }
-
+.texto-sombreado{
+    color:white;
+    font-weight: 800;
+    text-shadow: 10px 1px 8px black;
+    /* box-shadow: 10px 5px black; */
+}
 .navbar-nav{
     color: #ffffff;
 }
@@ -21,6 +26,8 @@
 
 .nav-link{
     color: #ffffff;
+    /* provicional */
+    /* min-width: 15vw; */
 }
 
 .nav-link:hover{

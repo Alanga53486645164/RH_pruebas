@@ -145,7 +145,8 @@ class Conexion:
         use="use "+self.db
         # if extension!='':
         #     use+=f'_{extension}'
-
+        self.execute_query(use)
+        
         # if self.execute_query(use)==-1:
         #     print('No existe la db')
         #     #fallo la conexion a la db

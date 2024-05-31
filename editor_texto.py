@@ -28,26 +28,27 @@ class Editor:
         self.ids=None
     
     def getMasculinos(self):
-        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Aparicion',"Trabajador"]
+        return ["Idioma","Grado de Avance","Estado Civil","Curso",'Aparicion',"Trabajador",'Trabajadores del curso']
     
     def getIds(self):
-        return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso","id_registro","idTrabajador"]
+        return ["idArea","idCarrera","idEscolaridad","idEstadoCivil","idGradoAvance","idHabilidad","idIdioma","id_curso","id_registro","idTrabajador",'id_registro']
     
     def getTables(self):
-        return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos","curso_has_aparicion","trabajadores"]
+        return ["area","carrera","escolaridad","estado_civil","grado_avance","habilidad","idioma","cursos","curso_has_aparicion","trabajadores",'curso_has_empleados']
     
     def getColsName(self):
         # Nota:No se incluye al campo ID
         tabl=Tabla("cursos",('nombre','descripcion','duracion','objetivos de aprendizaje','obligatorio','Numero de Ediciones'))
         tabl2=Tabla("area,carrera,escolaridad,estado_civil,grado_avance,habilidad,idioma",('Descripcion',))
-        tabl3=Tabla("curso_has_aparicion",('metodo de aplicacion','lugar','curso','inicio','fin','encargado'))
+        tabl3=Tabla("curso_has_aparicion",('metodo de aplicacion','lugar','curso','inicio','fin','encargado','edicion'))
         tabl4=Tabla("trabajadores",("Puesto","Edad","Sexo","Estado Civil","Nombre"))
+        tabl4=Tabla("curso_has_empleados",('nombre del empleado','calificacion'))
         return (
             tabl,tabl2,tabl3,tabl4
         )
 
     def getTableTitles(self):
-        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Aparicion","Trabajador"]
+        return ["Area","Carrera","Escolaridad","Estado Civil","Grado de Avance","Habilidad","Idioma","Curso","Aparicion","Trabajador",'Trabajadores en el curso']
     
     def isVowel(self,letra):
         vocales=["a","e","i","o","u"]

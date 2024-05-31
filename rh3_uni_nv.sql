@@ -20,7 +20,7 @@
 --
 CREATE DATABASE IF NOT EXISTS `rh3` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `rh3`;
-
+set sql_safe_updates=0;
 --
 -- Table structure for table `admins`
 --
@@ -182,7 +182,7 @@ CREATE TABLE `curso_has_aparicion` (
 
 LOCK TABLES `curso_has_aparicion` WRITE;
 /*!40000 ALTER TABLE `curso_has_aparicion` DISABLE KEYS */;
-INSERT INTO `curso_has_aparicion` VALUES (1,1,'Area 51',1,'1','2002-04-02','2002-04-20',2),(2,3,'NO HAY',2,'1','2002-03-27','2002-04-15',3);
+INSERT INTO `curso_has_aparicion` VALUES (1,1,'Area 51',1,'1','2002-04-02','2002-04-20',7),(2,3,'NO HAY',2,'1','2002-03-27','2002-04-15',9);
 /*!40000 ALTER TABLE `curso_has_aparicion` ENABLE KEYS */;
 UNLOCK TABLES;
 
