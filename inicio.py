@@ -216,7 +216,8 @@ def mostrarCatalogo(tabla,condicion):
     if tabla=='curso_has_empleados':
         campos='curso_has_empleados.id_registro, trabajadores.NombreTrab, curso_has_empleados.calificacion'
         join='join trabajadores on trabajadores.idTrabajador=curso_has_empleados.id_empleado'
-        # condicion="WHERE id_curso ="+ci
+        if(ci!=''):
+            condicion="WHERE id_curso ="+ci
     query=f"select {campos} from {tabla} {join} {condicion} order by {id} asc"
 
     conexion.execute(query)
@@ -263,6 +264,7 @@ def mostrarCatalogo(tabla,condicion):
 def catalogo_edita(tabla,id_campo):
     if request.method == 'POST':
         valor=request.form['valor']
+        condicion='NC'
 
         conexion=Admin()
         campos= conexion.colsToString(tabla,True)[0]
@@ -272,12 +274,14 @@ def catalogo_edita(tabla,id_campo):
         print(tabla)
         if(tabla=='curso_has_empleados'):
             index=3
+            conexion.execute('select id_curso from curso_has_empleados where id_registro=%s'%(id_campo))
+            condicion=conexion.Fetch()[0][0]
         otro=campos[index]
 
         query=('update %s set %s="%s" where %s=%s'%(tabla,otro,valor,id_tabla,id_campo))
         # print(f"{Back.RED}{query}{Back.RESET}")
         conexion.execute(query)
-    return redirect(url_for('mostrarCatalogo',tabla=tabla,condicion='NC'))
+    return redirect(url_for('mostrarCatalogo',tabla=tabla,condicion=condicion))
 #area_fedita
 
 @app.route('/catalogoBorrar:<string:titulo>:<string:id>:<string:id_aparicion>')
@@ -360,6 +364,7 @@ def catalogo_aplicar_cambio(title,id_campo):
     if request.method != 'POST':
         return
 
+    condicion='NC'
     conexion=Admin()
     table_name=conexion.titleToTable(title)
 
@@ -371,13 +376,9 @@ def catalogo_aplicar_cambio(title,id_campo):
     print(table_name)
 
     if(table_name=='cursos'):
-        print('PADO')
         Nombre_columnas=Nombre_columnas[:-1]
 
-    print(f"{Back.WHITE}{Nombre_columnas}{Back.RESET}")
-
     uniones=""
-    
 
     for col in range(len(Nombre_columnas)):
         column=Nombre_columnas[col]
@@ -395,13 +396,15 @@ def catalogo_aplicar_cambio(title,id_campo):
         if(table_name=='cursos'):
             uniones+=",0"
         if(title=='Trabajadores en el curso'):
-            datos=list(datos)  
-            campos=datos[1].split(',')[1:]
-            datos[1]=','.join(campos)
+            datos=list(datos)
             conexion.execute('select idTrabajador from trabajadores where NombreTrab="%s"'%(datos[2]))
-            id_campo=conexion.Fetch()[0][0]
-            datos[2]=id_campo      
+            id_traba=conexion.Fetch()[0][0]
+            datos[2]=str(id_campo)+','+str(id_traba)
+            if(datos[3]==''):
+                datos[3]='Null'
+            # datos[2]+=id_campo
             datos=tuple(datos)       
+            condicion=str(id_campo)
         conexion.execute(f'insert into %s (%s) values ({uniones})'%datos)
     else:
         sets=""
@@ -446,7 +449,7 @@ def catalogo_aplicar_cambio(title,id_campo):
         #         values=f"id_puesto={puesto}"
         #         query=f"update puesto_has_curso set {values} where id_curso={id_curso} and id_puesto={puesto}"
         #         conexion.execute(query)
-    return redirect(url_for('mostrarCatalogo',tabla=table_name,condicion='NC'))
+    return redirect(url_for('mostrarCatalogo',tabla=table_name,condicion=condicion))
 #area_fagrega
 
 # fin equipo 7
