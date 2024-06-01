@@ -18,7 +18,7 @@
    <br> -->
    <br>
    <br>{{fetch}}
-<form action="/catalogoPUSH:{{titulo}}:{{id_campo}}{% if editar %}_E{% endif %}" method="post">
+<form id="formulario" action="/catalogoPUSH:{{titulo}}:{{id_campo}}{% if editar %}_E{% endif %}" method="post">
     <input type="text" style="display:none" name="n_puestos" value="{{num_puestos}}">
     <div class="container">
         <div class="form-row">
@@ -176,6 +176,17 @@
         checklist[index].onclick=agregarPresionado
         checklist[index].accion=0
         
+    }
+    let env=document.getElementById('formulario')
+    env.onsubmit=function(e){
+        let selects=document.getElementsByTagName('select')
+        // alert('submit')
+        for(let index=0;index<selects.length;index++){
+            if(selects[index].value==''){
+                alert('SIN SELECTS VACIOS')
+                e.preventDefault()
+            }
+        }
     }
 </script>
 {% endblock %}

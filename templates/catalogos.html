@@ -12,7 +12,7 @@
   {% endif %}
 
   {% if  titulo=='Aparicion' %}
-    {%- set ns.prev = ns.prev+2 %}
+    {%- set ns.prev = ns.prev+3 %}
   {% elif titulo=='Trabajador' %}
     {%- set ns.prev = ns.prev+2 %}
   {% endif %}
@@ -31,17 +31,21 @@
       
     <td color="FFFFFF" bgcolor="#465F5A" valign="top">
       
-      {% if tabla_plural=='APARICIONES' and id==None %}
-       <right><h3><a href="/Instanciar_curso:NC:NR">Agregar {{titulo}}</a></h3></right>
-      {% elif tabla_plural=='APARICIONES' %}
-       <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
-      {% else %}
-        <right><h3><a href="/catalogosAgregar:{{titulo}}:{% if titulo=='Trabajadores en el curso' %}{{condicion}}_C{% else %}%{% endif %}">Agregar {{titulo}}</a></h3></right>
+      {% if agregar!=False %}
+        {% if tabla_plural=='APARICIONES' and id==None %}
+        <right><h3><a href="/Instanciar_curso:NC:NR">Agregar {{titulo}}</a></h3></right>
+        {% elif tabla_plural=='APARICIONES' %}
+        <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
+        {% else %}
+          <right><h3><a href="/catalogosAgregar:{{titulo}}:{% if titulo=='Trabajadores en el curso' %}{{condicion}}_C{% else %}%{% endif %}">Agregar {{titulo}}</a></h3></right>
+        {% endif %}
       {% endif %}
     <div style="display:none" id="titulo_plural">{{tabla_plural}}</div>
     <center><h3>{{tabla_plural}} 
-      {% if condicion!='NC' %}
-        {{condicion}}
+      {% if condicion!='NC'%}
+        {% if titulo!='Trabajadores en el curso'%}
+          {{condicion}}
+        {% endif %}
       {% else %}
         {% if male==True %}
           REGISTRADOS
@@ -65,7 +69,7 @@
         
         {% for columna in columnas %}
           {% set class=namespace(prev="") %}
-          {% if titulo=='Curso' and (c_col.prev>=2 and c_col.prev<=5 ) %}
+          {% if (titulo=='Curso' or titulo=='Aparicion') and (c_col.prev>=2 and c_col.prev<=5 ) %}
             <!--  -->
             {% if c_col.prev>=4 and c_col.prev<=5 %}
               {% set class.prev= class.prev+' None None-md' %}
@@ -117,7 +121,7 @@
             {% endfor %}
           {% endif %}
 
-          {% if titulo=='Curso' and (campo>=3 and campo<=6 ) %}
+          {% if (titulo=='Curso' or titulo=='Aparicion') and (campo>=3 and campo<=6 ) %}
             {% if campo==5 or campo==6 %}
               {% set class.prev= class.prev+' None None-md' %}
             {% else %}
@@ -190,7 +194,11 @@
         {% if( titulo=='Apariciones' or titulo=='Aparicion' ) and administrador==True %}
           <td bgcolor="#3C3EC5" width="8%">
           <center><a href="/catalogos:curso_has_empleados:{{i.0}}" >Ver empleados participantes</a></center>
-
+          
+          {% if condicion=='Pasadas' %}
+            <td bgcolor="#3C3EC5" width="8%">
+            <center><a href="/catalogosAgregar:Trabajadores en el curso:{{i.0}}_C" >Agregar emlpeado</a></center>
+          {% endif %}
           <td bgcolor="#3C3EC5" width="8%" class="None None-md">
           <center><a href="/trabajo_fdetalle/{{i.8}}" >Ver encargado</a></center>
         {% endif %}

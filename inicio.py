@@ -65,7 +65,12 @@ def instanciarCurso(id_curso,id_registro):
     conexion.execute("select nombre,id_modo from modo_aplicacion_curso")
     datos+=conexion.Fetch(),
 
-    conexion.execute("select NombreTrab,idTrabajador from trabajadores")
+    if(id_curso!='NC'):
+        query='SELECT t.idTrabajador,NombreTrab FROM trabajadores t WHERE t.idTrabajador NOT IN (SELECT che.id_empleado FROM curso_has_empleados che WHERE che.id_curso = %s)'%(id_curso)
+    else:
+        query=("select NombreTrab,idTrabajador from trabajadores")
+        
+    conexion.execute(query)
     datos+=conexion.Fetch(),
     edita=False
     #idPuesto,
@@ -165,7 +170,7 @@ def editarCatalogo(tabla,id_campo):
 # def mostrarCatalogo(tabla,condicion,admin):
 def mostrarCatalogo(tabla,condicion):
     conexion=Admin()
-
+    agregar=True
     if(conexion.existeTabla(tabla)==None ):
         # or(tabla=='curso_has_aparicion' and condicion=='NC')
         return redirect("/")
@@ -186,7 +191,7 @@ def mostrarCatalogo(tabla,condicion):
     ci=condicion.upper()
     if(condicion=='NC' and tabla!='curso_has_aparicion'):
         condicion=""
-    else:
+    elif tabla=='curso_has_aparicion':
         hoy=date.today()
         print(Back.GREEN,"hoy",hoy)
 
@@ -197,6 +202,7 @@ def mostrarCatalogo(tabla,condicion):
         elif condicion=='Pasadas':
             edita=False
             condicion=f' fin < "{hoy}"'
+            agregar=False
 
         elif condicion=='Pendientes':
             condicion=f' inicio > "{hoy}"'
@@ -216,8 +222,17 @@ def mostrarCatalogo(tabla,condicion):
     if tabla=='curso_has_empleados':
         campos='curso_has_empleados.id_registro, trabajadores.NombreTrab, curso_has_empleados.calificacion'
         join='join trabajadores on trabajadores.idTrabajador=curso_has_empleados.id_empleado'
+        hoy=date.today()
         if(ci!=''):
             condicion="WHERE id_curso ="+ci
+            query='select id_curso from curso_has_aparicion where id_registro=%s and fin<"%s"'%(ci,hoy)
+            conexion.execute(query)
+            res=conexion.Fetch()
+            print(f'{Back.CYAN}{res}')
+            if(res!=()):
+                agregar=False
+            # return f'Alto:{res}'
+
     query=f"select {campos} from {tabla} {join} {condicion} order by {id} asc"
 
     conexion.execute(query)
@@ -255,7 +270,8 @@ def mostrarCatalogo(tabla,condicion):
                 boolean=booleanos,
                 edita=edita,
             columnas=titulo_columnas, num_columnas=n_columnas,
-            acciones=0, n_acc=0, id_tabla=showId,condicion=ci,id=None
+            acciones=0, n_acc=0, id_tabla=showId,condicion=ci,id=None,
+            agregar=agregar
             #,administrador=admin
             )
 # area
@@ -345,9 +361,16 @@ def catalogo_agregar(tabla_titulo,id_campo):
         titulo_columnas+="Puestos a los que va dirigido :",
         fetch+=conexion.Fetch()
 
-    # print(f'{Back.RED}__________')
+    print(f'{Back.RED}__________{id_campo}')
     if(nombre_tabla=="curso_has_empleados"):
-        conexion.execute("select idTrabajador,NombreTrab from trabajadores order by idTrabajador desc")
+        
+        if(id_campo!=''):
+            query='SELECT t.idTrabajador,NombreTrab FROM trabajadores t WHERE t.idTrabajador NOT IN (SELECT che.id_empleado FROM curso_has_empleados che WHERE che.id_curso = %s)'%(id_campo)
+        else:
+            query=("select NombreTrab,idTrabajador from trabajadores")
+
+        conexion.execute(query)
+        # conexion.execute("select idTrabajador,NombreTrab from trabajadores order by idTrabajador desc")
         # res=conexion.Fetch() 
         fetch+=conexion.Fetch()
 
