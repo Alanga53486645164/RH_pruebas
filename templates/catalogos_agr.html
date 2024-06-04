@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout2.html" %}
 {% block content %}
 
 <style>
@@ -7,7 +7,13 @@
     }
 </style>
 <h3>
-    <CENTER> <b> Agregar {{titulo}} </b> </CENTER>
+    <CENTER> <b>
+        {% if editar %}
+            Editar
+        {% else %}
+            Agregar 
+        {% endif %}
+        {{titulo}} </b> </CENTER>
       
 </h3>
 <!-- {{boolean}}
@@ -17,7 +23,7 @@
 {{fetch}}
    <br> -->
    <br>
-   <br>{{fetch}}
+   <!-- <br>{{fetch}} -->
 <form id="formulario" action="/catalogoPUSH:{{titulo}}:{{id_campo}}{% if editar %}_E{% endif %}" method="post">
     <input type="text" style="display:none" name="n_puestos" value="{{num_puestos}}">
     <div class="container">

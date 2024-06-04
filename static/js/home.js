@@ -1,8 +1,8 @@
-gsap.to(".container", {
-    duration: 2,
-    ease: "power4.out",
-    x: 24,
-});
+// gsap.to(".container", {
+//     duration: 2,
+//     ease: "power4.out",
+//     x: 24,
+// });
 gsap.to(".rec", {
     duration: 1,
     ease: "power4.out",

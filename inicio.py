@@ -8,7 +8,7 @@ import pymysql
 import os
 from flask import send_file
 import docx2pdf
-from docx import Document
+# from docx import Document
 import pythoncom
 
 from conexion import conectar
@@ -22,6 +22,7 @@ from colorama import init, Fore, Back, Style
 from datetime import date
 
 conectar()
+Admin()
 
 @app.route('/verApariciones:<string:id_curso>')
 def verAparicion(id_curso):
@@ -478,11 +479,11 @@ def catalogo_aplicar_cambio(title,id_campo):
 
 @app.route('/')
 def home():
-    return render_template("home.html",inicio=True)
+    return render_template("home.html",inicio=True,inicio_sesion=False)
 
 @app.route('/layout2')
 def layout2():
-    return render_template("home2.html")
+    return render_template("home2.html",inicio=True)
 
 @app.route('/area')
 def area():
@@ -1560,8 +1561,6 @@ def generar_documento_word(idCandidato):
         if not resultados:
             return "Datos erróneos o Incompletos"
 
-
-
         column_names = [column[0] for column in cursor.description]
         valores_por_columna = [[row[i] for row in resultados] for i in range(len(cursor.description))]
         idCandidato = valores_por_columna[column_names.index("idCandidato")]
@@ -1969,103 +1968,103 @@ def CursosTrab(idTrabajador):
 
     return render_template("capacitacionesT.html", trabajador=trabajador, cursos=cursos)
 
-@app.route('/generar_documento_word/<int:idCandidato>', methods=['POST'])
-def generar_documento_word(idCandidato):
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
-        cursor = conn.cursor()
+# @app.route('/generar_documento_word/<int:idCandidato>', methods=['POST'])
+# def generar_documento_word(idCandidato):
+#         conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+#         cursor = conn.cursor()
 
-        cursor.execute("""
-        SELECT cand.idCandidato, req.nomSolicita AS Nombre_Solicitante, cand.nombre AS Nombre_Candidato, cand.rfc AS RFC_Candidato, cand.CURP, ec.descripcion AS Estado_Civil, cand.edad AS Edad, cand.sexo AS Sexo, cand.domCalle AS Calle, cand.domNumExtInt AS Numero_Ext, cand.domColonia AS Colonia, cand.idPuesto AS ID_Puesto, p.nomPuesto AS Nombre_Puesto, p.descripcionGeneral AS Descripcion_Puesto, p.jornada AS Jornada, p.remunMensual AS Remuneracion_Mensual, p.reqFisicos AS Requisitos_Fisicos, p.reqPsicologicos AS Requisitos_Psicologicos, req.tipoVacante AS Tipo_Vacante, cand.entrevFinalResul AS Resultado_Entrevista_Final 
-        FROM requisicion req 
-        JOIN candidato cand ON req.idRequisicion = cand.idRequisicion 
-        JOIN puesto p ON cand.idPuesto = p.idPuesto 
-        JOIN estado_civil ec ON cand.idEstadoCivil = ec.idEstadoCivil
-        WHERE cand.idCandidato = %s
-        """, (idCandidato,))
+#         cursor.execute("""
+#         SELECT cand.idCandidato, req.nomSolicita AS Nombre_Solicitante, cand.nombre AS Nombre_Candidato, cand.rfc AS RFC_Candidato, cand.CURP, ec.descripcion AS Estado_Civil, cand.edad AS Edad, cand.sexo AS Sexo, cand.domCalle AS Calle, cand.domNumExtInt AS Numero_Ext, cand.domColonia AS Colonia, cand.idPuesto AS ID_Puesto, p.nomPuesto AS Nombre_Puesto, p.descripcionGeneral AS Descripcion_Puesto, p.jornada AS Jornada, p.remunMensual AS Remuneracion_Mensual, p.reqFisicos AS Requisitos_Fisicos, p.reqPsicologicos AS Requisitos_Psicologicos, req.tipoVacante AS Tipo_Vacante, cand.entrevFinalResul AS Resultado_Entrevista_Final 
+#         FROM requisicion req 
+#         JOIN candidato cand ON req.idRequisicion = cand.idRequisicion 
+#         JOIN puesto p ON cand.idPuesto = p.idPuesto 
+#         JOIN estado_civil ec ON cand.idEstadoCivil = ec.idEstadoCivil
+#         WHERE cand.idCandidato = %s
+#         """, (idCandidato,))
 
-        resultados = cursor.fetchall()
+#         resultados = cursor.fetchall()
 
-        if not resultados:
-            return "Datos erróneos o Incompletos"
+#         if not resultados:
+#             return "Datos erróneos o Incompletos"
 
 
 
-        column_names = [column[0] for column in cursor.description]
-        valores_por_columna = [[row[i] for row in resultados] for i in range(len(cursor.description))]
-        idCandidato = valores_por_columna[column_names.index("idCandidato")]
-        Nombre_Solicitante = valores_por_columna[column_names.index("Nombre_Solicitante")]
-        Nombre_Candidato = valores_por_columna[column_names.index("Nombre_Candidato")]
-        RFC_Candidato = valores_por_columna[column_names.index("RFC_Candidato")]
-        CURP = valores_por_columna[column_names.index("CURP")]
-        Estado_Civil = valores_por_columna[column_names.index("Estado_Civil")]
-        Edad = valores_por_columna[column_names.index("Edad")]
-        Sexo = valores_por_columna[column_names.index("Sexo")]
-        Calle = valores_por_columna[column_names.index("Calle")]
-        Numero_Ext = valores_por_columna[column_names.index("Numero_Ext")]
-        Colonia = valores_por_columna[column_names.index("Colonia")]
-        ID_Puesto = valores_por_columna[column_names.index("ID_Puesto")]
-        Nombre_Puesto = valores_por_columna[column_names.index("Nombre_Puesto")]
-        Descripcion_Puesto = valores_por_columna[column_names.index("Descripcion_Puesto")]
-        Jornada = valores_por_columna[column_names.index("Jornada")]
-        Remuneracion_Mensual = valores_por_columna[column_names.index("Remuneracion_Mensual")]
-        Requisitos_Fisicos = valores_por_columna[column_names.index("Requisitos_Fisicos")]
-        Requisitos_Psicologicos = valores_por_columna[column_names.index("Requisitos_Psicologicos")]
-        Tipo_Vacante = valores_por_columna[column_names.index("Tipo_Vacante")]
-        Resultado_Entrevista_Final = valores_por_columna[column_names.index("Resultado_Entrevista_Final")]
+#         column_names = [column[0] for column in cursor.description]
+#         valores_por_columna = [[row[i] for row in resultados] for i in range(len(cursor.description))]
+#         idCandidato = valores_por_columna[column_names.index("idCandidato")]
+#         Nombre_Solicitante = valores_por_columna[column_names.index("Nombre_Solicitante")]
+#         Nombre_Candidato = valores_por_columna[column_names.index("Nombre_Candidato")]
+#         RFC_Candidato = valores_por_columna[column_names.index("RFC_Candidato")]
+#         CURP = valores_por_columna[column_names.index("CURP")]
+#         Estado_Civil = valores_por_columna[column_names.index("Estado_Civil")]
+#         Edad = valores_por_columna[column_names.index("Edad")]
+#         Sexo = valores_por_columna[column_names.index("Sexo")]
+#         Calle = valores_por_columna[column_names.index("Calle")]
+#         Numero_Ext = valores_por_columna[column_names.index("Numero_Ext")]
+#         Colonia = valores_por_columna[column_names.index("Colonia")]
+#         ID_Puesto = valores_por_columna[column_names.index("ID_Puesto")]
+#         Nombre_Puesto = valores_por_columna[column_names.index("Nombre_Puesto")]
+#         Descripcion_Puesto = valores_por_columna[column_names.index("Descripcion_Puesto")]
+#         Jornada = valores_por_columna[column_names.index("Jornada")]
+#         Remuneracion_Mensual = valores_por_columna[column_names.index("Remuneracion_Mensual")]
+#         Requisitos_Fisicos = valores_por_columna[column_names.index("Requisitos_Fisicos")]
+#         Requisitos_Psicologicos = valores_por_columna[column_names.index("Requisitos_Psicologicos")]
+#         Tipo_Vacante = valores_por_columna[column_names.index("Tipo_Vacante")]
+#         Resultado_Entrevista_Final = valores_por_columna[column_names.index("Resultado_Entrevista_Final")]
 
-        dir_actual = os.path.dirname(__file__)
-        plantilla = os.path.join(dir_actual, 'static', 'plantilla.docx')
-        document = Document(plantilla)
-        for resultado in resultados:
-         for paragraph in document.paragraphs:
-            for field_name, field_value in zip(column_names, resultado):
-                marcador = f"[{field_name}]"
-                if marcador in paragraph.text:
-                    paragraph.text = paragraph.text.replace(marcador, str(field_value))
-                if "[Nombre_Solicitante]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Nombre_Solicitante]", str(Nombre_Solicitante[0]))
-                if "[Nombre_Candidato]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Nombre_Candidato]", str(Nombre_Candidato[0]))
-                if "[RFC_Candidato]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[RFC_Candidato]", str(RFC_Candidato[0]))
-                if "[CURP]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[CURP]", str(CURP[0]))
-                if "[Estado_Civil]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Estado_Civil]", str(Estado_Civil[0]))
-                if "[Edad]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Edad]", str(Edad[0]))
-                if "[Sexo]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Sexo]", str(Sexo[0]))
-                if "[Calle]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Calle]", str(Calle[0]))
-                if "[Numero_Ext]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Numero_Ext]", str(Numero_Ext[0]))                 
-                if "[Colonia]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Colonia]", str(Colonia[0]))
-                if "[ID_Puesto]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[ID_Puesto]", str(ID_Puesto[0]))
-                if "[Nombre_Puesto]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Nombre_Puesto]", str(Nombre_Puesto[0]))
-                if "[Descripcion_Puesto]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Descripcion_Puesto]", str(Descripcion_Puesto[0]))
-                if "[Jornada]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Jornada]", str(Jornada[0]))
-                if "[Remuneracion_Mensual]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Remuneracion_Mensual]", str(Remuneracion_Mensual[0]))
-                if "[Requisitos_Fisicos]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Requisitos_Fisicos]", str(Requisitos_Fisicos[0]))
-                if "[Requisitos_Psicologicos]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Requisitos_Psicologicos]", str(Requisitos_Psicologicos[0]))
-                if "[Tipo_Vacante ]" in paragraph.text:
-                 paragraph.text = paragraph.text.replace("[Tipo_Vacante]", str(Tipo_Vacante[0]))
-                if "[Resultado_Entrevista_Final]" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("[Resultado_Entrevista_Final]", str(Resultado_Entrevista_Final[0]))
-        cursor.close()
-        conn.close()
-        pythoncom.CoInitialize()
-        document.save('contrato.docx')
-        docx2pdf.convert("contrato.docx")
-        return send_file('contrato.pdf', as_attachment=True)
+#         dir_actual = os.path.dirname(__file__)
+#         plantilla = os.path.join(dir_actual, 'static', 'plantilla.docx')
+#         document = Document(plantilla)
+#         for resultado in resultados:
+#          for paragraph in document.paragraphs:
+#             for field_name, field_value in zip(column_names, resultado):
+#                 marcador = f"[{field_name}]"
+#                 if marcador in paragraph.text:
+#                     paragraph.text = paragraph.text.replace(marcador, str(field_value))
+#                 if "[Nombre_Solicitante]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Nombre_Solicitante]", str(Nombre_Solicitante[0]))
+#                 if "[Nombre_Candidato]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Nombre_Candidato]", str(Nombre_Candidato[0]))
+#                 if "[RFC_Candidato]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[RFC_Candidato]", str(RFC_Candidato[0]))
+#                 if "[CURP]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[CURP]", str(CURP[0]))
+#                 if "[Estado_Civil]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Estado_Civil]", str(Estado_Civil[0]))
+#                 if "[Edad]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Edad]", str(Edad[0]))
+#                 if "[Sexo]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Sexo]", str(Sexo[0]))
+#                 if "[Calle]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Calle]", str(Calle[0]))
+#                 if "[Numero_Ext]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Numero_Ext]", str(Numero_Ext[0]))                 
+#                 if "[Colonia]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Colonia]", str(Colonia[0]))
+#                 if "[ID_Puesto]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[ID_Puesto]", str(ID_Puesto[0]))
+#                 if "[Nombre_Puesto]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Nombre_Puesto]", str(Nombre_Puesto[0]))
+#                 if "[Descripcion_Puesto]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Descripcion_Puesto]", str(Descripcion_Puesto[0]))
+#                 if "[Jornada]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Jornada]", str(Jornada[0]))
+#                 if "[Remuneracion_Mensual]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Remuneracion_Mensual]", str(Remuneracion_Mensual[0]))
+#                 if "[Requisitos_Fisicos]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Requisitos_Fisicos]", str(Requisitos_Fisicos[0]))
+#                 if "[Requisitos_Psicologicos]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Requisitos_Psicologicos]", str(Requisitos_Psicologicos[0]))
+#                 if "[Tipo_Vacante ]" in paragraph.text:
+#                  paragraph.text = paragraph.text.replace("[Tipo_Vacante]", str(Tipo_Vacante[0]))
+#                 if "[Resultado_Entrevista_Final]" in paragraph.text:
+#                     paragraph.text = paragraph.text.replace("[Resultado_Entrevista_Final]", str(Resultado_Entrevista_Final[0]))
+#         cursor.close()
+#         conn.close()
+#         pythoncom.CoInitialize()
+#         document.save('contrato.docx')
+#         docx2pdf.convert("contrato.docx")
+#         return send_file('contrato.pdf', as_attachment=True)
 
 
 

@@ -1,10 +1,10 @@
 {% extends "layout2.html" %}
 {% block content %}
-    {{comentar.0}} <br>
+    <!-- {{comentar.0}} <br>
     {{comentar.1}} <br>
     {{comentar.2}} <br>
     {{comentar.3}} <br>
-    {{comentar.4}} <br>
+    {{comentar.4}} <br> -->
     
     {% set id_reg=namespace(prev=0) %}
 
@@ -24,6 +24,7 @@
 
         <form action="/ActivarCurso:{% if comentar[0]!=None %}{{comentar[0][0][0]}}{% else %}CP{% endif %}:{{id_reg.prev}}:{{redir}}" method="POST" class="row">
             
+            <h1>APARECER CURSO</h1>
             {% if cursos!= None %}
                 <legend class="col-6">Curso</legend>
                 <select name="curso" class="col-6">
@@ -54,7 +55,7 @@
                             {% set class.prev= "Activo" %}
                         {% endif %}
                     {% endif %}
-                    <option id={{opcion.1}} class="{{class.prev}}">{{opcion.0}}</option>
+                    <option id={{opcion.1}} class="{{class.prev}}">{{opcion.1}}</option>
                 {% endfor %}
             </select>
 
