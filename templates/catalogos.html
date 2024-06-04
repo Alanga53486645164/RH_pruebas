@@ -1,0 +1,247 @@
+{% extends "layout.html" %}
+{% block content %}
+  {% set administrador=True %}
+  <!-- el array de aqui guarda unas variables que llegan desde el archivo python  -->
+  {% set acciones = borrado,boolean,edita %}
+
+  <!-- {{acciones}} <br> -->
+  {% set ns = namespace(prev=0) %}
+
+  {% if titulo=='Curso' or titulo =='Apariciones' %}
+    {%- set ns.prev = ns.prev+1 %}
+  {% endif %}
+
+  {% if  titulo=='Aparicion' %}
+    {%- set ns.prev = ns.prev+3 %}
+  {% elif titulo=='Trabajador' %}
+    {%- set ns.prev = ns.prev+2 %}
+  {% endif %}
+
+  {% for x in acciones %}
+    <!-- x={{x}} <br> -->
+    {%- if x!=None and x!=False %} 
+      {%- set ns.prev = ns.prev+1 %}
+    {% endif -%} 
+  {% endfor %}
+<!-- {{comentarios}} -->
+    <div id="booleanos" class="dis-None">{{boolean}}</div>
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <tbody>
+    <tr>
+      
+    <td color="FFFFFF" bgcolor="#465F5A" valign="top">
+      
+      {% if agregar!=False %}
+        {% if tabla_plural=='APARICIONES' and id==None %}
+        <right><h3><a href="/Instanciar_curso:NC:NR">Agregar {{titulo}}</a></h3></right>
+        {% elif tabla_plural=='APARICIONES' %}
+        <right><h3><a href="/Instanciar_curso:{{id}}:NR">Agregar {{titulo}}</a></h3></right>
+        {% else %}
+          <right><h3><a href="/catalogosAgregar:{{titulo}}:{% if titulo=='Trabajadores en el curso' %}{{condicion}}_C{% else %}%{% endif %}">Agregar {{titulo}}</a></h3></right>
+        {% endif %}
+      {% endif %}
+    <div style="display:none" id="titulo_plural">{{tabla_plural}}</div>
+    <center><h3>{{tabla_plural}} 
+      {% if condicion!='NC'%}
+        {% if titulo!='Trabajadores en el curso'%}
+          {{condicion}}
+        {% endif %}
+      {% else %}
+        {% if male==True %}
+          REGISTRADOS
+        {% else %}
+          REGISTRADAS
+        {% endif %}
+      {% endif %}
+    </h3></center>
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <thead>
+      <tr>
+        {% if id_tabla==True %}
+          <td class="text-center" style="color:white" bgcolor="blue">ID</td>
+        {% endif %}
+
+        {% set c_col=namespace(prev=0) %}
+        <!-- <br>
+        {{columnas}}
+        <br>
+        {{comentarios.0}} -->
+        
+        {% for columna in columnas %}
+          {% set class=namespace(prev="") %}
+          {% if (titulo=='Curso' or titulo=='Aparicion') and (c_col.prev>=2 and c_col.prev<=5 ) %}
+            <!--  -->
+            {% if c_col.prev>=4 and c_col.prev<=5 %}
+              {% set class.prev= class.prev+' None None-md' %}
+            {% else %}
+              {% set class.prev= class.prev+' None None-lg' %}
+            {% endif %}
+
+          {% elif (titulo=='Apariciones' or titulo=='Aparicion') and (c_col.prev==5 ) %}
+            <!--  -->
+              {% set class.prev= class.prev+' None None-md' %}
+
+          {% endif %}
+          <td class="text-center{{class.prev}}" style="color:white" bgcolor="blue">{{columna}}{{c_col.prev}}</td>
+          
+          {% set c_col.prev=c_col.prev +1 %}
+        {% endfor %}
+
+        <!-- con 'ctrl' + 'Esc ' puedes eliminar espacion entre renglones. Ejemplo :
+          Antes: 
+            borrado,(aqui se usa el comando)
+            boolean,(aqui se usa el comando)
+            edita
+          Despues
+            borrado,boolean,edita -->
+        {% if administrador==True %}
+          <td class="text-center" bgcolor="black" colspan="{{ns.prev}}" style="color:white">Opciones</td>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    {% set c=namespace(prev=0) %}
+    {% for i in comentarios %}
+        <tr>
+        {% if id_tabla==True %}
+          <td >{{i.0}}</td> 
+        {% endif %}
+
+        {% for campo in range(1,num_columnas+1) %}
+          {% set class=namespace(prev="") %}
+
+          {% if boolean != None %}
+            <!--  -->
+            {% set class.prev= class.prev+'text-center' %}
+            {% for booleano in boolean %}
+              {% if campo==booleano+1 %} 
+                <!--  -->
+                {% set class.prev= class.prev+' booleanTarget' %}                
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% if (titulo=='Curso' or titulo=='Aparicion') and (campo>=3 and campo<=6 ) %}
+            {% if campo==5 or campo==6 %}
+              {% set class.prev= class.prev+' None None-md' %}
+            {% else %}
+              {% set class.prev= class.prev+' None None-lg' %}
+            {% endif %}
+
+          {% elif (titulo=='Apariciones' or titulo=='Aparicion') and (campo==6 ) %}
+            
+              {% set class.prev= class.prev+' None None-md' %}
+          {% endif %}
+
+          <td class="{{class.prev}}">
+            {{ i[campo] }}
+          </td>
+
+        {% endfor %}
+
+        {% if titulo=='Curso' %}
+          <td class="puesto_has_curso">
+            {% if puestos_cursos[c.prev] =="" %}
+              NO HAY PUESTO ASOCIADO
+            {% else %}
+              |{{puestos_cursos[c.prev] }}</td>
+            {% endif %}
+        {% endif %}
+        <!-- and edita_cancelado.prev!=True  -->
+        <!-- {% if titulo=='Trabajador' and administrador==True %}
+            <td bgcolor="#2B2D83" width="6%">
+            <center><a href="/trabajo_fdetalle/{{i.0}}" class="btn btn-outline-info btn-sm ">Detalles</a></center>
+            </td>
+            <td bgcolor="#2B2D83" width="6%">
+            <center><a href="/CursosTrab/{{i.0}}" class="btn btn-outline-info btn-sm ">Capacitacion</a></center>
+            </td>
+        {% endif %} -->
+
+        {% if edita !=False and administrador==True %}
+          {% if titulo=="Curso" %}
+            {% set class=namespace(prev="") %}
+              <!--  -->
+            {% set class.prev= class.prev+' None None-lg' %}
+
+            <td class="{{class.prev}}" bgcolor="#2B2D83" width="8%">
+              <center><a href="/catalogosAgregar:{{titulo}}:{{i.0}}" >Editar</a></center>
+          {% elif titulo=='Apariciones' or titulo=='Aparicion' %}
+            <td  bgcolor="#2B2D83" class="None None-md" width="8%">
+              <center><a href="/Instanciar_curso:{{id}}:{{i.0}}" >Editar</a></center>
+          {% else %}
+            <td  bgcolor="#2B2D83" width="8%">
+              <center><a href="/catalogosEdita:{{titulo}}:{{i.0}}" >
+                {% if titulo =='Trabajadores en el curso' %}
+                  Calificar
+                {% else %}
+                  Editar
+                {% endif %}</a></center>
+          {% endif %}
+        </td>
+        {% endif %}
+
+        {% if titulo=="Curso" and administrador==True %}
+        <td bgcolor="#2B2D83">
+          <center><a href="/Instanciar_curso:{{i.0}}:CR" >Activar Curso</a></center>
+        </td>
+        <td bgcolor="#2B2D83" width="8%">
+            <!-- <center><a href="/Apariciones_curso:{{i.0}}" >Ver Apariciones</a></center> -->
+            <!-- <center><a href="/catalogos:curso_has_aparicion:id_curso={{i.0}}" >Ver Apariciones</a></center> -->
+            <center><a href="/verApariciones:{{i.0}}" >Ver Apariciones</a></center>
+          </td>
+        {% endif %} 
+
+        {% if( titulo=='Apariciones' or titulo=='Aparicion' ) and administrador==True %}
+          <td bgcolor="#3C3EC5" width="8%">
+          <center><a href="/catalogos:curso_has_empleados:{{i.0}}" >Ver empleados participantes</a></center>
+          
+          {% if condicion=='Pasadas' %}
+            <td bgcolor="#3C3EC5" width="8%">
+            <center><a href="/catalogosAgregar:Trabajadores en el curso:{{i.0}}_C" >Agregar emlpeado</a></center>
+          {% endif %}
+          <td bgcolor="#3C3EC5" width="8%" class="None None-md">
+          <center><a href="/trabajo_fdetalle/{{i.8}}" >Ver encargado</a></center>
+        {% endif %}
+        
+        {% if borrado!=False and administrador==True %}
+          <td bgcolor="#3C3EC5" class="{% if titulo=='Curso' %}None None-sm{% endif %}"  width="8%">
+          <center><a href="/catalogoBorrar:{{titulo}}:{{i.0}}{% if tabla_plural=='APARICIONES' %}:{{id}}{% else %}:NA{% endif %} " >Borrar</a></center>
+        {% endif %}
+        </td>
+        </tr>
+        {% set c.prev= c.prev+1 %}
+    {% endfor %}
+    <!-- </tbody>
+    </table>
+    </td>
+    </tr>
+    </tbody>
+    </table> -->
+
+    <script>
+      function IntToBoolean(int){
+        if(int==1){
+          return "SI"
+          return "Cierto"
+        }else{
+          return "NO"
+          return "Falso"
+        }
+      }
+
+      booleanos=document.getElementsByClassName("booleanTarget")
+      for(let bool=0;bool<booleanos.length;bool++){
+        let txt=booleanos[bool].innerText
+        booleanos[bool].innerText=IntToBoolean(txt)
+      }
+      let puestos=document.getElementsByClassName("puesto_has_curso")
+      for(let index=0;index<puestos.length;index++){
+        puestos[index].innerHTML=(puestos[index].innerHTML.split(",").join("<br>-"))
+        puestos[index].innerHTML=puestos[index].innerHTML.replace("|","-")
+        // puestos[index].innerHTML
+      }
+
+      document.getElementById("titulo").innerHTML="RH|"+document.getElementById("titulo_plural").innerHTML
+    </script>
+
+{% endblock %}

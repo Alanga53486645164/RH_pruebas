@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<head>
+    <style>
+        /* Añade estos estilos al archivo style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Color de fondo */
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.form-container {
+    padding: 20px;
+    background-color: rgb(46, 46, 55);
+    color: aliceblue;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h3 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.form-label {
+    color: aliceblue;
+}
+
+.btn-primary {
+    background-color: #2a8691;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #15a7bd;
+}
+
+.select-container {
+    margin-bottom: 20px;
+}
+
+.select-container select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.select-container label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.submit-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 form-container">
+            <h3>Capacitaciones Empleados</h3>
+            <form action="/addCurso" method="post">
+                <div class="select-container">
+                    <label for="idTrab" class="form-label">Trabajadores</label>
+                    <select name="idTrab" id="idTrab" class="form-select">
+                        <option selected disabled>Elige...</option>
+                        {% for i in catTrab %}
+                            <option value="{{ i.0 }}">{{ i.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="select-container">
+                    <label for="idCurso" class="form-label">Capacitaciones Disponibles</label>
+                    <select name="idCurso" id="idCurso" class="form-select">
+                        <option selected disabled>Elige...</option>
+                        {% for i in catCurso %}
+                            <option value="{{ i.0 }}">{{ i.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="submit-container">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+{% endblock %}

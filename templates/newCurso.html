@@ -1,0 +1,86 @@
+{% extends "layout2.html" %}
+{% block content %}
+    {{comentar.0}} <br>
+    {{comentar.1}} <br>
+    {{comentar.2}} <br>
+    {{comentar.3}} <br>
+    {{comentar.4}} <br>
+    
+    {% set id_reg=namespace(prev=0) %}
+
+    {% if edita==True %}
+        {% set id_reg.prev=comentar[4][0] %}
+    {% else %}
+        {% set id_reg.prev='NR' %}
+    {% endif %}
+    
+    <style>
+        form{
+            background-color: rgba(96, 85, 85, 0.763);
+        }
+    </style>
+    <div class="dis-None" id="restriccion">1{{restriccion_fecha}}</div>
+    <div class="container">
+
+        <form action="/ActivarCurso:{% if comentar[0]!=None %}{{comentar[0][0][0]}}{% else %}CP{% endif %}:{{id_reg.prev}}:{{redir}}" method="POST" class="row">
+            
+            {% if cursos!= None %}
+                <legend class="col-6">Curso</legend>
+                <select name="curso" class="col-6">
+                    {% set cbucle=namespace(prev=0) %}
+                    {% for c in cursos %}
+                        <option class="{% if cbucle.prev==0 %}Activo{% endif %} value="">{{c.0}}</option>
+                        {% set cbucle.prev=1 %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+            <legend class="col-6">Lugar</legend>
+            <input name="lugar" required type="text" class="col-6" value="{% if edita==True %}{{comentar[4][1]}}{% endif %}">
+
+            <legend class="col-6">Inicio</legend>
+            <input name="fecha_inicio" required class="col-6" type="date" value="{% if edita==True %}{{comentar[4][2]}}{% endif %}">
+
+            <legend class="col-6">FIN</legend>
+            <input name="fecha_fin" required class="col-6" type="date" value="{% if edita==True %}{{comentar[4][3]}}{% endif %}">
+
+            <legend class="col-6">Encargado:</legend>
+
+            <select class="col-6" name="Encargado">
+                {% for opcion in comentar[3] %}
+                    {% set class=namespace(prev='') %}
+                    {% if edita==True %}
+                        {% if opcion.1 ==comentar[4][4] %}
+                            {% set class.prev= "Activo" %}
+                        {% endif %}
+                    {% endif %}
+                    <option id={{opcion.1}} class="{{class.prev}}">{{opcion.0}}</option>
+                {% endfor %}
+            </select>
+
+            <legend class="col-6">Metodo de Aplicacion:</legend>
+            <select class="col-6" name="MetAplicacion">
+                {% for opcion in comentar[2] %}
+                    {% set class=namespace(prev='') %}
+                    {% if edita==True %}
+                        {% if opcion.1 ==comentar[4][5] %}
+                            {% set class.prev= "Activo" %}
+                        {% endif %}
+                    {% endif %}
+                    <option id={{opcion.1}} class="{{class.prev}}">{{opcion.0}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input name="Enviar" type="submit" value="Activar Curso">
+        </form>
+    </div>
+
+    <script src="../static/js/Fechas.js"></script>
+    <script>
+        let activos=document.getElementsByClassName('Activo')
+        let selects=document.getElementsByTagName('select')
+        for(let index=0;index<activos.length;index++){
+            selects[index].value=activos[index].value
+        }
+    </script>
+{% endblock %}

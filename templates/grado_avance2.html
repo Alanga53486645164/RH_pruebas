@@ -1,0 +1,46 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+      <section id="tablaar" class="container">
+          <table id="tablar" class="margTabla" width="100%" border="1" cellpadding="0" bordercolor="#000000">
+          <tbody>
+          <tr>
+          <td color="FFFFFF" bgcolor="lightblue" valign="top">
+          <right><h3><a href="/area_agregar">Agregar Grado de avance</a></h3></right>
+          <center><h3>GRADOS DE AVANCE REGISTRADOS</h3></center>
+          <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+          <thead>
+            <tr>
+              <td color="white" bgcolor="white">Descripcion</td>
+              <td color="white" bgcolor="white"></td>
+              <td color="white" bgcolor="white"></td>
+            </tr>
+          </thead>
+          <tbody>
+          {% for i in comentarios %}
+              <tr>
+              <td width="80%">
+                {{i.1}}
+              </td>
+
+              <td bgcolor="#2B2D83" width="8%">
+              <center><a href="/grado_avance_editar/{{i.0}}">Editar</a></center>
+              </td>
+              <td bgcolor="#3C3EC5" width="8%">
+              <center><a href="/grado_avance_borrar/{{i.0}}">Borrar</a></center>
+              </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+          </td>
+          </tr>
+          </tbody>
+          </table>
+      </section>
+  </div>
+</div>
+    
+{% endblock %}

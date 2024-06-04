@@ -1,0 +1,57 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+<style>
+    /* Archivo: estilos.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #9090f6;
+    margin: 0;
+    padding: 0;
+}
+
+.anuncio {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(16, 0, 43);
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.anuncio h1 {
+    color: #4e22c6;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.anuncio p {
+    color: #555555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.anuncio p strong {
+    color: #0a0044;
+}
+
+.anuncio p:last-child {
+    margin-bottom: 0;
+}
+
+</style>
+
+<div class="anuncio">
+    <h1>Anuncio de Contratación</h1>
+    <p><strong>ID Vacante:</strong> {{ id_vacante }}</p>
+    <p><strong>Folio:</strong> {{ folio }}</p>
+    <p><strong>Puesto:</strong> {{ puesto }}</p>
+    <p><strong>Personal:</strong> {{ personal }}</p>
+    <p><strong>Medios de Publicación:</strong> {{ medios|join(', ') }}</p>
+    <p><strong>Fecha de Inicio:</strong> {{ fecha_inicio }}</p>
+    <p><strong>Fecha de Finalización:</strong> {{ fecha_elegida }}</p>
+</div>
+{% endblock %}

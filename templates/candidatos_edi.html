@@ -1,0 +1,308 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+<div class="row">
+      <div class="col-12">
+          <section id="tablaar" class="container">
+            <form id="formwhite" action="/candidatos_fedita/{{comentar.0}}" method="post">
+            <div class="container">
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="CURP" class="form-label">CURP</label>
+                              <input type="text" class="form-control" name="CURP" id="CURP" placeholder="CURP" value="{{comentar.1}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="RFC" class="form-label">RFC</label>
+                              <input type="text" class="form-control" name="RFC" id="RFC" placeholder="RFC" value="{{comentar.2}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                        <div class="mb-3">
+                              <label for="nombre" class="form-label">Nombre</label>
+                              <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" value="{{comentar.3}}">
+                        </div>
+
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="domCalle" class="form-label">Calle del Domicilio</label>
+                                    <input type="text" class="form-control" name="domCalle" id="domCalle" placeholder="Calle del Domicilio" value="{{comentar.4}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="domNumExtInt" class="form-label">Número exterior e interior del domicilio</label>
+                                    <input type="text" class="form-control" name="domNumExtInt" id="domNumExtInt" placeholder="Número exterior e interior del domicilio" value="{{comentar.5}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="domColonia" class="form-label">Colonia del Domicilio</label>
+                                    <input type="text" class="form-control" name="domColonia" id="domColonia" placeholder="Colonia del Domicilio" value="{{comentar.6}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="tel1" class="form-label">Teléfono 1</label>
+                                    <input type="number" class="form-control" name="tel1" id="tel1" placeholder="Teléfono 1" value="{{comentar.7}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="tel2" class="form-label">Teléfono 2</label>
+                                    <input type="number" class="form-control" name="tel2" id="tel2" placeholder="Teléfono 2" value="{{comentar.8}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="correoE" class="form-label">Correo Electrónico</label>
+                                    <input type="text" class="form-control" name="correoE" id="correoE" placeholder="Correo Electrónico" value="{{comentar.9}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="edad" class="form-label">Edad</label>
+                                    <input type="number" class="form-control" name="edad" id="edad" placeholder="Edad" value="{{comentar.10}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="sexo" class="form-label">Sexo</label>
+                                    <input type="text" class="form-control" name="sexo" id="sexo" placeholder="Sexo" value="{{comentar.11}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="idEstadoCivil" class="form-label">ID del Estado Civil</label>
+                                    <input type="number" class="form-control" name="idEstadoCivil" id="idEstadoCivil" placeholder="ID del Estado Civil" value="{{comentar.12}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="idEscolaridad" class="form-label">ID de la Escolaridad</label>
+                                    <input type="number" class="form-control" name="idEscolaridad" id="idEscolaridad" placeholder="ID de la Escolaridad" value="{{comentar.13}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="idGradoAvance" class="form-label">ID del Grado de Avance</label>
+                                    <input type="number" class="form-control" name="idGradoAvance" id="idGradoAvance" placeholder="ID del Grado de Avance" value="{{comentar.14}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="idCarrera" class="form-label">ID de la Carrera</label>
+                                    <input type="number" class="form-control" name="idCarrera" id="idCarrera" placeholder="ID de la Carrera" value="{{comentar.15}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="entrevSelecReq" class="form-label">Entrevista SelecReq</label>
+                                    <input type="number" class="form-control" name="entrevSelecReq" id="entrevSelecReq" placeholder="Entrevista SelecReq" value="{{comentar.16}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="entrevSelecPresen" class="form-label">Entrevista SelecPresen</label>
+                                    <input type="number" class="form-control" name="entrevSelecPresen" id="entrevSelecPresen" placeholder="Entrevista SelecPresen" value="{{comentar.17}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="entrevSelecResult" class="form-label">Entrevista SelecResult</label>
+                                    <input type="text" class="form-control" name="entrevSelecResult" id="entrevSelecResult" placeholder="Entrevista SelecResult" value="{{comentar.18}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalMedicaReq" class="form-label">Evaluación Médica Req</label>
+                                    <input type="number" class="form-control" name="evalMedicaReq" id="evalMedicaReq" placeholder="Evaluación Médica Req" value="{{comentar.19}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalMedicaPresen" class="form-label">Evaluación Médica Presen</label>
+                                    <input type="number" class="form-control" name="evalMedicaPresen" id="evalMedicaPresen" placeholder="Evaluación Médica Presen" value="{{comentar.20}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalMedicaResul" class="form-label">Evaluación Médica Resul</label>
+                                    <input type="text" class="form-control" name="evalMedicaResul" id="evalMedicaResul" placeholder="" value="{{comentar.21}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalPsicolgReq" class="form-label">Evaluación Psicológica Req</label>
+                                    <input type="number" class="form-control" name="evalPsicolgReq" id="evalPsicolgReq" placeholder="Evaluación Psicológica Req" value="{{comentar.22}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalPsicologPresen" class="form-label">Evaluación Psicológica Presen</label>
+                                    <input type="number" class="form-control" name="evalPsicologPresen" id="evalPsicologPresen" placeholder="Evaluación Psicológica Presen" value="{{comentar.23}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalPsicologResult" class="form-label">Evaluación Psicológica Result</label>
+                                    <input type="text" class="form-control" name="evalPsicologResult" id="evalPsicologResult" placeholder="Evaluación Psicológica Result" value="{{comentar.24}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalPsicometReq" class="form-label">Evaluación Psicométrica Req</label>
+                                    <input type="number" class="form-control" name="evalPsicometReq" id="evalPsicometReq" placeholder="Evaluación Psicométrica Req" value="{{comentar.25}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalPsicometPresene" class="form-label">Evaluación Psicométrica Presene</label>
+                                    <input type="number" class="form-control" name="evalPsicometPresene" id="evalPsicometPresene" placeholder="Evaluación Psicométrica Presene" value="{{comentar.26}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalPsicometResult" class="form-label">Evaluación Psicométrica Result</label>
+                                    <input type="text" class="form-control" name="evalPsicometResult" id="evalPsicometResult" placeholder="Evaluación Psicométrica Result" value="{{comentar.27}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalTecnicaReq" class="form-label">Evaluación Técnica Req</label>
+                                    <input type="number" class="form-control" name="evalTecnicaReq" id="evalTecnicaReq" placeholder="Evaluación Técnica Req" value="{{comentar.28}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalTecnicaPresen" class="form-label">Evaluación Técnica Presen</label>
+                                    <input type="number" class="form-control" name="evalTecnicaPresen" id="evalTecnicaPresen" placeholder="Evaluación Técnica Presen" value="{{comentar.29}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalTecnicaResul" class="form-label">Evaluación Técnica Resul</label>
+                                    <input type="text" class="form-control" name="evalTecnicaResul" id="evalTecnicaResul" placeholder="Evaluación Técnica Resul" value="{{comentar.30}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalConocReq" class="form-label">Evaluación Conocimientos Req</label>
+                                    <input type="number" class="form-control" name="evalConocReq" id="evalConocReq" placeholder="Evaluación Conocimientos Req" value="{{comentar.31}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalConocPresen" class="form-label">Evaluación Conocimientos Presen</label>
+                                    <input type="number" class="form-control" name="evalConocPresen" id="evalConocPresen" placeholder="Evaluación Conocimientos Presen" value="{{comentar.32}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="evalConocResult" class="form-label">Evaluación Conocimientos Result</label>
+                                    <input type="text" class="form-control" name="evalConocResult" id="evalConocResult" placeholder="Evaluación Conocimientos Result" value="{{comentar.33}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="entrevFinalReq" class="form-label">Entrevista Final Req</label>
+                                    <input type="number" class="form-control" name="entrevFinalReq" id="entrevFinalReq" placeholder="Entrevista Final Req" value="{{comentar.34}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="entrevFinalPresen" class="form-label">Entrevista Final Presen</label>
+                                    <input type="number" class="form-control" name="entrevFinalPresen" id="entrevFinalPresen" placeholder="Edad" value="{{comentar.35}}">
+                              </div>
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="col-xs-12 ">
+                              <div class="mb-3">
+                                    <label for="entrevFinalResul" class="form-label">Entrevista Final Resul</label>
+                                    <input type="text" class="form-control" name="entrevFinalResul" id="entrevFinalResul" placeholder="Entrevista Final Resul" value="{{comentar.36}}">
+                              </div>
+                        </div>
+                  </div>
+            </div>
+                  <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+      </section>
+</div>
+</div>
+
+
+{% endblock %}

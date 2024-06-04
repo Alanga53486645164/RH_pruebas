@@ -1,0 +1,145 @@
+{% extends "layout.html" %} 
+
+{% block content %}
+<center><h1>SOLICITAR VACANTE</h1></center>
+<div class="containeraut">
+    <div class="row">
+        <div class="col-md-12">
+            ConseVR
+        </div>
+    </div>
+    <div class="row"></div>
+    <div class="col-md-12">
+        <form action="/solicicvac" method="post">
+            <input type="text" name="conseVR" id="conseVR" class="form-control" required style="color: rgb(0, 0, 0);">
+    </div>
+    <br><br>
+
+
+
+    <div class="row">
+        <div class="col-md-2" style="color: rgb(0, 0, 0);">
+            <label for="fuentc">Fuente Candidato:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="fuentc" id="fuentc" class="form-control" required style="color: rgb(0 ,0, 0);">
+        </div>
+
+
+
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2" style="color: rgb(0, 0, 0);">
+            <label for="ars">Fecha de Publicacion</label>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="fechpub" id="fechpub" class="form-control" required style="color: rgb(0,0,0);">
+        </div>
+    </div>
+
+
+
+    <br><br><br>
+    <div class="row">
+        <div class="col-md-2" style="color: rgb(0, 0, 0);">
+            <label for="finfechpub">Fin fecha de publicacion:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="finfechpub" id="finfechpub" class="form-control" required style="color: rgb(0,0,0);">
+        </div>
+        <div class="col-md-2">
+
+        </div>
+
+
+
+        <div class="col-md-2" style="color: rgb(0, 0, 0);">
+            <label for="public">Publicadas</label>
+        </div>
+        <div class="col-md-3">
+            <input type="number" id="public" name="public"  required class="form-control" style="color: rgb(0, 0, 0);">
+        </div>
+    </div>
+
+
+
+    <br><br>
+    <div class="row">
+        <div class="col-md-4" style="color: rgb(0, 0, 0);">
+            <label for="obs">Observaciones</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="text" name="obs" id="obs" required class="form-control" style="color: rgb(0, 0, 0);">
+        </div>
+    </div>
+    <br>
+
+
+<div class="row">
+    <div class="col-md-4" style="color: rgb(0, 0, 0);">
+        <label for="cands">Candidato</label>
+    </div>
+    <div class="col-md-4" style="color: rgb(0, 0, 0);">
+        <label for="fechc">Fecha de contratacion</label>
+    </div>
+    <div class="col-md-4" style="color: rgb(0, 0, 0);">
+        <label for="req"> Seleccionar Requisicion</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <input type="text" name="cands" id="cands" required class="form-control" style="color: rgb(0, 0, 0);">
+    </div>
+    <div class="col-md-4">
+        <input type="date" id="fechc" name="fechc"required class="form-control" style="color: rgb(0, 0, 0);"> 
+    </div>
+
+
+
+    <div class="col-md-4">
+        <select id="idsreq" name="idsreq" class="form-control" required style="color: rgb(0,0,0);">
+            <option value="">Seleccionar id</option>
+            {% for i in idsreqs %}
+                <option value="{{ i[0] }}">{{ i[0] }} </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<br><br>
+
+<div class="row">
+    <div class="col-md-12" style="color: rgb(0, 0, 0);">
+        <label for="idspuest">Seleccionar Puesto</label>
+    </div>
+    <div class="col-md-12">
+        <select id="idspuest" name="idspuest" class="form-control" required style="color: rgb(0,0,0);">
+            <option value="">Seleccionar id </option>
+            {% for i in idspuests %}
+                <option value="{{ i[0] }}">{{ i[0] }} </option>
+            {% endfor %}
+        </select>
+    </div>
+
+</div>
+
+
+<br>
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <input type="submit" name="enviar" id="enviar" class="form-control" style="color: rgb(0, 0, 0);">
+    </form>
+    </div> 
+    <div class="col-md-4"></div>
+</div>
+</div>
+
+
+
+
+{% endblock %}

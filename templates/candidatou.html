@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+      <section id="tablaar" class="container">
+        <table id="tablar" class="margTabla" width="70%" border="1" cellpadding="0" bordercolor="#000000">
+          <tbody>
+            <tr>
+              <td color="FFFFFF" bgcolor="lightblue" valign="top">
+                <center><h3>CANDIDATOS REGISTRADOS</h3></center>
+                <table width="70%" border="1" cellpadding="0" bordercolor="#000000">
+                  <thead>
+                    <tr>
+                      <td bgcolor="white">ID</td>
+                      <td bgcolor="white">ID de la vacante</td>
+                      <td bgcolor="white">ID de la Requisición</td>
+                      <td bgcolor="white">ID del Puesto</td>
+                      <td bgcolor="white">CURP</td>
+                      <td bgcolor="white">RFC</td>
+                      <td bgcolor="white">Nombre</td>
+                      <td bgcolor="white">Calle del Domicilio</td>
+                      <td bgcolor="white">Número exterior e interior del Domicilio</td>
+                      <td bgcolor="white">Colonia del domicilio</td>
+                      <td bgcolor="white">Teléfono 1</td>
+                      <td bgcolor="white">Teléfono 2</td>
+                      <td bgcolor="white">Correo Electrónico</td>
+                      <td bgcolor="white">Edad</td>
+                      <td bgcolor="white">Sexo</td>
+                      <td bgcolor="white">Estado civil</td>
+                      <td bgcolor="white">Escolaridad</td>
+                      <td bgcolor="white">Grado de avance</td>
+                      <td bgcolor="white">Carrera</td>
+                      <td bgcolor="white">entrevSelecReq</td>
+                      <td bgcolor="white">esntrevSelecResult</td>
+                      <td bgcolor="white">evalMedicaReq</td>
+                      <td bgcolor="white">evalMedicaPresen</td>
+                      <td bgcolor="white">evalMedicaResult</td>
+                      <td bgcolor="white">evalPsicolgReq</td>
+                      <td bgcolor="white">evalPsicolgPresen</td>
+                      <td bgcolor="white">evalPsicolgResult</td> 
+                      <td bgcolor="white">evalPsicometReq</td> 
+                      <td bgcolor="white">evalPsicometPresene</td> 
+                      <td bgcolor="white">evalPsicometResult</td> 
+                      <td bgcolor="white">evalTecnicaReq</td> 
+                      <td bgcolor="white">evalTecnicaPresen</td> 
+                      <td bgcolor="white">evalTecnicaResult</td> 
+                      <td bgcolor="white">evalConocReq</td>
+                      <td bgcolor="white">evalConocPresen</td> 
+                      <td bgcolor="white">evalConocResult</td> 
+                      <td bgcolor="white">entrevFinalReq</td> 
+                      <td bgcolor="white">enrtevFinalPresen</td> 
+                      <td bgcolor="white">entrevFinalResult</td>  
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for dato in comentar %}
+                    <tr>
+                      <td>{{ dato[0] }}</td>
+                      <td>{{ dato[1] }}</td>
+                      <td>{{ dato[2] }}</td>
+                      <td>{{ dato[3] }}</td>
+                      <td>{{ dato[4] }}</td>
+                      <td>{{ dato[5] }}</td>
+                      <td>{{ dato[6] }}</td>
+                      <td>{{ dato[7] }}</td>
+                      <td>{{ dato[8] }}</td>
+                      <td>{{ dato[9] }}</td>
+                      <td>{{ dato[10] }}</td>
+                      <td>{{ dato[11] }}</td>
+                      <td>{{ dato[12] }}</td>
+                      <td>{{ dato[13] }}</td>
+                      <td>{{ dato[14] }}</td>
+                      <td>{{ dato[15] }}</td>
+                      <td>{{ dato[16] }}</td>
+                      <td>{{ dato[17] }}</td>
+                      <td>{{ dato[18] }}</td>
+                      <td>{{ dato[19] }}</td>
+                      <td>{{ dato[20] }}</td>
+                      <td>{{ dato[21] }}</td>
+                      <td>{{ dato[22] }}</td>
+                      <td>{{ dato[23] }}</td>
+                      <td>{{ dato[24] }}</td>
+                      <td>{{ dato[25] }}</td>
+                      <td>{{ dato[26] }}</td>
+                      <td>{{ dato[27] }}</td>
+                      <td>{{ dato[28] }}</td>
+                      <td>{{ dato[29] }}</td>
+                      <td>{{ dato[30] }}</td>
+                      <td>{{ dato[31] }}</td>
+                      <td>{{ dato[32] }}</td>
+                      <td>{{ dato[33] }}</td>
+                      <td>{{ dato[34] }}</td>
+                      <td>{{ dato[35] }}</td>
+                      <td>{{ dato[36] }}</td>
+                      <td>{{ dato[37] }}</td>
+                      <td>{{ dato[38] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                  
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  
+  {% endblock %}

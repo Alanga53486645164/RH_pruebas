@@ -1,0 +1,179 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+<style>
+    /* Archivo: estilos.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #9090f6;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(16, 0, 43);
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.content h1 {
+    color: #4e22c6;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.content .form-label {
+    font-weight: bold;
+    color: #333333;
+}
+
+.content .form-control,
+.content .form-select {
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    padding: 10px;
+}
+
+.content .form-check-label {
+    margin-left: 10px;
+    color: #555555;
+}
+
+.content .form-check-input {
+    cursor: pointer;
+}
+
+.content .btn-primary {
+    background-color: #493b77b6;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.content .btn-primary:hover {
+    background-color: #251a48;
+}
+
+.content .row {
+    margin-bottom: 15px;
+}
+
+.content .input-group .form-select,
+.content .input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.content .input-group .form-control {
+    border-left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.content .d-none {
+    display: none;
+}
+
+.content .left-align {
+    text-align: left;
+}
+
+</style>
+<form action="/crear_anuncio" method="post">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="id_vacante" class="form-label">ID Vacante</label>
+                    <input type="text" class="form-control" id="id_vacante" name="id_vacante" placeholder="Vacante">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="folio" class="form-label">Folio</label>
+                    <input type="text" class="form-control" id="folio" name="folio" placeholder="Folio">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="puesto" class="form-label">Puesto</label>
+                    <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="personal" class="form-label">La vacante se cubrirá con personal</label>
+                    <select class="form-select" id="personal" name="personal">
+                        <option value="Interno">Interno</option>
+                        <option value="Externo">Externo</option>
+                        <option value="Mixto">Mixto</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label for="medios" class="form-label">Se publicará en:</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="medios1" name="medios" value="Redes Sociales">
+                    <label class="form-check-label" for="medios1">Redes Sociales (de la empresa)</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="medios2" name="medios" value="Radio">
+                    <label class="form-check-label" for="medios2">Radio</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="medios3" name="medios" value="Periodico">
+                    <label class="form-check-label" for="medios3">Periódico</label>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="fechaInicio" class="form-label">Fecha de inicio de la publicación</label>
+                    <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="fechaFinalizacion" class="form-label">Fecha de finalización de la publicación</label>
+                    <div class="input-group">
+                        <select class="form-select" id="fechaFinalizacion" name="fechaFinalizacion">
+                            <option value="">Seleccionar fecha</option>
+                            <option value="N/A">N/A</option>
+                        </select>
+                        <input type="date" class="form-control d-none" id="fechaElegida" name="fechaElegida">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('fechaFinalizacion').addEventListener('change', function() {
+                if (this.value === 'N/A') {
+                    document.getElementById('fechaElegida').classList.add('d-none');
+                } else {
+                    document.getElementById('fechaElegida').classList.remove('d-none');
+                }
+            });
+        </script>
+
+        <br>
+
+        <button type="submit" class="btn btn-primary center-align">CREAR PUBLICACIÓN</button>
+    </div>
+</form>
+{% endblock %}
